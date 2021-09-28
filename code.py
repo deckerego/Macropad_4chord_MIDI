@@ -25,7 +25,11 @@ def key_pressed(event):
     if key_event.released:
         macropad.midi.send(macropad.NoteOff(note, 0))
         macropad.pixels[key_event.key_number] = 0x0F0F0F
-        pressed_notes.remove(note)
+        try:
+            pressed_notes.remove(note)
+        except ValueError:
+            print("Key changed during note press, clearing notes...")
+            pressed_notes = []
 
     note_names = [Key.to_name(note) for note in pressed_notes]
     text_lines[2].text = "Pressed: " + ' '.join(note_names)
