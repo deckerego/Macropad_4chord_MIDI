@@ -6,9 +6,8 @@ macropad = MacroPad()
 macropad.pixels.brightness = 0.1
 macropad.pixels.fill(0x0F0F0F)
 
-progression = settings.conf['progression']
 text_lines = macropad.display_text("Macropad 4chord MIDI")
-text_lines[1].text = "Chords: " + ' '.join(progression)
+text_lines[1].text = "Chords: "
 text_lines[2].text = "Pressed: "
 text_lines.show()
 
@@ -31,6 +30,12 @@ def key_pressed(event):
     note_names = [Key.to_name(note) for note in pressed_notes]
     text_lines[2].text = "Pressed: " + ' '.join(note_names)
 
+def switch_progression(position):
+    global progression
+    index = position % len(settings.conf['progressions'])
+    progression = settings.conf['progressions'][index]
+    text_lines[1].text = "Chords: " + ' '.join(progression)
+
 def switch_key(position_change):
     global key, chords
     if position_change:
@@ -42,16 +47,22 @@ def switch_key(position_change):
 
 key = None
 chords = None
+progression = None
 encoder_last_position = 0
 pressed_notes = []
 
+switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
 
 while True:
-    position = macropad.encoder
-    if position != encoder_last_position:
-        switch_key(position - encoder_last_position)
-        encoder_last_position = position
+    encoder_switch = macropad.encoder_switch
+    encoder_position = macropad.encoder
+    if encoder_position != encoder_last_position:
+        if encoder_switch: # Change progressions
+            switch_progression(encoder_position)
+        else: # Change key / octave
+            switch_key(encoder_position - encoder_last_position)
+            encoder_last_position = encoder_position
 
     key_event = macropad.keys.events.get()
     if key_event:
