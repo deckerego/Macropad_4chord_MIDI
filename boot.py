@@ -10,5 +10,4 @@ if(encoder_switch.value):
     print("Mounting Read-Only")
 else:
     print("Mounting Read/Write")
-#storage.remount("/", not encoder_switch.value)
-storage.remount("/", True) # Enable read/write for now
+storage.remount("/", not encoder_switch.value)
