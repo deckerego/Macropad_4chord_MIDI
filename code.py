@@ -11,27 +11,30 @@ text_lines[1].text = "Chords: "
 text_lines[2].text = "Pressed: "
 text_lines.show()
 
+key = None
+chords = None
+progression = None
+active_notes = [None for i in range(12)]
+encoder_last_position = 0
+
 def key_pressed(event):
-    global pressed_notes
-    row = key_event.key_number // 3
-    column = key_event.key_number % 3
-    note = chords[row][column]
+    global active_notes
 
-    if key_event.pressed:
+    if event.pressed:
+        row = event.key_number // 3
+        column = event.key_number % 3
+        note = chords[row][column]
+        active_notes[event.key_number] = note
         macropad.midi.send(macropad.NoteOn(note, settings.conf['velocity']))
-        macropad.pixels[key_event.key_number] = 0x00FF00
-        pressed_notes.append(note)
+        macropad.pixels[event.key_number] = 0x00FF00
 
-    if key_event.released:
+    if event.released:
+        note = active_notes[event.key_number]
+        active_notes[event.key_number] = None
         macropad.midi.send(macropad.NoteOff(note, 0))
-        macropad.pixels[key_event.key_number] = 0x0F0F0F
-        try:
-            pressed_notes.remove(note)
-        except ValueError:
-            print("Key changed during note press, clearing notes...")
-            pressed_notes = []
+        macropad.pixels[event.key_number] = 0x0F0F0F
 
-    note_names = [Key.to_name(note) for note in pressed_notes]
+    note_names = [Key.to_name(note) for note in active_notes if note]
     text_lines[2].text = "Pressed: " + ' '.join(note_names)
 
 def switch_progression(position):
@@ -48,12 +51,6 @@ def switch_key(position_change):
         key = Key(settings.conf['keys'][0], 4)
     chords = [key.chord(degree) for degree in progression]
     text_lines[0].text = "Key: %s Oct: %i" % (key.key, key.octave)
-
-key = None
-chords = None
-progression = None
-encoder_last_position = 0
-pressed_notes = []
 
 switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
