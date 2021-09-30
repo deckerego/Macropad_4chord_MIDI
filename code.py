@@ -42,11 +42,8 @@ def keypad_events(events):
             macropad.midi.send(macropad.NoteOff(note, 0))
             active_notes[event.key_number] = None
 
-    # Update the displays if any events were sent
-    if events:
-        display.set_playing(active_notes)
-        pixels.set_playing(active_notes)
-        sleep_seconds = settings.conf['sleep_seconds']
+    display.set_playing(active_notes)
+    pixels.set_playing(active_notes)
 
 def switch_progression(position):
     global progression, sleep_seconds
@@ -54,7 +51,6 @@ def switch_progression(position):
     progression = settings.conf['progressions'][index]
     pixels.set_progression(progression)
     display.set_progression(progression)
-    sleep_seconds = settings.conf['sleep_seconds']
 
 def switch_key(position_change):
     global key, chords, sleep_seconds
@@ -65,7 +61,6 @@ def switch_key(position_change):
     chords = key.chords(progression)
     pixels.wake()
     display.set_key(key)
-    sleep_seconds = settings.conf['sleep_seconds']
 
 def sleep_event():
     pixels.sleep()
@@ -81,8 +76,11 @@ while True:
     while key_event:
         key_events.append(key_event)
         key_event = macropad.keys.events.get()
-    keypad_events(key_events)
+    if key_events:
+        keypad_events(key_events)
+        sleep_seconds = settings.conf['sleep_seconds']
 
+    # Watch for any encoder turns
     encoder_position = macropad.encoder
     if encoder_position != encoder_last_position:
         encoder_switch = macropad.encoder_switch
@@ -91,8 +89,11 @@ while True:
         else: # Change key / octave
             switch_key(encoder_position - encoder_last_position)
         encoder_last_position = encoder_position
+        sleep_seconds = settings.conf['sleep_seconds']
 
-    if sleep_seconds <= 0:
-        sleep_event()
-    else:
-        sleep_seconds -= elapsed_seconds()
+    # Let the keypad go dark if it has timed out
+    if sleep_seconds: # Always on if None
+        if sleep_seconds <= 0:
+            sleep_event()
+        else:
+            sleep_seconds -= elapsed_seconds()

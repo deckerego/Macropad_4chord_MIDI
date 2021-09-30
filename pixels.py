@@ -5,6 +5,7 @@ from key import Key
 SEGMENT_SIZE = 255 // 7
 SUBSEGMENT_SIZE = SEGMENT_SIZE // 3
 
+# Everything related to lighting the Macropad's keypad
 class Pixels:
     def __init__(self, macropad):
         self.pixels = macropad.pixels

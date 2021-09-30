@@ -3,6 +3,7 @@ import displayio
 from adafruit_macropad import MacroPad
 from key import Key
 
+# Everything related to the Macropad's OLED display
 class Display:
     def __init__(self, macropad):
         self.display = macropad.display
