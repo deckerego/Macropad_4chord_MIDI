@@ -28,6 +28,9 @@ class Key:
         fifth = root + sum(offset for offset in scale[:4])
         return [root, third, fifth]
 
+    def chords(self, progression):
+        return [self.chord(degree) for degree in progression]
+
     def advance(self, index):
         key_index = self.key_offset + index
         octave = self.octave + key_index // SCALE_LENGTH

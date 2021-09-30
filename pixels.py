@@ -26,12 +26,9 @@ class Pixels:
                 self.palette[(row * 3) + column] = colorwheel(segment + subsegment)
         self.reset()
 
-    def off(self, index):
-        self.pixels[index] = self.palette[index]
-        self.pixels.show()
-
-    def highlight(self, index):
-        self.pixels[index] = 0xFFFFFF
+    def set_playing(self, active_notes):
+        for index in range(12):
+            self.pixels[index] = 0xFFFFFF if active_notes[index] else self.palette[index]
         self.pixels.show()
 
     def reset(self):

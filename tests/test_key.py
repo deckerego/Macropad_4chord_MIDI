@@ -11,6 +11,12 @@ class TestChords(unittest.TestCase):
         key = Key('C', 4)
         self.assertEqual(key.chord('vi'), [69, 72, 76])
 
+class TestChord(unittest.TestCase):
+
+    def test_chord_list(self):
+        key = Key('C', 4)
+        self.assertEqual(key.chords(['I', 'vi']), [[60, 64, 67], [69, 72, 76]])    
+
 class TestName(unittest.TestCase):
 
     def test_c_four(self):
@@ -21,7 +27,7 @@ class TestName(unittest.TestCase):
         name = Key.to_name(42)
         self.assertEqual(name, "F#2" )
 
-class TestName(unittest.TestCase):
+class TestAdvance(unittest.TestCase):
 
     def test_next_note(self):
         start = Key('C', 4)

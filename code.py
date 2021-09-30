@@ -11,27 +11,31 @@ pixels = Pixels(macropad)
 key = None
 chords = None
 progression = None
+note_velocity = settings.conf['velocity']
 active_notes = [None for i in range(12)]
 encoder_last_position = 0
 
-def key_pressed(event):
+def keypad_events(events):
     global active_notes
 
-    if event.pressed:
-        row = event.key_number // 3
-        column = event.key_number % 3
-        note = chords[row][column]
-        macropad.midi.send(macropad.NoteOn(note, settings.conf['velocity']))
-        active_notes[event.key_number] = note
-        pixels.highlight(event.key_number)
+    # Send as many MIDI operations as you can at once
+    for event in events:
+        if event.pressed:
+            row = event.key_number // 3
+            column = event.key_number % 3
+            note = chords[row][column]
+            macropad.midi.send(macropad.NoteOn(note, note_velocity))
+            active_notes[event.key_number] = note
 
-    if event.released:
-        note = active_notes[event.key_number]
-        macropad.midi.send(macropad.NoteOff(note, 0))
-        active_notes[event.key_number] = None
-        pixels.off(event.key_number)
+        else: # event.released
+            note = active_notes[event.key_number]
+            macropad.midi.send(macropad.NoteOff(note, 0))
+            active_notes[event.key_number] = None
 
-    display.set_playing(active_notes)
+    # Update the displays if any events were sent
+    if events:
+        display.set_playing(active_notes)
+        pixels.set_playing(active_notes)
 
 def switch_progression(position):
     global progression
@@ -41,18 +45,26 @@ def switch_progression(position):
     display.set_progression(progression)
 
 def switch_key(position_change):
-    global key, chords
+    global key, chords, progression
     if position_change:
         key = key.advance(position_change)
     else: # No change - reset to default
         key = Key(settings.conf['keys'][0], 4)
-    chords = [key.chord(degree) for degree in progression]
+    chords = key.chords(progression)
     display.set_key(key)
 
 switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
 
 while True:
+    # Try to process all the keypad events at once
+    key_events = []
+    key_event = macropad.keys.events.get()
+    while key_event:
+        key_events.append(key_event)
+        key_event = macropad.keys.events.get()
+    keypad_events(key_events)
+
     encoder_position = macropad.encoder
     if encoder_position != encoder_last_position:
         encoder_switch = macropad.encoder_switch
@@ -61,7 +73,3 @@ while True:
         else: # Change key / octave
             switch_key(encoder_position - encoder_last_position)
         encoder_last_position = encoder_position
-
-    key_event = macropad.keys.events.get()
-    if key_event:
-        key_pressed(key_event)
