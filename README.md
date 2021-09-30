@@ -4,6 +4,30 @@ With thanks to the [4 Chord USB MIDI Keyboard](http://old.sgreg.fi//projects/4ch
 by [Sven Gregori](http://old.sgreg.fi).
 
 
+## Playing
+
+The Macropad 4chord MIDI is built to play simple chord progressions as a MIDI
+device. You can connect the Macropad to any studio recording software that
+accepts MIDI devices, such as GarageBand.
+
+Once you power on the Macropad a default progression is restored, with the root
+on middle C (I'm a assuming middle C is on the fourth octave). The root note
+is at the top left, with the major (or minor) third and perfect fifth on the
+middle and right keys. The key and octave can be changed by rotating the
+encoder dial, going up or down the chromatic scale.
+
+As you go down the keypad, the notes follow the four chord progression listed
+on the screen. By default this is a I-V-vi-IV progression, so with the root
+at C4 you will have G4, A5, and F4 as you go down the keypad. You can rotate
+through some four chord progressions by pressing down on the encoder button
+while rotating the dial.
+
+Thanks to the RP2040, all the keys can be pressed simultaneously. You can
+play the triad chords for each degree, or arpeggiate the chords however
+you like. The list of notes currently being played are displayed on screen
+if you want to check my math.
+
+
 ## Installing
 
 When installing for the first time, extract the latest
@@ -29,31 +53,30 @@ rotary encoder button. You should see the text "Mounting Read/Write" quickly
 appear on the screen, and then the CIRCUITPY drive will mount in read/write mode.
 
 
-## Playing
+## Configuring
 
-The Macropad 4chord MIDI is built to play simple chord progressions as a MIDI
-device. You can connect the Macropad to any studio recording software that
-accepts MIDI devices, such as GarageBand.
-
-Once you power on the Macropad a default progression is restored, with the root
-on middle C (I'm a assuming middle C is on the fourth octave). The root note
-is at the top left, with the major (or minor) third and perfect fifth on the
-middle and right keys. The key and octave can be changed by rotating the
-encoder dial, going up or down the chromatic scale.
-
-As you go down the keypad, the notes follow the four chord progression listed
-on the screen. By default this is a I-V-vi-IV progression, so with the root
-at C4 you will have G4, A5, and F4 as you go down the keypad. You can rotate
-through some four chord progressions by pressing down on the encoder button
-while rotating the dial.
-
-Thanks to the RP2040, all the keys can be pressed simultaneously. You can
-play the triad chords for each degree, or arpeggiate the chords however
-you like. The list of notes currently being played are displayed on screen
-if you want to check my math.
+The `settings.py` file has several settings you can tweak, including
+MIDI note configurations and a list of the progressions you can scroll through.
+If you would like to add your own chord progressions or would like to keep a
+shorter list of possible keys, you can make those changes in the `settings.py`
+file within the CIRCUITPY drive. Just make sure to mount your Macropad
+in read/write mode (see [Updating](#updating)).
 
 
-## Unit Testing
+## Building
+
+There is no big build process since the Python files are distributed in
+.py form and are not compiled to Micropython. Just copy-and-paste.
+
+### Packaging
+
+The necessary Adafruit CircuitPython libraries are provided in the
+releases package but not included in the Git repository for obvious reasons.
+If you are installing from this repo directly, review
+[lib/README.md](./lib/README.md) for details on how to add the
+necessary libraries.
+
+### Unit Testing
 
 Unit testing can be run with:
 
