@@ -1,4 +1,5 @@
 import settings
+import time
 from key import Key
 from adafruit_macropad import MacroPad
 from pixels import Pixels
@@ -14,9 +15,18 @@ progression = None
 note_velocity = settings.conf['velocity']
 active_notes = [None for i in range(12)]
 encoder_last_position = 0
+last_time_seconds = time.time()
+sleep_seconds = settings.conf['sleep_seconds']
+
+def elapsed_seconds():
+    global last_time_seconds
+    current_seconds = time.time()
+    elapsed_seconds = current_seconds - last_time_seconds
+    last_time_seconds = current_seconds
+    return elapsed_seconds
 
 def keypad_events(events):
-    global active_notes
+    global active_notes, sleep_seconds
 
     # Send as many MIDI operations as you can at once
     for event in events:
@@ -32,26 +42,29 @@ def keypad_events(events):
             macropad.midi.send(macropad.NoteOff(note, 0))
             active_notes[event.key_number] = None
 
-    # Update the displays if any events were sent
-    if events:
-        display.set_playing(active_notes)
-        pixels.set_playing(active_notes)
+    display.set_playing(active_notes)
+    pixels.set_playing(active_notes)
 
 def switch_progression(position):
-    global progression
+    global progression, sleep_seconds
     index = position % len(settings.conf['progressions'])
     progression = settings.conf['progressions'][index]
     pixels.set_progression(progression)
     display.set_progression(progression)
 
 def switch_key(position_change):
-    global key, chords, progression
+    global key, chords, sleep_seconds
     if position_change:
         key = key.advance(position_change)
     else: # No change - reset to default
         key = Key(settings.conf['keys'][0], 4)
     chords = key.chords(progression)
+    pixels.wake()
     display.set_key(key)
+
+def sleep_event():
+    pixels.sleep()
+    display.sleep()
 
 switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
@@ -63,8 +76,11 @@ while True:
     while key_event:
         key_events.append(key_event)
         key_event = macropad.keys.events.get()
-    keypad_events(key_events)
+    if key_events:
+        keypad_events(key_events)
+        sleep_seconds = settings.conf['sleep_seconds']
 
+    # Watch for any encoder turns
     encoder_position = macropad.encoder
     if encoder_position != encoder_last_position:
         encoder_switch = macropad.encoder_switch
@@ -73,3 +89,11 @@ while True:
         else: # Change key / octave
             switch_key(encoder_position - encoder_last_position)
         encoder_last_position = encoder_position
+        sleep_seconds = settings.conf['sleep_seconds']
+
+    # Let the keypad go dark if it has timed out
+    if sleep_seconds: # Always on if None
+        if sleep_seconds <= 0:
+            sleep_event()
+        else:
+            sleep_seconds -= elapsed_seconds()

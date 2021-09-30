@@ -12,6 +12,7 @@ START_NOTE = 9
 # perfect fifth, that means we max out at note 111 (D#8).
 END_NOTE = 111
 
+# Calculations for chords based on the selected key
 class Key:
     def __init__(self, key, octave):
         self.octave = octave
