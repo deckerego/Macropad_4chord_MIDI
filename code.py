@@ -1,4 +1,5 @@
 import settings
+import time
 from key import Key
 from adafruit_macropad import MacroPad
 from pixels import Pixels
@@ -14,9 +15,18 @@ progression = None
 note_velocity = settings.conf['velocity']
 active_notes = [None for i in range(12)]
 encoder_last_position = 0
+last_time_seconds = time.time()
+sleep_seconds = settings.conf['sleep_seconds']
+
+def elapsed_seconds():
+    global last_time_seconds
+    current_seconds = time.time()
+    elapsed_seconds = current_seconds - last_time_seconds
+    last_time_seconds = current_seconds
+    return elapsed_seconds
 
 def keypad_events(events):
-    global active_notes
+    global active_notes, sleep_seconds
 
     # Send as many MIDI operations as you can at once
     for event in events:
@@ -36,22 +46,30 @@ def keypad_events(events):
     if events:
         display.set_playing(active_notes)
         pixels.set_playing(active_notes)
+        sleep_seconds = settings.conf['sleep_seconds']
 
 def switch_progression(position):
-    global progression
+    global progression, sleep_seconds
     index = position % len(settings.conf['progressions'])
     progression = settings.conf['progressions'][index]
     pixels.set_progression(progression)
     display.set_progression(progression)
+    sleep_seconds = settings.conf['sleep_seconds']
 
 def switch_key(position_change):
-    global key, chords, progression
+    global key, chords, sleep_seconds
     if position_change:
         key = key.advance(position_change)
     else: # No change - reset to default
         key = Key(settings.conf['keys'][0], 4)
     chords = key.chords(progression)
+    pixels.wake()
     display.set_key(key)
+    sleep_seconds = settings.conf['sleep_seconds']
+
+def sleep_event():
+    pixels.sleep()
+    display.sleep()
 
 switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
@@ -73,3 +91,8 @@ while True:
         else: # Change key / octave
             switch_key(encoder_position - encoder_last_position)
         encoder_last_position = encoder_position
+
+    if sleep_seconds <= 0:
+        sleep_event()
+    else:
+        sleep_seconds -= elapsed_seconds()
