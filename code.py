@@ -26,7 +26,7 @@ def elapsed_seconds():
     return elapsed_seconds
 
 def keypad_events(events):
-    global active_notes, sleep_seconds
+    global active_notes
 
     # Send as many MIDI operations as you can at once
     for event in events:
@@ -46,14 +46,14 @@ def keypad_events(events):
     pixels.set_playing(active_notes)
 
 def switch_progression(position):
-    global progression, sleep_seconds
+    global progression
     index = position % len(settings.conf['progressions'])
     progression = settings.conf['progressions'][index]
     pixels.set_progression(progression)
     display.set_progression(progression)
 
 def switch_key(position_change):
-    global key, chords, sleep_seconds
+    global key, chords
     if position_change:
         key = key.advance(position_change)
     else: # No change - reset to default
@@ -70,7 +70,7 @@ switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
 
 while True:
-    # Try to process all the keypad events at once
+    # Process all available key events at once
     key_events = []
     key_event = macropad.keys.events.get()
     while key_event:
@@ -80,13 +80,13 @@ while True:
         keypad_events(key_events)
         sleep_seconds = settings.conf['sleep_seconds']
 
-    # Watch for any encoder turns
+    # See if the encoder dial has rotated
     encoder_position = macropad.encoder
     if encoder_position != encoder_last_position:
         encoder_switch = macropad.encoder_switch
-        if encoder_switch: # Change progressions
+        if encoder_switch: # The encoder button is pushed down
             switch_progression(encoder_position)
-        else: # Change key / octave
+        else: # The encoder button is not pressed
             switch_key(encoder_position - encoder_last_position)
         encoder_last_position = encoder_position
         sleep_seconds = settings.conf['sleep_seconds']
