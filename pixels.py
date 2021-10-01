@@ -10,8 +10,8 @@ class Pixels:
     def __init__(self, macropad):
         self.pixels = macropad.pixels
         self.pixels.auto_write = False
-        self.palette = [0x0F0F0F for i in range(12)]
         self.pixels.brightness = settings.conf['brightness']
+        self.palette = [0x0F0F0F for i in range(12)]
         self.reset()
 
     def wake(self):

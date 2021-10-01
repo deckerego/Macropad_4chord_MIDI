@@ -93,7 +93,5 @@ while True:
 
     # Let the keypad go dark if it has timed out
     if sleep_seconds: # Always on if None
-        if sleep_seconds <= 0:
-            sleep_event()
-        else:
-            sleep_seconds -= elapsed_seconds()
+        sleep_seconds -= elapsed_seconds()
+        if sleep_seconds <= 0: sleep_event()
