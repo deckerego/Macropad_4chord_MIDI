@@ -68,6 +68,7 @@ def sleep_event():
 
 switch_progression(encoder_last_position)
 switch_key(encoder_last_position)
+keypad_events([])
 
 while True:
     # Process all available key events at once
