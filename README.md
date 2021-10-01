@@ -45,7 +45,7 @@ the CIRCUITPY filesystem will be mounted as read-only. When mounting the device
 as read-only, Windows and MacOS won't complain if you unplug or reboot the device
 without unmounting it, making it more like a regular old HID device.
 
-To update or edit the code on the device, or to modify the macros, you first
+To update or edit the code on the device, or to modify the settings, you first
 need to reboot the device with the CIRCUITPY drive mounted in read/write mode.
 To do that, reboot the device using the boot switch on the left of the
 Macropad, and then after releasing the button immediately hold down the
