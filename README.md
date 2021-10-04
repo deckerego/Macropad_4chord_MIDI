@@ -30,7 +30,13 @@ if you want to check my math.
 
 ## Installing
 
-When installing for the first time, extract the latest
+First make sure that your Macropad has the
+[latest version of CircuitPython installed](https://circuitpython.org/board/adafruit_macropad_rp2040/).
+See [https://learn.adafruit.com/adafruit-macropad-rp2040/circuitpython](https://learn.adafruit.com/adafruit-macropad-rp2040/circuitpython)
+for instructions on how to update the Macropad to have the latest version of
+CircuitPython.
+
+When installing the Macropad 4chord for the first time, extract the latest
 [MacroPad 4chord MIDI.zip](https://github.com/deckerego/Macropad_4chord_MIDI/releases/latest)
 into a directory, then copy the contents of that extracted archive
 into the CIRCUITPY drive that appears when you plug in your Macropad.
