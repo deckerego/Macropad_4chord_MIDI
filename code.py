@@ -9,9 +9,9 @@ macropad = MacroPad()
 display = Display(macropad)
 pixels = Pixels(macropad)
 
-key = None
+key = Key(settings.conf['keys'][0], 4)
 chords = None
-progression = None
+progression = settings.conf['progressions'][0]
 note_velocity = settings.conf['velocity']
 active_notes = [None for i in range(12)]
 encoder_last_position = 0
@@ -46,9 +46,10 @@ def keypad_events(events):
     pixels.set_playing(active_notes)
 
 def switch_progression(position):
-    global progression
+    global progression, chords
     index = position % len(settings.conf['progressions'])
     progression = settings.conf['progressions'][index]
+    chords = key.chords(progression)
     pixels.set_progression(progression)
     display.set_progression(progression)
 
