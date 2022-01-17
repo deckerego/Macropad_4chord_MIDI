@@ -9,6 +9,7 @@ conf = {
     'progressions': [
         ["I", "V", "vi", "IV"], # The "pop" progression
         ["vi", "IV", "I", "V"], # A rotation of the "pop" progression
+        ["IV", "V", "I", "vi"], # Coldplay progression
         ["I", "vi", "IV", "V"], # The '50s progression
         ["I", "IV", "ii", "V"], # The Montgomery Ward bridge
         ["I", "iii", "vi", "V"] # Blues progression
