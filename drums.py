@@ -82,7 +82,6 @@ class Display:
         self.display.auto_refresh = False
         self.display.auto_brightness = True
         self.display.brightness = self.scaled_brightness
-
         self.display.show(self.group)
         self.display.refresh()
 
