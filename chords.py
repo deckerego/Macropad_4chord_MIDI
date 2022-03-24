@@ -1,5 +1,8 @@
 import settings
 import displayio
+import terminalio
+from adafruit_display_text import label
+from adafruit_display_shapes.rect import Rect
 from rainbowio import colorwheel
 from key import Key
 from adafruit_macropad import MacroPad
@@ -69,13 +72,33 @@ class Display:
     def __init__(self, macropad):
         self.display = macropad.display
         self.scaled_brightness = 0.5 + (settings.conf['brightness'] * 0.5)
-        self.text_lines = macropad.display_text("Macropad 4chord MIDI")
+        self.group = displayio.Group()
+        self.group.append(Rect(0, 0, self.display.width, 12, fill=0xFFFFFF))
+        self.group.append(Display.create_label('Macropad 4chord MIDI', (self.display.width//2, -2), (0.5, 0.0), 0x000000))
+        self.group.append(Display.create_label("Key:", (0, self.display.height - 36), (0, 1.0)))
+        self.group.append(Display.create_label("X#", (30, self.display.height - 36), (0, 1.0)))
+        self.group.append(Display.create_label("Oct:", (self.display.width / 2, self.display.height - 36), (0, 1.0)))
+        self.group.append(Display.create_label("00", ((self.display.width / 2) + 30, self.display.height - 36), (0, 1.0)))
+        self.group.append(Display.create_label("Chords:", (0, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("III III III III", (42, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("Notes:", (0, self.display.height - 8), (0, 1.0)))
+        self.group.append(Display.create_label("Xm# Xm# Xm# Xm#", (40, self.display.height - 8), (0, 1.0)))
+
+    @staticmethod
+    def create_label(text, anchor_position, anchor_point, color=0xFFFFFF):
+        return label.Label(
+            terminalio.FONT,
+            text=text,
+            color=color,
+            anchored_position=anchor_position,
+            anchor_point=anchor_point
+        )
 
     def refresh(self):
         self.display.auto_refresh = False
         self.display.auto_brightness = True
         self.display.brightness = self.scaled_brightness
-        self.text_lines.show()
+        self.display.show(self.group)
         self.display.refresh()
 
     def wake(self):
@@ -90,18 +113,19 @@ class Display:
 
     def set_progression(self, progression):
         self.wake()
-        self.text_lines[1].text = "Chords: " + ' '.join(progression)
+        self.group[7].text = ' '.join(progression)
         self.display.refresh()
 
     def set_key(self, key):
         self.wake()
-        self.text_lines[0].text = "Key: %s Oct: %i" % (key.key, key.octave)
+        self.group[3].text = key.key
+        self.group[5].text = str(key.octave)
         self.display.refresh()
 
     def set_playing(self, notes):
         self.wake()
         note_names = [Key.to_name(note) for note in notes if note]
-        self.text_lines[2].text = "Pressed: " + ' '.join(note_names)
+        self.group[9].text = ' '.join(note_names)
         self.display.refresh()
 
 SEGMENT_SIZE = 255 // 7
