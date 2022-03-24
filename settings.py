@@ -1,5 +1,5 @@
 conf = {
-    'velocity': 127,       # MIDI note velocity to be sent with each note
+    'velocity': 96,        # MIDI note velocity to be sent with each note
     'pitch_bend': 8195,    # MIDI pitch bend to be sent with each note
     'brightness': 0.2,     # Brightness of LEDs and screen from 0.0 to 1.0
     'sleep_seconds': 300,  # Seconds before the LEDs turn off, None if they are always on
