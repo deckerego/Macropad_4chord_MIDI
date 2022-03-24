@@ -3,9 +3,10 @@ import time
 from adafruit_macropad import MacroPad
 from chords import Chords
 from drums import Drums
+from controls import Controls
 
 macropad = MacroPad()
-modes = [Chords(macropad), Drums(macropad)]
+modes = [Chords(macropad), Drums(macropad), Controls(macropad)]
 mode_current = 0
 
 encoder_last_position = 0
@@ -23,7 +24,7 @@ def elapsed_seconds():
 
 def click_event():
     global mode_current
-    mode_current = (mode_current + 1) % 2
+    mode_current = (mode_current + 1) % 3
     modes[mode_current].refresh()
 
 modes[mode_current].refresh()
