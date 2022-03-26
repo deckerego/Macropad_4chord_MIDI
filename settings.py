@@ -15,8 +15,8 @@ chord_configs = {
 
 midi_configs = {
     'Velocity': 96,        # Note velocity to be sent with each note
-    'Attack': 0,           # Envelope attack time
-    'Release': 0,          # Envelope release time
+    'Attack': 16,          # Envelope attack time
+    'Release': 16,         # Envelope release time
     'Brightness': 0,       # Filter cutoff frequency
     'Timbre': 0,           # Filter envelope levels
     'TimePortamento': 0,   # Rate that portamento slides the pitch between notes

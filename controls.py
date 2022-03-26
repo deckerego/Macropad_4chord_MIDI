@@ -29,6 +29,8 @@ class Controls:
         self.pressed = None
 
     def refresh(self):
+        for control in controls:
+            self.set_control(control)
         self.display.reload()
         self.pixels.refresh()
 
