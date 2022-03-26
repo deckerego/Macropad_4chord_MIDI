@@ -1,4 +1,3 @@
-import settings
 import displayio
 import terminalio
 from adafruit_display_text import label
@@ -8,18 +7,17 @@ from key import Key
 from adafruit_macropad import MacroPad
 
 class Chords:
-    def __init__(self, macropad):
-        self.display = Display(macropad)
-        self.pixels = Pixels(macropad)
+    def __init__(self, macropad, settings):
+        self.settings = settings
+        self.display = Display(macropad, self.settings.display['brightness'])
+        self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
+        self.key = Key(self.settings.chords['keys'][0], 4)
+        self.chords = None
+        self.progression_idx = 0
 
     def refresh(self):
-        self.key = Key(settings.conf['keys'][0], 4)
-        self.chords = None
-        self.progression = settings.conf['progressions'][0]
-        self.note_velocity = settings.conf['velocity']
         self.active_notes = [None for i in range(12)]
-
         self.display.refresh()
         self.pixels.refresh()
         self.switch_progression(0)
@@ -27,16 +25,18 @@ class Chords:
         self.keypad_events([])
 
     def keypad_events(self, events):
+        note_velocity = self.settings.midi['Velocity']
+
         for event in events:
             if event.pressed:
                 row = event.key_number // 3
                 column = event.key_number % 3
                 note = self.chords[row][column]
-                self.macropad.midi.send(self.macropad.NoteOn(note, self.note_velocity))
+                self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity))
                 self.active_notes[event.key_number] = note
             else: # event.released
                 note = self.active_notes[event.key_number]
-                self.macropad.midi.send(self.macropad.NoteOff(note, self.note_velocity))
+                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity))
                 self.active_notes[event.key_number] = None
 
         self.display.set_playing(self.active_notes)
@@ -44,7 +44,7 @@ class Chords:
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         if encoder_switch: # The encoder button is pushed down
-            self.switch_progression(encoder_position)
+            self.switch_progression(encoder_position - encoder_last_position)
         else: # The encoder button is not pressed
             self.switch_key(encoder_position - encoder_last_position)
 
@@ -52,26 +52,24 @@ class Chords:
         self.pixels.sleep()
         self.display.sleep()
 
-    def switch_progression(self, position):
-        index = position % len(settings.conf['progressions'])
-        self.progression = settings.conf['progressions'][index]
-        self.chords = self.key.chords(self.progression)
-        self.pixels.set_progression(self.progression)
-        self.display.set_progression(self.progression)
+    def switch_progression(self, position_change):
+        self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
+        progression = self.settings.chords['progressions'][self.progression_idx]
+        self.chords = self.key.chords(progression)
+        self.pixels.set_progression(progression)
+        self.display.set_progression(progression)
 
     def switch_key(self, position_change):
-        if position_change:
-            self.key = self.key.advance(position_change)
-        else: # No change - reset to default
-            self.key = Key(settings.conf['keys'][0], 4)
-        self.chords = self.key.chords(self.progression)
+        self.key = self.key.advance(position_change)
+        progression = self.settings.chords['progressions'][self.progression_idx]
+        self.chords = self.key.chords(progression)
         self.pixels.wake()
         self.display.set_key(self.key)
 
 class Display:
-    def __init__(self, macropad):
+    def __init__(self, macropad, brightness):
         self.display = macropad.display
-        self.scaled_brightness = 0.5 + (settings.conf['brightness'] * 0.5)
+        self.scaled_brightness = 0.5 + (brightness * 0.5)
         self.group = displayio.Group()
         self.group.append(Rect(0, 0, self.display.width, 12, fill=0xFFFFFF))
         self.group.append(Display.create_label('Macropad 4chord MIDI', (self.display.width//2, -2), (0.5, 0.0), 0x000000))
@@ -132,18 +130,19 @@ SEGMENT_SIZE = 255 // 7
 SUBSEGMENT_SIZE = SEGMENT_SIZE // 3
 
 class Pixels:
-    def __init__(self, macropad):
+    def __init__(self, macropad, brightness):
         self.pixels = macropad.pixels
+        self.brightness = brightness
 
     def refresh(self):
         self.pixels.auto_write = False
-        self.pixels.brightness = settings.conf['brightness']
+        self.pixels.brightness = self.brightness
         self.palette = [0x0F0F0F for i in range(12)]
         self.reset()
 
     def wake(self):
         if self.pixels.brightness <= 0:
-            self.pixels.brightness = settings.conf['brightness']
+            self.pixels.brightness = self.brightness
             self.pixels.show()
 
     def sleep(self):

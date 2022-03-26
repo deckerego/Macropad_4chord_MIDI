@@ -1,51 +1,63 @@
+import settings
 import displayio
 import terminalio
 from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
+from adafruit_midi import control_change_values
 from rainbowio import colorwheel
-from drumkits import DrumKits
+from adafruit_macropad import MacroPad
 
-class Drums:
+# Several of these can be removed after https://github.com/adafruit/Adafruit_CircuitPython_MIDI/pull/49
+ATTACK_TIME = 73
+PORTAMENTO_TIME = 37
+CHORUS = 93
+DETUNE = 94
 
+controls = [
+    ('Attack', ATTACK_TIME), ('Release', control_change_values.RELEASE_TIME), ('Brightness', control_change_values.CUTOFF_FREQUENCY),
+    ('Timbre', control_change_values.FILTER_RESONANCE), ('TimePortamento', PORTAMENTO_TIME), ('CtlPortamento', control_change_values.PORTAMENTO),
+    ('ChorusSend', CHORUS), ('PanL/R', control_change_values.PAN), ('Volume', control_change_values.VOLUME),
+    ('Breath', control_change_values.BREATH_CONTROL), ('Celeste', DETUNE), ('Velocity', None)
+]
+
+class Controls:
     def __init__(self, macropad, settings):
         self.settings = settings
+        self.macropad = macropad
         self.display = Display(macropad, self.settings.display['brightness'])
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
-        self.macropad = macropad
-        self.kits = DrumKits()
-        self.active_notes = [None for i in range(12)]
+        self.pressed = None
 
     def refresh(self):
-        self.display.refresh()
+        self.display.reload()
         self.pixels.refresh()
 
-        name, kit = self.kits.get()
-        self.display.set_kit(name, kit)
-        self.pixels.set_kit(kit)
-
     def keypad_events(self, events):
-        note_velocity = self.settings.midi['Velocity']
-        _, kit = self.kits.get()
-
         for event in events:
             if event.pressed:
-                row = event.key_number // 3
-                column = event.key_number % 3
-                if row < len(kit) and column < len(kit[row]):
-                    color, _, note = kit[row][column]
-                    self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity))
-                    self.active_notes[event.key_number] = note
+                self.pressed = event.key_number
+                name, _ = controls[event.key_number]
+                self.display.adjust(event.key_number, self.settings.midi[name])
+                self.pixels.press(event.key_number)
             else: # event.released
-                note = self.active_notes[event.key_number]
-                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity))
-                self.active_notes[event.key_number] = None
-        self.pixels.set_playing(self.active_notes)
+                if event.key_number == self.pressed: self.pressed = None
+                if not self.pressed: self.display.reload()
+                self.set_control(controls[event.key_number])
+                self.pixels.release(event.key_number)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
-        change = encoder_position - encoder_last_position
-        name, kit = self.kits.prev() if change < 0 else self.kits.next()
-        self.display.set_kit(name, kit)
-        self.pixels.set_kit(kit)
+        if self.pressed is not None:
+            name, number = controls[self.pressed]
+            delta = encoder_position - encoder_last_position
+            value = (self.settings.midi[name] + delta) % 128
+            self.settings.midi[name] = value
+            self.display.adjust(self.pressed, value)
+
+    def set_control(self, control):
+        name, control_number = control
+        if control_number is not None:
+            value = self.settings.midi[name]
+            self.macropad.midi.send(self.macropad.ControlChange(control_number, value))
 
     def sleep_event(self):
         self.pixels.sleep()
@@ -79,10 +91,26 @@ class Display:
             )
         )
 
-    def refresh(self):
+    def adjust(self, key, control_value):
+        control_name, _ = controls[key]
+        self.group[13].anchored_position=(5, -2)
+        self.group[13].anchor_point=(0, 0)
+        self.group[13].text = "%s: %d" % (control_name, control_value)
+        self.display.show(self.group)
+        self.display.refresh()
+
+    def reload(self):
         self.display.auto_refresh = False
         self.display.auto_brightness = True
         self.display.brightness = self.scaled_brightness
+
+        self.group[13].anchored_position=(self.display.width//2, -2)
+        self.group[13].anchor_point=(0.5, 0.0)
+        self.group[13].text = 'MIDI Controls'
+        for i in range(12):
+            control_name, _ = controls[i]
+            self.group[i].text = control_name[:6]
+
         self.display.show(self.group)
         self.display.refresh()
 
@@ -96,16 +124,6 @@ class Display:
         self.display.brightness = 0
         self.display.refresh()
 
-    def set_kit(self, name, kit):
-        self.group[13].text = name
-        for i in range(12):
-            row = i // 3
-            column = i % 3
-            if row < len(kit) and column < len(kit[row]):
-                _, self.group[i].text, _ = kit[row][column]
-        self.refresh()
-
-
 SEGMENT_SIZE = 255 // 7
 SUBSEGMENT_SIZE = SEGMENT_SIZE // 3
 
@@ -113,11 +131,21 @@ class Pixels:
     def __init__(self, macropad, brightness):
         self.pixels = macropad.pixels
         self.brightness = brightness
-        self.palette = [0x0F0F0F for i in range(12)]
+        self.default_color = 0x0F0F0F
+        self.highlight_color = 0xFFFFFF
 
     def refresh(self):
         self.pixels.auto_write = False
         self.pixels.brightness = self.brightness
+        self.palette = [self.default_color for i in range(12)]
+        self.reset()
+
+    def press(self, key):
+        self.palette[key] = self.highlight_color
+        self.reset()
+
+    def release(self, key):
+        self.palette[key] = self.default_color
         self.reset()
 
     def wake(self):
@@ -133,18 +161,4 @@ class Pixels:
         self.wake()
         for index in range(12):
             self.pixels[index] = self.palette[index]
-        self.pixels.show()
-
-    def set_kit(self, kit):
-        for i in range(12):
-            row = i // 3
-            column = i % 3
-            if row < len(kit) and column < len(kit[row]):
-                self.palette[i], _, _ = kit[row][column]
-        self.reset()
-
-    def set_playing(self, active_notes):
-        self.wake()
-        for index in range(12):
-            self.pixels[index] = 0xFFFFFF if active_notes[index] else self.palette[index]
         self.pixels.show()
