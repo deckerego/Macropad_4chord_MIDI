@@ -24,7 +24,7 @@ class Drums:
         self.pixels.set_kit(kit)
 
     def keypad_events(self, events):
-        note_velocity = self.settings.midi['velocity']
+        note_velocity = self.settings.midi['Velocity']
         _, kit = self.kits.get()
 
         for event in events:

@@ -26,7 +26,7 @@ class Chords:
         self.keypad_events([])
 
     def keypad_events(self, events):
-        note_velocity = self.settings.midi['velocity']
+        note_velocity = self.settings.midi['Velocity']
 
         for event in events:
             if event.pressed:

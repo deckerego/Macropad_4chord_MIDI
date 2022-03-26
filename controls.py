@@ -12,22 +12,21 @@ ATTACK_TIME = 73
 PORTAMENTO_TIME = 37
 CHORUS = 93
 DETUNE = 94
-PHASER = 95
 
 controls = [
     ('Attack', ATTACK_TIME), ('Release', control_change_values.RELEASE_TIME), ('Brightness', control_change_values.CUTOFF_FREQUENCY),
     ('Timbre', control_change_values.FILTER_RESONANCE), ('TimePortamento', PORTAMENTO_TIME), ('CtlPortamento', control_change_values.PORTAMENTO),
-    ('Chorus Send', CHORUS), ('PanL/R', control_change_values.PAN), ('Volume', control_change_values.VOLUME),
-    ('Breath', control_change_values.BREATH_CONTROL), ('Celeste', DETUNE), ('Phaser', PHASER)
+    ('ChorusSend', CHORUS), ('PanL/R', control_change_values.PAN), ('Volume', control_change_values.VOLUME),
+    ('Breath', control_change_values.BREATH_CONTROL), ('Celeste', DETUNE), ('Velocity', None)
 ]
 
 class Controls:
     def __init__(self, macropad, settings):
         self.settings = settings
+        self.macropad = macropad
         self.display = Display(macropad, self.settings.display['brightness'])
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.pressed = None
-
 
     def refresh(self):
         self.display.reload()
@@ -37,17 +36,29 @@ class Controls:
         for event in events:
             if event.pressed:
                 self.pressed = event.key_number
-                self.display.adjust(event.key_number)
+                name, _ = controls[event.key_number]
+                self.display.adjust(event.key_number, self.settings.midi[name])
                 self.pixels.press(event.key_number)
             else: # event.released
-                if event.key_number == self.pressed:
-                    self.pressed = None
-                if not self.pressed:
-                    self.display.reload()
+                if event.key_number == self.pressed: self.pressed = None
+                if not self.pressed: self.display.reload()
+                self.set_control(controls[event.key_number])
                 self.pixels.release(event.key_number)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
-        print("Rotation")
+        name, number = controls[self.pressed]
+        delta = encoder_position - encoder_last_position
+        value = self.settings.midi[name] + delta
+        value = value if value <= 127 else 127
+        value = value if value >= 0 else 0
+        self.settings.midi[name] = value
+        self.display.adjust(self.pressed, value)
+
+    def set_control(self, control):
+        name, control_number = control
+        if control_number:
+            value = self.settings.midi[name]
+            self.macropad.midi.send(self.macropad.ControlChange(control_number, value))
 
     def sleep_event(self):
         self.pixels.sleep()
@@ -81,9 +92,8 @@ class Display:
             )
         )
 
-    def adjust(self, key):
+    def adjust(self, key, control_value):
         control_name, _ = controls[key]
-        control_value = 64
         self.group[13].anchored_position=(5, -2)
         self.group[13].anchor_point=(0, 0)
         self.group[13].text = "%s: %d" % (control_name, control_value)
