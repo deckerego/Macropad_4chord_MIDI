@@ -1,4 +1,3 @@
-import settings
 import displayio
 import terminalio
 from adafruit_display_text import label
@@ -8,12 +7,12 @@ from drumkits import DrumKits
 
 class Drums:
 
-    def __init__(self, macropad):
-        self.display = Display(macropad)
-        self.pixels = Pixels(macropad)
+    def __init__(self, macropad, settings):
+        self.settings = settings
+        self.display = Display(macropad, self.settings.display['brightness'])
+        self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
         self.kits = DrumKits()
-        self.note_velocity = settings.conf['velocity']
         self.active_notes = [None for i in range(12)]
 
     def refresh(self):
@@ -25,18 +24,20 @@ class Drums:
         self.pixels.set_kit(kit)
 
     def keypad_events(self, events):
+        note_velocity = self.settings.midi['velocity']
         _, kit = self.kits.get()
+
         for event in events:
             if event.pressed:
                 row = event.key_number // 3
                 column = event.key_number % 3
                 if row < len(kit) and column < len(kit[row]):
                     color, _, note = kit[row][column]
-                    self.macropad.midi.send(self.macropad.NoteOn(note, self.note_velocity))
+                    self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity))
                     self.active_notes[event.key_number] = note
             else: # event.released
                 note = self.active_notes[event.key_number]
-                self.macropad.midi.send(self.macropad.NoteOff(note, self.note_velocity))
+                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity))
                 self.active_notes[event.key_number] = None
         self.pixels.set_playing(self.active_notes)
 
@@ -51,9 +52,9 @@ class Drums:
         self.display.sleep()
 
 class Display:
-    def __init__(self, macropad):
+    def __init__(self, macropad, brightness):
         self.display = macropad.display
-        self.scaled_brightness = 0.5 + (settings.conf['brightness'] * 0.5)
+        self.scaled_brightness = 0.5 + (brightness * 0.5)
         self.group = displayio.Group()
         for key_index in range(12):
             x = key_index % 3
@@ -109,18 +110,19 @@ SEGMENT_SIZE = 255 // 7
 SUBSEGMENT_SIZE = SEGMENT_SIZE // 3
 
 class Pixels:
-    def __init__(self, macropad):
+    def __init__(self, macropad, brightness):
         self.pixels = macropad.pixels
+        self.brightness = brightness
         self.palette = [0x0F0F0F for i in range(12)]
 
     def refresh(self):
         self.pixels.auto_write = False
-        self.pixels.brightness = settings.conf['brightness']
+        self.pixels.brightness = self.brightness
         self.reset()
 
     def wake(self):
         if self.pixels.brightness <= 0:
-            self.pixels.brightness = settings.conf['brightness']
+            self.pixels.brightness = self.brightness
             self.pixels.show()
 
     def sleep(self):
