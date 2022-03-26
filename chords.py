@@ -15,6 +15,7 @@ class Chords:
         self.key = Key(self.settings.chords['keys'][0], 4)
         self.chords = None
         self.progression_idx = 0
+        self.pitch_bend = 8192
 
     def refresh(self):
         self.active_notes = [None for i in range(12)]
@@ -38,15 +39,21 @@ class Chords:
                 note = self.active_notes[event.key_number]
                 self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity))
                 self.active_notes[event.key_number] = None
+                notes_active = len(list(filter(lambda x: x, self.active_notes)))
+                if notes_active == 0: self.pitch_bend = 8192
 
         self.display.set_playing(self.active_notes)
         self.pixels.set_playing(self.active_notes)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
-        if encoder_switch: # The encoder button is pushed down
+        notes_active = len(list(filter(lambda x: x, self.active_notes)))
+        if encoder_switch and notes_active == 0:
             self.switch_progression(encoder_position - encoder_last_position)
-        else: # The encoder button is not pressed
+        elif notes_active == 0:
             self.switch_key(encoder_position - encoder_last_position)
+        else:
+            self.pitch_bend = (self.pitch_bend + ((encoder_position - encoder_last_position) * 400)) % 16383
+            self.macropad.midi.send(self.macropad.PitchBend(self.pitch_bend))
 
     def sleep_event(self):
         self.pixels.sleep()
