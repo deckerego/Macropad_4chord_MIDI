@@ -46,17 +46,16 @@ class Controls:
                 self.pixels.release(event.key_number)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
-        name, number = controls[self.pressed]
-        delta = encoder_position - encoder_last_position
-        value = self.settings.midi[name] + delta
-        value = value if value <= 127 else 127
-        value = value if value >= 0 else 0
-        self.settings.midi[name] = value
-        self.display.adjust(self.pressed, value)
+        if self.pressed is not None:
+            name, number = controls[self.pressed]
+            delta = encoder_position - encoder_last_position
+            value = (self.settings.midi[name] + delta) % 128
+            self.settings.midi[name] = value
+            self.display.adjust(self.pressed, value)
 
     def set_control(self, control):
         name, control_number = control
-        if control_number:
+        if control_number is not None:
             value = self.settings.midi[name]
             self.macropad.midi.send(self.macropad.ControlChange(control_number, value))
 

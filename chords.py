@@ -12,13 +12,12 @@ class Chords:
         self.display = Display(macropad, self.settings.display['brightness'])
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
-
-    def refresh(self):
         self.key = Key(self.settings.chords['keys'][0], 4)
         self.chords = None
-        self.progression = self.settings.chords['progressions'][0]
-        self.active_notes = [None for i in range(12)]
+        self.progression_idx = 0
 
+    def refresh(self):
+        self.active_notes = [None for i in range(12)]
         self.display.refresh()
         self.pixels.refresh()
         self.switch_progression(0)
@@ -45,7 +44,7 @@ class Chords:
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         if encoder_switch: # The encoder button is pushed down
-            self.switch_progression(encoder_position)
+            self.switch_progression(encoder_position - encoder_last_position)
         else: # The encoder button is not pressed
             self.switch_key(encoder_position - encoder_last_position)
 
@@ -53,19 +52,17 @@ class Chords:
         self.pixels.sleep()
         self.display.sleep()
 
-    def switch_progression(self, position):
-        index = position % len(self.settings.chords['progressions'])
-        self.progression = self.settings.chords['progressions'][index]
-        self.chords = self.key.chords(self.progression)
-        self.pixels.set_progression(self.progression)
-        self.display.set_progression(self.progression)
+    def switch_progression(self, position_change):
+        self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
+        progression = self.settings.chords['progressions'][self.progression_idx]
+        self.chords = self.key.chords(progression)
+        self.pixels.set_progression(progression)
+        self.display.set_progression(progression)
 
     def switch_key(self, position_change):
-        if position_change:
-            self.key = self.key.advance(position_change)
-        else: # No change - reset to default
-            self.key = Key(self.settings.chords['keys'][0], 4)
-        self.chords = self.key.chords(self.progression)
+        self.key = self.key.advance(position_change)
+        progression = self.settings.chords['progressions'][self.progression_idx]
+        self.chords = self.key.chords(progression)
         self.pixels.wake()
         self.display.set_key(self.key)
 
