@@ -15,16 +15,16 @@ chord_configs = {
 
 midi_configs = {
     'Velocity': 96,        # Note velocity to be sent with each note
-    'Attack': 32,          # Envelope attack time
-    'Release': 32,         # Envelope release time
+    'Attack': 0,           # Envelope attack time
+    'Release': 0,          # Envelope release time
     'Brightness': 0,       # Filter cutoff frequency
     'Timbre': 0,           # Filter envelope levels
     'TimePortamento': 0,   # Rate that portamento slides the pitch between notes
     'CtlPortamento': 0,    # Portamento on/off
     'ChorusSend': 0,       # Chorus effect level
     'PanL/R': 64,          # Pan left/right channel (64 is center)
-    'Volume': 127,         # Volume of the send
-    'Breath': 32,          # Wind instrument breath control
+    'Volume': 90,          # Volume of the send
+    'Breath': 0,           # Wind instrument breath control
     'Celeste': 0           # Detune level
 }
 
