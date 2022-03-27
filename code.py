@@ -7,11 +7,11 @@ from controls import Controls
 
 macropad = MacroPad()
 settings = Settings()
-modes = [
-    Chords(macropad, settings),
-    Drums(macropad, settings),
-    Controls(macropad, settings)
-]
+controls = Controls(macropad, settings)
+chords = Chords(macropad, settings)
+drums = Drums(macropad, settings)
+
+modes = [ chords, drums, controls ]
 mode_current = 0
 
 encoder_last_position = 0
@@ -20,6 +20,7 @@ encoder_last_pressed = 0
 last_time_seconds = time.time()
 sleep_seconds = settings.display['sleep_seconds']
 
+# Seconds (floating) since last invocation
 def elapsed_seconds():
     global last_time_seconds
     current_seconds = time.time()
@@ -27,12 +28,18 @@ def elapsed_seconds():
     last_time_seconds = current_seconds
     return elapsed_seconds
 
+# The current mode has changed, update the MacroPad
+def refresh():
+    controls.send_controls()
+    modes[mode_current].refresh()
+
+# A click occurs when the dial is pressed ONLY (no rotation or keypress)
 def click_event():
     global mode_current
     mode_current = (mode_current + 1) % 3
-    modes[mode_current].refresh()
+    refresh()
 
-modes[mode_current].refresh()
+refresh()
 while True:
     # Process all available key events at once
     key_events = []

@@ -1,6 +1,6 @@
 chord_configs = {
     # The list of keys you can select from turning the rotary dial
-    'keys': [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
+    'keys': [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"], # Chromatic C
     # The list of progressions you can select by press & turning on the rotary dial
     'progressions': [
         ["I",  "V",   "vi", "IV"], # The "pop" progression
@@ -13,6 +13,7 @@ chord_configs = {
     ]
 }
 
+# MIDI control defaults accessible in the MIDI Controls section
 midi_configs = {
     'Velocity': 96,        # Note velocity to be sent with each note
     'Attack': 16,          # Envelope attack time

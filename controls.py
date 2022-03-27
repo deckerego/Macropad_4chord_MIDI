@@ -28,9 +28,12 @@ class Controls:
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.pressed = None
 
-    def refresh(self):
+    def send_controls(self):
         for control in controls:
-            self.set_control(control)
+            self.send_control(control)
+
+    def refresh(self):
+        self.send_controls()
         self.display.reload()
         self.pixels.refresh()
 
@@ -44,7 +47,7 @@ class Controls:
             else: # event.released
                 if event.key_number == self.pressed: self.pressed = None
                 if not self.pressed: self.display.reload()
-                self.set_control(controls[event.key_number])
+                self.send_control(controls[event.key_number])
                 self.pixels.release(event.key_number)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
@@ -55,7 +58,7 @@ class Controls:
             self.settings.midi[name] = value
             self.display.adjust(self.pressed, value)
 
-    def set_control(self, control):
+    def send_control(self, control):
         name, control_number = control
         if control_number is not None:
             value = self.settings.midi[name]
