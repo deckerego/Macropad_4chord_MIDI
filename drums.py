@@ -3,16 +3,14 @@ import terminalio
 from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
 from rainbowio import colorwheel
-from drumkits import DrumKits
 
 class Drums:
-
     def __init__(self, macropad, settings):
         self.settings = settings
-        self.display = Display(macropad, self.settings.display['brightness'])
-        self.pixels = Pixels(macropad, self.settings.display['brightness'])
+        self.display = Display(macropad, settings.display['brightness'])
+        self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.kits = DrumKits()
+        self.kits = DrumKits(settings)
         self.active_notes = [None for i in range(12)]
 
     def refresh(self):
@@ -50,6 +48,23 @@ class Drums:
     def sleep_event(self):
         self.pixels.sleep()
         self.display.sleep()
+
+class DrumKits:
+    def __init__(self, settings):
+        self.index = 0
+        self.names = settings.drums['names']
+        self.kits = settings.drums['kits']
+
+    def get(self):
+        return self.names[self.index], self.kits[self.index]
+
+    def next(self):
+        self.index = (self.index + 1) % len(self.kits)
+        return self.get()
+
+    def prev(self):
+        self.index = self.index - 1 if self.index > 0 else len(self.kits) - 1
+        return self.get()
 
 class Display:
     def __init__(self, macropad, brightness):
