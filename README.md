@@ -1,7 +1,20 @@
 # Macropad 4chord MIDI
 
-With thanks to the [4 Chord USB MIDI Keyboard](http://old.sgreg.fi//projects/4chord-midi)
-by [Sven Gregori](http://old.sgreg.fi).
+"All the greatest hits from the past forty years just use four chords. Same four chords for every song. It's dead simple to write a pop hit."
+ -- Benny, Axis of Awesome
+
+A four-chord MIDI device that allows you to rapidly churn out catchy tunes.
+Set your root key & chord progression, then off you go. Includes drum pads
+so you can provide a backing beat to your tracks.
+
+Huge thanks to so many who have inspired this idea, especially
+[Sven Gregori](https://github.com/sgreg) and his
+[4 Chord USB MIDI Keyboard](https://hackaday.io/project/26078-4chord-midi),
+[ArcAttach](https://youtu.be/d2OsF86fcKQ) and their
+[StringTheory project](https://arcattack.com/stringtheory/),
+Paul David's [The Four Chord Song](https://youtu.be/6U8-Y7DEzOE) music theory video,
+[iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4),
+and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I).
 
 
 ## Playing
@@ -9,6 +22,15 @@ by [Sven Gregori](http://old.sgreg.fi).
 The Macropad 4chord MIDI is built to play simple chord progressions as a MIDI
 device. You can connect the Macropad to any studio recording software that
 accepts MIDI devices, such as GarageBand.
+
+The 4chord MIDI has three different modes: the "chords" mode that allows you
+to select progressions and root keys to play chords, the "drum pad" mode that
+allows you to use the MacroPad as an acoustic drum / electric drum /
+percussion pad, and a "MIDI controls" mode that lets you set MIDI command
+controls (including note velocity). You can switch between each mode by
+clicking on the rotary dial.
+
+### Chord Keyboard
 
 Once you power on the Macropad a default progression is restored, with the root
 on middle C (I'm a assuming middle C is on the fourth octave). The root note
@@ -26,6 +48,32 @@ Thanks to the RP2040, all the keys can be pressed simultaneously. You can
 play the triad chords for each degree, or arpeggiate the chords however
 you like. The list of notes currently being played are displayed on screen
 if you want to check my math.
+
+You can bend the current notes being played by rotating the dial while keys
+are being held down. Rotating counter-clockwise will bend the pitch down,
+rotating clockwise will bend the pitch up.
+
+### Drum Pads
+
+If you click once on the rotary dial after the Macropad boots, it will move
+into the drum pad mode. Rotating the dial will allow you to select from
+a number of drum or percussion presets where MIDI notes match acoustic drum,
+electric drum, or percussion strikes.
+
+### MIDI Controls
+
+Clicking twice after booting the Macropad will take you into the MIDI controls
+mode, where you can adjust MIDI controls that are transferred to your DAW
+when recording. This includes global settings (such as attack or release time)
+as well as note settings (such as velocity).
+
+Bear in mind that not all DAWs will register MIDI commands from devices in the
+same way. Some DAWs register the commands so long as your device is connected,
+others will not register any commands until you begin recording. If you find
+that your DAW isn't picking up the values you set, start recording while the
+"MIDI Controls" mode is showing on the Macropad, then single-click to return
+to the chords mode immediately after. This will re-send all the MIDI commands
+to your DAW.
 
 
 ## Installing
