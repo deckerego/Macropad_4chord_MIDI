@@ -9,6 +9,7 @@ chord_configs = {
         ["IV", "V",   "I",  "vi"], # Coldplay progression
         ["I",  "vi",  "IV", "V" ], # The '50s progression
         ["I",  "IV",  "ii", "V" ], # The Montgomery Ward bridge
+        ["I",  "iii", "vi", "IV"], # A-ha progression
         ["I",  "iii", "vi", "V" ]  # Blues progression
     ]
 }
