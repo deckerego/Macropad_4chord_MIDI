@@ -30,9 +30,9 @@ percussion pad, and a "MIDI controls" mode that lets you set MIDI command
 controls (including note velocity). You can switch between each mode by
 clicking on the rotary dial.
 
-![MacroPad 4chord MIDI: Playing Chords](./docs/images/chords.jpg =x400)
-![MacroPad 4chord MIDI: Drum Pad](./docs/images/drumpad.jpg =x400)
-![MacroPad 4chord MIDI: MIDI Controls](./docs/images/controls.jpg =x400)
+![MacroPad 4chord MIDI: Playing Chords](./docs/images/chords.jpg)
+![MacroPad 4chord MIDI: Drum Pad](./docs/images/drumpad.jpg)
+![MacroPad 4chord MIDI: MIDI Controls](./docs/images/controls.jpg)
 
 ### Chord Keyboard
 
