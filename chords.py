@@ -9,10 +9,10 @@ from adafruit_macropad import MacroPad
 class Chords:
     def __init__(self, macropad, settings):
         self.settings = settings
-        self.display = Display(macropad, self.settings.display['brightness'])
-        self.pixels = Pixels(macropad, self.settings.display['brightness'])
+        self.display = Display(macropad, settings.display['brightness'])
+        self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(self.settings.chords['keys'][0], 4)
+        self.key = Key(settings.chords['keys'][0], 4)
         self.chords = None
         self.progression_idx = 0
         self.pitch_bend = 8192

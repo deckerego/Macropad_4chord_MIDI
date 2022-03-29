@@ -9,8 +9,37 @@ chord_configs = {
         ["IV", "V",   "I",  "vi"], # Coldplay progression
         ["I",  "vi",  "IV", "V" ], # The '50s progression
         ["I",  "IV",  "ii", "V" ], # The Montgomery Ward bridge
-        ["I",  "iii", "vi", "IV"], # A-ha progression
-        ["I",  "iii", "vi", "V" ]  # Blues progression
+        ["I",  "iii", "vi", "V" ], # Blues progression
+        ["I",  "iii", "vi", "IV"], # Take On Me progression
+        ["ii", "V",   "I",  "iii"] # Minor TOM progression (shortened)
+    ]
+}
+
+drum_configs = {
+    'names': [ # Title of the pad to show in order corresponding to the pads
+        "Acoustic Drum Kit",
+        "Electric Drum Kit",
+        "Percussion",
+    ],
+    'kits': [ # List of pads as they show on the display, stored as (LED color, name, MIDI number)
+        [   # Acoustic Drum Kit
+            [(0x544408, 'CrashC',  49), (0x544408, 'HatCls',  42), (0x544408, 'HatOpn',  46)],
+            [(0x04541B, 'XStick',  37), (0x095E06, 'Snare',   38), (0x04541B, 'SnrRod',  91)],
+            [(0x000754, 'FlorTom', 43), (0x000754, 'LowTom',  45), (0x000754, 'HiTom',   50)],
+            [(0x540908, 'Bass',    35), (0x540908, 'Kick',    36), (0x04541B, 'Cowbell', 56)]
+        ],
+        [   # Electric Drum Kit
+            [(0x544408, 'CrashC',  49), (0x544408, 'HatCls',  42), (0x544408, 'HatOpn',  46)],
+            [(0x095E06, 'Snare',   38), (0x095E06, 'ESnare',  40), (0x095E06, 'XStick',  37)],
+            [(0x000754, 'Tom1',    41), (0x000754, 'Tom2',    43), (0x000754, 'LTom',    45)],
+            [(0x04541B, 'Clap',    39), (0x540908, 'Kick',    36), (0x04541B, 'Cowbell', 47)]
+        ],
+        [   # Percussion
+            [(0x544408, 'Bells',   59), (0x544408, 'Claves',  75), (0x544408, 'Maraca',  70)],
+            [(0x095E06, 'HBongo',  60), (0x000754, 'Conga',   63), (0x04541B, 'HTimbl',  65)],
+            [(0x095E06, 'LBongo',  61), (0x000754, 'CongaD',  62), (0x04541B, 'LTimbl',  66)],
+            [(0x540908, 'Stomp',   57), (0x540908, 'Wdblck',  77), (0x540908, 'Snap', 58)]
+        ]
     ]
 }
 
@@ -39,4 +68,5 @@ class Settings:
     def __init__(self):
         self.chords = chord_configs
         self.midi = midi_configs
+        self.drums = drum_configs
         self.display = display_configs
