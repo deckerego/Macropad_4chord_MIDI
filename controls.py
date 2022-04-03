@@ -8,7 +8,7 @@ from adafruit_macropad import MacroPad
 
 # Several of these can be removed after https://github.com/adafruit/Adafruit_CircuitPython_MIDI/pull/49
 ATTACK_TIME = 73
-PORTAMENTO_TIME = 37
+PORTAMENTO_TIME = 5
 CHORUS = 93
 DETUNE = 94
 
