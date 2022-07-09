@@ -4,8 +4,9 @@ chord_configs = {
     # The list of progressions you can select by press & turning on the rotary dial
     'progressions': [
         ["I",  "V",   "vi", "IV"], # The "pop" progression
-        ["I",  "IV",  "vi", "V" ], # Alternate Western pop
         ["vi", "IV",  "I",  "V" ], # Minor pop progression
+        ["IV", "V",   "iii","vi"], # Royal Road progression
+        ["I",  "IV",  "vi", "V" ], # Alternate Western pop
         ["IV", "V",   "I",  "vi"], # Coldplay progression
         ["I",  "vi",  "IV", "V" ], # The '50s progression
         ["I",  "IV",  "ii", "V" ], # The Montgomery Ward bridge
