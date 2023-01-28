@@ -52,11 +52,12 @@ class Drums:
 class DrumKits:
     def __init__(self, settings):
         self.index = 0
-        self.names = settings.drums['names']
-        self.kits = settings.drums['kits']
+        self.names = list(settings.drums)
+        self.kits = settings.drums
 
     def get(self):
-        return self.names[self.index], self.kits[self.index]
+        name = self.names[self.index]
+        return name, self.kits[name]
 
     def next(self):
         self.index = (self.index + 1) % len(self.kits)
