@@ -15,6 +15,7 @@ class Chords:
         self.key = Key(settings.chords['keys'][0], 4)
         self.chords = None
         self.progression_idx = 0
+        self.progression_keys = list(settings.chords['progressions'])
         self.pitch_bend = 8192
 
     def refresh(self):
@@ -60,15 +61,17 @@ class Chords:
         self.display.sleep()
 
     def switch_progression(self, position_change):
-        self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
-        progression = self.settings.chords['progressions'][self.progression_idx]
+        self.progression_idx = (self.progression_idx + position_change) % len(self.progression_keys)
+        name = self.progression_keys[self.progression_idx]
+        progression = self.settings.chords['progressions'][name]
         self.chords = self.key.chords(progression)
         self.pixels.set_progression(progression)
-        self.display.set_progression(progression)
+        self.display.set_progression(name, progression)
 
     def switch_key(self, position_change):
         self.key = self.key.advance(position_change)
-        progression = self.settings.chords['progressions'][self.progression_idx]
+        name = self.progression_keys[self.progression_idx]
+        progression = self.settings.chords['progressions'][name]
         self.chords = self.key.chords(progression)
         self.pixels.wake()
         self.display.set_key(self.key)
@@ -116,8 +119,9 @@ class Display:
         self.display.brightness = 0
         self.display.refresh()
 
-    def set_progression(self, progression):
+    def set_progression(self, name, progression):
         self.wake()
+        self.group[1].text = name
         self.group[7].text = ' '.join(progression)
         self.display.refresh()
 
