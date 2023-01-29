@@ -27,15 +27,15 @@ class Controls:
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.pressed = None
 
-    def send_controls(self):
+    def send_controls(self, channel=None):
         for control in controls:
-            self.send_control(control)
+            self.send_control(control, channel=channel)
 
-    def send_control(self, control):
+    def send_control(self, control, channel=None):
         name, control_number = control
         if control_number is not None:
             value = self.settings.midi[name]
-            self.macropad.midi.send(self.macropad.ControlChange(control_number, value))
+            self.macropad.midi.send(self.macropad.ControlChange(control_number, value, channel=channel))
 
     def refresh(self):
         self.display.reload()

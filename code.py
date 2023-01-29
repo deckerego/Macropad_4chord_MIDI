@@ -32,7 +32,7 @@ def elapsed_seconds():
 def refresh():
     if hasattr(modes[mode_current], 'channel'): 
         macropad.midi.out_channel = modes[mode_current].channel
-        controls.send_controls()
+        controls.send_controls(modes[mode_current].channel)
     modes[mode_current].refresh()
 
 # A click occurs when the dial is pressed ONLY (no rotation or keypress)
