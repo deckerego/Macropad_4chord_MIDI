@@ -10,8 +10,9 @@ class Drums:
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.kits = DrumKits(settings)
+        self.kits = DrumKits(settings.drums)
         self.active_notes = [None for i in range(12)]
+        self.channel = settings.drums['channel']
 
     def refresh(self):
         self.display.refresh()
@@ -31,11 +32,11 @@ class Drums:
                 column = event.key_number % 3
                 if row < len(kit) and column < len(kit[row]):
                     color, _, note = kit[row][column]
-                    self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity))
+                    self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity, channel=self.channel))
                     self.active_notes[event.key_number] = note
             else: # event.released
                 note = self.active_notes[event.key_number]
-                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity))
+                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = None
         self.pixels.set_playing(self.active_notes)
 
@@ -52,8 +53,8 @@ class Drums:
 class DrumKits:
     def __init__(self, settings):
         self.index = 0
-        self.names = list(settings.drums)
-        self.kits = settings.drums
+        self.names = list(settings.kits)
+        self.kits = settings
 
     def get(self):
         name = self.names[self.index]

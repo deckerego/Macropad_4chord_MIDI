@@ -116,11 +116,11 @@ appear on the screen, and then the CIRCUITPY drive will mount in read/write mode
 ## Configuring
 
 The `settings.py` file has several settings you can tweak, including
-MIDI note configurations and a list of the progressions you can scroll through.
-If you would like to add your own chord progressions or would like to keep a
-shorter list of possible keys, you can make those changes in the `settings.py`
-file within the CIRCUITPY drive. Just make sure to mount your Macropad
-in read/write mode (see [Updating](#updating)).
+MIDI note configurations, MIDI channel settings, and a list of the progressions 
+you can scroll through. If you would like to add your own chord progressions or 
+would like to keep a shorter list of possible keys, you can make those changes 
+in the `settings.py` file within the CIRCUITPY drive. Just make sure to mount 
+your Macropad in read/write mode (see [Updating](#updating)).
 
 
 ## Building
