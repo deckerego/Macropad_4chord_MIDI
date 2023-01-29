@@ -17,6 +17,7 @@ class Chords:
         self.progression_idx = 0
         self.progression_keys = list(settings.chords['progressions'])
         self.pitch_bend = 8192
+        self.channel = settings.chords['channel']
 
     def refresh(self):
         self.active_notes = [None for i in range(12)]
@@ -34,11 +35,11 @@ class Chords:
                 row = event.key_number // 3
                 column = event.key_number % 3
                 note = self.chords[row][column]
-                self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity))
+                self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = note
             else: # event.released
                 note = self.active_notes[event.key_number]
-                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity))
+                self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = None
                 notes_active = len(list(filter(lambda x: x, self.active_notes)))
                 if notes_active == 0: self.pitch_bend = 8192

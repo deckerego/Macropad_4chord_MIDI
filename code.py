@@ -5,7 +5,7 @@ from chords import Chords
 from drums import Drums
 from controls import Controls
 
-macropad = MacroPad()
+macropad = MacroPad(midi_out_channel=4)
 settings = Settings()
 controls = Controls(macropad, settings)
 chords = Chords(macropad, settings)
@@ -30,7 +30,9 @@ def elapsed_seconds():
 
 # The current mode has changed, update the MacroPad
 def refresh():
-    controls.send_controls()
+    if hasattr(modes[mode_current], 'channel'): 
+        macropad.midi.out_channel = modes[mode_current].channel
+        controls.send_controls(modes[mode_current].channel)
     modes[mode_current].refresh()
 
 # A click occurs when the dial is pressed ONLY (no rotation or keypress)
