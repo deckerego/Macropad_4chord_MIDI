@@ -31,8 +31,13 @@ class Controls:
         for control in controls:
             self.send_control(control)
 
+    def send_control(self, control):
+        name, control_number = control
+        if control_number is not None:
+            value = self.settings.midi[name]
+            self.macropad.midi.send(self.macropad.ControlChange(control_number, value))
+
     def refresh(self):
-        self.send_controls()
         self.display.reload()
         self.pixels.refresh()
 
@@ -46,7 +51,6 @@ class Controls:
             else: # event.released
                 if event.key_number == self.pressed: self.pressed = None
                 if not self.pressed: self.display.reload()
-                self.send_control(controls[event.key_number])
                 self.pixels.release(event.key_number)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
@@ -56,12 +60,6 @@ class Controls:
             value = (self.settings.midi[name] + delta) % 128
             self.settings.midi[name] = value
             self.display.adjust(self.pressed, value)
-
-    def send_control(self, control):
-        name, control_number = control
-        if control_number is not None:
-            value = self.settings.midi[name]
-            self.macropad.midi.send(self.macropad.ControlChange(control_number, value))
 
     def sleep_event(self):
         self.pixels.sleep()

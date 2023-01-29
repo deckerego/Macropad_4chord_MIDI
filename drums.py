@@ -51,10 +51,10 @@ class Drums:
         self.display.sleep()
 
 class DrumKits:
-    def __init__(self, settings):
+    def __init__(self, config):
         self.index = 0
-        self.names = list(settings.kits)
-        self.kits = settings
+        self.names = list(config['kits'])
+        self.kits = config['kits']
 
     def get(self):
         name = self.names[self.index]
