@@ -12,7 +12,7 @@ class Chords:
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(settings.chords['keys'][0], 4)
+        self.key = Key(settings.chords['keys'][0], 3)
         self.chords = None
         self.progression_idx = 0
         self.progression_keys = list(settings.chords['progressions'])
