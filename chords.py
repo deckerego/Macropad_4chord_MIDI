@@ -35,7 +35,6 @@ class Chords:
                 row = event.key_number // 3
                 column = event.key_number % 3
                 note = self.chords[row][column]
-                print("Sending:", note)
                 self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = note
             else: # event.released
