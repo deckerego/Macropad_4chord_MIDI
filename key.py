@@ -1,15 +1,16 @@
 MAJOR_SCALE = [2, 2, 1, 2, 2, 2, 1]
 MINOR_SCALE = [2, 1, 2, 2, 1, 2, 2]
-CHROMATIC_SCALE_NAMES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#']
+CHROMATIC_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 SCALE_LENGTH = len(CHROMATIC_SCALE_NAMES)
 DEGREES = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii']
 
-# I'm considering MIDI note 60 (middle C) to be C4.
+# I'm considering MIDI note 60 (middle C) to be C3.
 # If we want to include all full scales starting at A and going to G#,
-# that means we start at A-1 (note #9) and end at G#8 (note #116)
-START_NOTE = 9
+# that means we start at C-2 (note #0) and end at G#7 (note #116)
+START_NOTE = 0
+START_OCTAVE = -2
 # However, MIDI 1.0 only goes to note 127 and so if we use a seventh degree's
-# perfect fifth, that means we max out at note 111 (D#8).
+# perfect fifth, that means we max out at note 111 (D#7).
 END_NOTE = 111
 
 # Calculations for chords based on the selected key
@@ -18,7 +19,7 @@ class Key:
         self.octave = octave
         self.key = key
         self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
-        self.octave_offset = START_NOTE + (octave * SCALE_LENGTH)
+        self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * SCALE_LENGTH)
         self.number = self.octave_offset + self.key_offset
 
     def chord(self, numeral):
@@ -44,9 +45,9 @@ class Key:
 
     @staticmethod
     def to_name(number):
-        octave = (number - START_NOTE) // SCALE_LENGTH
+        octave_idx = (number - START_NOTE) // SCALE_LENGTH
         note_idx = (number - START_NOTE) % SCALE_LENGTH
-        return "%s%i" % (CHROMATIC_SCALE_NAMES[note_idx], octave)
+        return "%s%i" % (CHROMATIC_SCALE_NAMES[note_idx], octave_idx + START_OCTAVE)
 
     @staticmethod
     def to_degree(numeral):

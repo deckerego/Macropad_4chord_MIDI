@@ -12,7 +12,7 @@ class Chords:
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(settings.chords['keys'][0], 4)
+        self.key = Key(settings.chords['keys'][0], 3)
         self.chords = None
         self.progression_idx = 0
         self.progression_keys = list(settings.chords['progressions'])
@@ -35,6 +35,7 @@ class Chords:
                 row = event.key_number // 3
                 column = event.key_number % 3
                 note = self.chords[row][column]
+                print("Sending:", note)
                 self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = note
             else: # event.released
