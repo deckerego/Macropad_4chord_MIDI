@@ -1,72 +1,88 @@
 from key import Key
 import unittest
 
-class TestChords(unittest.TestCase):
+class TestDegrees(unittest.TestCase):
 
     def test_1st_degree(self):
-        key = Key('C', 4)
+        key = Key('C', 3)
         self.assertEqual(key.chord('I'), [60, 64, 67])
 
+    def test_2st_degree(self):
+        key = Key('C', 3)
+        self.assertEqual(key.chord('ii'), [62, 65, 69])
+
+    def test_3rd_degree(self):
+        key = Key('C', 3)
+        self.assertEqual(key.chord('iii'), [64, 67, 71])
+
+    def test_4th_degree(self):
+        key = Key('C', 3)
+        self.assertEqual(key.chord('IV'), [65, 69, 72])
+
+    def test_5th_degree(self):
+        key = Key('C', 3)
+        self.assertEqual(key.chord('V'), [67, 71, 74])
+
     def test_6th_degree(self):
-        key = Key('C', 4)
+        key = Key('C', 3)
         self.assertEqual(key.chord('vi'), [69, 72, 76])
 
-class TestChord(unittest.TestCase):
+class TestChords(unittest.TestCase):
 
     def test_chord_list(self):
-        key = Key('C', 4)
+        key = Key('C', 3)
         self.assertEqual(key.chords(['I', 'vi']), [[60, 64, 67], [69, 72, 76]])    
 
 class TestName(unittest.TestCase):
 
-    def test_c_four(self):
+    def test_c_three(self):
         name = Key.to_name(60)
-        self.assertEqual(name, "C4")
+        self.assertEqual(name, "C3")
 
-    def test_f_sharp_two(self):
+    def test_f_sharp_one(self):
         name = Key.to_name(42)
-        self.assertEqual(name, "F#2" )
+        self.assertEqual(name, "F#1" )
 
 class TestAdvance(unittest.TestCase):
 
     def test_next_note(self):
-        start = Key('C', 4)
+        start = Key('C', 3)
         next = start.advance(1)
         self.assertEqual(next.key, "C#")
-        self.assertEqual(next.octave, 4)
+        self.assertEqual(next.octave, 3)
         self.assertEqual(next.number, 61)
 
     def test_next_octave(self):
-        start = Key('G#', 4)
+        start = Key('B', 3)
         next = start.advance(1)
-        self.assertEqual(next.key, "A")
-        self.assertEqual(next.octave, 5)
-        self.assertEqual(next.number, 69)
+        self.assertEqual(next.key, "C")
+        self.assertEqual(next.octave, 4)
+        self.assertEqual(next.number, 72)
 
     def test_prev_note(self):
-        start = Key('C', 4)
+        start = Key('F', 3)
         next = start.advance(-1)
-        self.assertEqual(next.key, "B")
-        self.assertEqual(next.octave, 4)
-        self.assertEqual(next.number, 59)
+        self.assertEqual(next.key, "E")
+        self.assertEqual(next.octave, 3)
+        self.assertEqual(next.number, 64)
 
     def test_prev_octave(self):
-        start = Key('A', 4)
+        start = Key('C', 3)
         next = start.advance(-1)
-        self.assertEqual(next.key, "G#")
-        self.assertEqual(next.octave, 3)
-        self.assertEqual(next.number, 56)
+        self.assertEqual(next.key, "B")
+        self.assertEqual(next.octave, 2)
+        self.assertEqual(next.number, 59)
 
     def test_max(self):
-        start = Key('D#', 8)
+        start = Key('G#', 7)
         next = start.advance(1)
-        self.assertEqual(next.key, "D#")
-        self.assertEqual(next.octave, 8)
-        self.assertEqual(next.number, 111)
+        self.assertEqual(next.key, "G#")
+        self.assertEqual(next.octave, 7)
+        self.assertEqual(next.number, 116)
 
     def test_min(self):
-        start = Key('C', -1)
+        start = Key('C', -2)
         next = start.advance(-1)
         self.assertEqual(next.key, "C")
-        self.assertEqual(next.octave, -1)
+        self.assertEqual(next.octave, -2)
         self.assertEqual(next.number, 0)
