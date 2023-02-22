@@ -1,5 +1,7 @@
 # Macropad 4chord MIDI
 
+[![Macropad 4chord MIDI](https://github.com/deckerego/Macropad_4chord_MIDI/actions/workflows/pullrequest-unittest.yml/badge.svg)](https://github.com/deckerego/Macropad_4chord_MIDI/actions/workflows/pullrequest-unittest.yml)
+
 "All the greatest hits from the past forty years just use four chords. Same four chords for every song. It's dead simple to write a pop hit."
  -- Benny, Axis of Awesome
 
