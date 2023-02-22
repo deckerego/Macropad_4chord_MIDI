@@ -1,7 +1,6 @@
-MAJOR_SCALE = [2, 2, 1, 2, 2, 2, 1]
-MINOR_SCALE = [2, 1, 2, 2, 1, 2, 2]
+MAJOR_SCALE_DEGREES = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]
 CHROMATIC_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-SCALE_LENGTH = len(CHROMATIC_SCALE_NAMES)
+CHROMATIC_SCALE_LENGTH = len(CHROMATIC_SCALE_NAMES)
 DEGREES = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii']
 
 # I'm considering MIDI note 60 (middle C) to be C3.
@@ -19,15 +18,14 @@ class Key:
         self.octave = octave
         self.key = key
         self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
-        self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * SCALE_LENGTH)
+        self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * CHROMATIC_SCALE_LENGTH)
         self.number = self.octave_offset + self.key_offset
 
     def chord(self, numeral):
-        scale = MINOR_SCALE if numeral.islower() else MAJOR_SCALE
         degree = Key.to_degree(numeral)
-        root = self.number + sum(offset for offset in MAJOR_SCALE[:degree])
-        third = root + sum(offset for offset in scale[:2])
-        fifth = root + sum(offset for offset in scale[:4])
+        root =  self.number + MAJOR_SCALE_DEGREES[degree    ]
+        third = self.number + MAJOR_SCALE_DEGREES[degree + 2]
+        fifth = self.number + MAJOR_SCALE_DEGREES[degree + 4]
         return [root, third, fifth]
 
     def chords(self, progression):
@@ -35,8 +33,8 @@ class Key:
 
     def advance(self, index):
         key_index = self.key_offset + index
-        octave = self.octave + key_index // SCALE_LENGTH
-        key = CHROMATIC_SCALE_NAMES[key_index % SCALE_LENGTH]
+        octave = self.octave + (key_index // CHROMATIC_SCALE_LENGTH)
+        key = CHROMATIC_SCALE_NAMES[key_index % CHROMATIC_SCALE_LENGTH]
         new_key = Key(key, octave)
         if new_key.number >=0 and new_key.number <= END_NOTE:
             return new_key
@@ -45,8 +43,8 @@ class Key:
 
     @staticmethod
     def to_name(number):
-        octave_idx = (number - START_NOTE) // SCALE_LENGTH
-        note_idx = (number - START_NOTE) % SCALE_LENGTH
+        octave_idx = (number - START_NOTE) // CHROMATIC_SCALE_LENGTH
+        note_idx = (number - START_NOTE) % CHROMATIC_SCALE_LENGTH
         return "%s%i" % (CHROMATIC_SCALE_NAMES[note_idx], octave_idx + START_OCTAVE)
 
     @staticmethod
