@@ -9,7 +9,7 @@ A four-chord MIDI device that allows you to rapidly churn out catchy tunes.
 Set your root key & chord progression, then off you go. Includes drum pads
 so you can provide a backing beat to your tracks.
 
-Huge thanks to so many who have inspired this idea, especially
+Huge thanks to so many who have inspired this idea, especially:
 - [Sven Gregori](https://github.com/sgreg) and his
 [4 Chord USB MIDI Keyboard](https://hackaday.io/project/26078-4chord-midi)
 - [ArcAttach](https://youtu.be/d2OsF86fcKQ) and their
