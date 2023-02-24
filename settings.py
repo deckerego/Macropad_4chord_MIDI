@@ -25,22 +25,28 @@ drum_configs = {
     # See also https://www.midi.org/specifications-old/item/gm-level-1-sound-set
     'kits': {
         'Acoustic Drum Kit': [
-            [(0x544408, 'CrashC',  49), (0x544408, 'HatCls',  42), (0x544408, 'HatOpn',  46)],
-            [(0x04541B, 'XStick',  37), (0x095E06, 'Snare',   38), (0x04541B, 'SnrRod',  91)],
-            [(0x000754, 'FlorTom', 43), (0x000754, 'LowTom',  45), (0x000754, 'HiTom',   50)],
-            [(0x540908, 'Bass',    35), (0x540908, 'Kick',    36), (0x04541B, 'Cowbell', 56)]
+            # Layout is intended to be similar to a standard drum kit, as illustrated at:
+            # https://macprovideo.com/article/audio-software/everything-producers-need-to-know-about-drum-maps
+            [(0xFFF500, 'HHClose', 42), (0xFFF500, 'HHPedal', 44), (0xFFF500, 'HHOpen',  46)],
+            [(0xFFF500, 'Crash',   49), (0xFFF500, 'Ride',    51), (0xFFF500, 'LgCrash', 57)],
+            [(0x12B0FF, 'Snare',   38), (0x12B0FF, 'SmolTom', 50), (0x12B0FF, 'LgTom',   45)],
+            [(0xFF1930, 'Kick',    35), (0xFF1930, 'LoFlTom', 41), (0xFF1930, 'HiFlTom', 43)]
         ],
-        'Electric Drum Kit': [
-            [(0x544408, 'CrashC',  49), (0x544408, 'HatCls',  42), (0x544408, 'HatOpn',  46)],
-            [(0x095E06, 'Snare',   38), (0x095E06, 'ESnare',  40), (0x095E06, 'XStick',  37)],
-            [(0x000754, 'Tom1',    41), (0x000754, 'Tom2',    43), (0x000754, 'LTom',    45)],
-            [(0x04541B, 'Clap',    39), (0x540908, 'Kick',    36), (0x04541B, 'Cowbell', 47)]
+        'Rhythm Composer': [
+            # Layout inspired by the instruments of the TR-808, MIDI details at:
+            # https://www.roland.com/global/support/by_product/rc_tr-808/owners_manuals/
+            # Some pads adjusted to work with the GarageBand "Roland TR-808" electronic drum kit
+            [(0xFFF500, 'HHClose', 42), (0xFFF500, 'HHOpen',  46), (0xFFF500, 'Cymbal',  49)],
+            [(0xF200FF, 'Clap',    39), (0xF200FF, 'Claves',  37), (0xF200FF, 'Cowbell', 56)],
+            [(0x12B0FF, 'LoTom',   41), (0x12B0FF, 'MdTom',   45), (0x12B0FF, 'HiTom',   48)],
+            [(0xFF1930, 'Kick',    36), (0xFF1930, 'Snare',   40), (0x12B0FF, 'LowMid',  47)]
         ],
         'Percussion': [
-            [(0x544408, 'Bells',   59), (0x544408, 'Claves',  75), (0x544408, 'Maraca',  70)],
-            [(0x095E06, 'HBongo',  60), (0x000754, 'Conga',   63), (0x04541B, 'HTimbl',  65)],
-            [(0x095E06, 'LBongo',  61), (0x000754, 'CongaD',  62), (0x04541B, 'LTimbl',  66)],
-            [(0x540908, 'Stomp',   57), (0x540908, 'Wdblck',  77), (0x540908, 'Snap',    58)]
+            # A grab bag of other useful percussion instruments
+            [(0xFFF500, 'Bells',   59), (0xF200FF, 'Claves',  75), (0xF200FF, 'Maraca',  70)],
+            [(0x12B0FF, 'HBongo',  60), (0x12B0FF, 'Conga',   63), (0x12B0FF, 'HTimbl',  65)],
+            [(0x12B0FF, 'LBongo',  61), (0x12B0FF, 'CongaD',  62), (0x12B0FF, 'LTimbl',  66)],
+            [(0xFF1930, 'Stomp',   57), (0xFF1930, 'Wdblck',  77), (0x00FF9E, 'Snap',    58)]
         ]
     }
 }
