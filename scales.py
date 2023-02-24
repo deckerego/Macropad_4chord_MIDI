@@ -6,25 +6,24 @@ from rainbowio import colorwheel
 from key import Key
 from adafruit_macropad import MacroPad
 
-class Chords:
+class Scales:
     def __init__(self, macropad, settings):
         self.settings = settings
-        self.scale = settings.scales['scale_degrees']['Major Scale']
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(settings.chords['keys'][0], 3, self.scale)
+        self.key = Key(settings.chords['keys'][0], 3, [])
         self.chords = None
-        self.progression_idx = 0
-        self.progression_keys = list(settings.chords['progressions'])
+        self.scale_idx = 0
+        self.scale_keys = list(settings.scales['scale_degrees'])
         self.pitch_bend = 8192
-        self.channel = settings.chords['channel']
+        self.channel = settings.scales['channel']
 
     def refresh(self):
         self.active_notes = [None for i in range(12)]
         self.display.refresh()
         self.pixels.refresh()
-        self.switch_progression(0)
+        self.switch_scale(0)
         self.switch_key(0)
         self.keypad_events([])
 
@@ -33,9 +32,7 @@ class Chords:
 
         for event in events:
             if event.pressed:
-                row = event.key_number // 3
-                column = event.key_number % 3
-                note = self.chords[row][column]
+                note = self.key.number + event.key_number
                 self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = note
             else: # event.released
@@ -51,9 +48,10 @@ class Chords:
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         notes_active = len(list(filter(lambda x: x, self.active_notes)))
         if encoder_switch and notes_active == 0:
-            self.switch_progression(encoder_position - encoder_last_position)
+            self.switch_scale(encoder_position - encoder_last_position)
         elif notes_active == 0:
             self.switch_key(encoder_position - encoder_last_position)
+            self.switch_scale(0)
         else:
             self.pitch_bend = (self.pitch_bend + ((encoder_position - encoder_last_position) * 400)) % 16383
             self.macropad.midi.send(self.macropad.PitchBend(self.pitch_bend))
@@ -62,19 +60,17 @@ class Chords:
         self.pixels.sleep()
         self.display.sleep()
 
-    def switch_progression(self, position_change):
-        self.progression_idx = (self.progression_idx + position_change) % len(self.progression_keys)
-        name = self.progression_keys[self.progression_idx]
-        progression = self.settings.chords['progressions'][name]
-        self.chords = self.key.chords(progression)
-        self.pixels.set_progression(progression)
-        self.display.set_progression(name, progression)
+    def switch_scale(self, position_change):
+        self.scale_idx = (self.scale_idx + position_change) % len(self.scale_keys)
+        name = self.scale_keys[self.scale_idx]
+        self.scale = self.settings.scales['scale_degrees'][name]
+        self.pixels.set_scale(self.scale)
+        self.display.set_scale(name, self.key, self.scale)
 
     def switch_key(self, position_change):
         self.key = self.key.advance(position_change)
-        name = self.progression_keys[self.progression_idx]
-        progression = self.settings.chords['progressions'][name]
-        self.chords = self.key.chords(progression)
+        name = self.scale_keys[self.scale_idx]
+        self.scale = self.settings.scales['scale_degrees'][name]
         self.pixels.wake()
         self.display.set_key(self.key)
 
@@ -89,8 +85,8 @@ class Display:
         self.group.append(Display.create_label("X#", (30, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("Oct:", (self.display.width / 2, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("00", ((self.display.width / 2) + 30, self.display.height - 36), (0, 1.0)))
-        self.group.append(Display.create_label("Chords:", (0, self.display.height - 22), (0, 1.0)))
-        self.group.append(Display.create_label("III III III III", (42, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("Scl:", (0, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("* * * * * * *", (30, self.display.height - 22), (0, 1.0)))
         self.group.append(Display.create_label("Notes:", (0, self.display.height - 8), (0, 1.0)))
         self.group.append(Display.create_label("Xm# Xm# Xm# Xm#", (40, self.display.height - 8), (0, 1.0)))
 
@@ -121,10 +117,11 @@ class Display:
         self.display.brightness = 0
         self.display.refresh()
 
-    def set_progression(self, name, progression):
+    def set_scale(self, name, key, scale):
         self.wake()
         self.group[1].text = name
-        self.group[7].text = ' '.join(progression)
+        notes = map(lambda d: Key.to_note(key.number + d), scale[:7])
+        self.group[7].text = ' '.join(notes)
         self.display.refresh()
 
     def set_key(self, key):
@@ -162,13 +159,16 @@ class Pixels:
         self.pixels.brightness = 0
         self.pixels.show()
 
-    def set_progression(self, progression):
+    def set_scale(self, scale):
         for row in range(4):
             for column in range(3):
-                degree = Key.to_degree(progression[row])
-                segment = SEGMENT_SIZE * degree
-                subsegment = SUBSEGMENT_SIZE * column
-                self.palette[(row * 3) + column] = colorwheel(segment + subsegment)
+                key_number = (row * 3) + column
+                if key_number in scale:
+                    segment = SEGMENT_SIZE * row
+                    subsegment = SUBSEGMENT_SIZE * column
+                    self.palette[key_number] = colorwheel(segment + subsegment)
+                else:
+                    self.palette[key_number] = (0, 0, 0)
         self.reset()
 
     def set_playing(self, active_notes):

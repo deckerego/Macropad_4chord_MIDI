@@ -1,4 +1,3 @@
-MAJOR_SCALE_DEGREES = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]
 CHROMATIC_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 CHROMATIC_SCALE_LENGTH = len(CHROMATIC_SCALE_NAMES)
 DEGREES = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii']
@@ -14,7 +13,8 @@ END_NOTE = 111
 
 # Calculations for chords based on the selected key
 class Key:
-    def __init__(self, key, octave):
+    def __init__(self, key, octave, scale):
+        self.scale = scale
         self.octave = octave
         self.key = key
         self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
@@ -23,9 +23,9 @@ class Key:
 
     def chord(self, numeral):
         degree = Key.to_degree(numeral)
-        root =  self.number + MAJOR_SCALE_DEGREES[degree    ]
-        third = self.number + MAJOR_SCALE_DEGREES[degree + 2]
-        fifth = self.number + MAJOR_SCALE_DEGREES[degree + 4]
+        root =  self.number + self.scale[degree    ]
+        third = self.number + self.scale[degree + 2]
+        fifth = self.number + self.scale[degree + 4]
         return [root, third, fifth]
 
     def chords(self, progression):
@@ -35,7 +35,7 @@ class Key:
         key_index = self.key_offset + index
         octave = self.octave + (key_index // CHROMATIC_SCALE_LENGTH)
         key = CHROMATIC_SCALE_NAMES[key_index % CHROMATIC_SCALE_LENGTH]
-        new_key = Key(key, octave)
+        new_key = Key(key, octave, self.scale)
         if new_key.number >=0 and new_key.number <= END_NOTE:
             return new_key
         else: # We are out of range of allowed roots
@@ -44,8 +44,12 @@ class Key:
     @staticmethod
     def to_name(number):
         octave_idx = (number - START_NOTE) // CHROMATIC_SCALE_LENGTH
+        return "%s%i" % (Key.to_note(number), octave_idx + START_OCTAVE)
+
+    @staticmethod
+    def to_note(number):
         note_idx = (number - START_NOTE) % CHROMATIC_SCALE_LENGTH
-        return "%s%i" % (CHROMATIC_SCALE_NAMES[note_idx], octave_idx + START_OCTAVE)
+        return CHROMATIC_SCALE_NAMES[note_idx]
 
     @staticmethod
     def to_degree(numeral):
