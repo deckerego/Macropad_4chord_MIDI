@@ -6,17 +6,18 @@ from rainbowio import colorwheel
 from key import Key
 from adafruit_macropad import MacroPad
 
+SCALE_NAME = 'Major Scale'
+
 class Chords:
     def __init__(self, macropad, settings):
         self.settings = settings
-        self.scale = settings.scales['scale_degrees']['Major Scale']
+        _, self.scale = next(filter(lambda s: s[0] == SCALE_NAME, settings.scales['scale_degrees']))
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
         self.key = Key(settings.chords['keys'][0], 3, self.scale)
         self.chords = None
         self.progression_idx = 0
-        self.progression_keys = list(settings.chords['progressions'])
         self.pitch_bend = 8192
         self.channel = settings.chords['channel']
 
@@ -63,17 +64,15 @@ class Chords:
         self.display.sleep()
 
     def switch_progression(self, position_change):
-        self.progression_idx = (self.progression_idx + position_change) % len(self.progression_keys)
-        name = self.progression_keys[self.progression_idx]
-        progression = self.settings.chords['progressions'][name]
+        self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
+        name, progression = self.settings.chords['progressions'][self.progression_idx]
         self.chords = self.key.chords(progression)
         self.pixels.set_progression(progression)
         self.display.set_progression(name, progression)
 
     def switch_key(self, position_change):
         self.key = self.key.advance(position_change)
-        name = self.progression_keys[self.progression_idx]
-        progression = self.settings.chords['progressions'][name]
+        name, progression = self.settings.chords['progressions'][self.progression_idx]
         self.chords = self.key.chords(progression)
         self.pixels.wake()
         self.display.set_key(self.key)

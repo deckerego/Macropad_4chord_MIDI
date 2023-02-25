@@ -4,16 +4,16 @@ melody_configs = {
     # The degrees in each scale, zero-indexed. That means 1st Degree is the value 0 (not 1)
     # Note we "wrap around" the scale to the next octave for a total of twelve notes
     # Special thanks to https://pulse.berklee.edu/?lesson=73&id=4 for helping me double-check
-    'scale_degrees': {
-        'Chromatic Scale':  [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12], # Chromatic Scale
-        'Pentatonic':       [ 0,  2,  4,  7,  9, 12, 14, 16, 19, 21, 24, 26, 28], # Pentatonic Major
-        'Minor Pentatonic': [ 0,  3,  5,  7, 10, 12, 15, 17, 19, 22, 24, 27, 29], # Pentatonic Minor
-        'Major Blues':      [ 0,  2,  3,  4,  7,  9, 12, 14, 15, 16, 19, 21, 24], # Pentatonic Major + Chromatic
-        'Minor Blues':      [ 0,  3,  5,  6,  7, 10, 12, 15, 17, 18, 19, 22, 24], # Pentatonic Minor + Chromatic
-        'Major Scale':      [ 0,  2,  4,  5,  7,  9, 11, 12, 14, 16, 17, 19, 21], # Heptatonic Major
-        'Minor Scale':      [ 0,  2,  3,  5,  7,  8, 10, 12, 14, 15, 17, 19, 20], # Heptatonic Minor
-        'Harmonic Minor':   [ 0,  2,  3,  5,  7,  8, 10, 11, 12, 14, 15, 17, 19]  # Harmonic Minor
-    }
+    'scale_degrees': [
+        ('Chromatic Scale', [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]), # Chromatic Scale
+        ('Major Scale',     [ 0,  2,  4,  5,  7,  9, 11, 12, 14, 16, 17, 19, 21]), # Heptatonic Major
+        ('Minor Scale',     [ 0,  2,  3,  5,  7,  8, 10, 12, 14, 15, 17, 19, 20]), # Heptatonic Minor
+        ('Pentatonic',      [ 0,  2,  4,  7,  9, 12, 14, 16, 19, 21, 24, 26, 28]), # Pentatonic Major
+        ('Minor Pentatonic',[ 0,  3,  5,  7, 10, 12, 15, 17, 19, 22, 24, 27, 29]), # Pentatonic Minor
+        ('Major Blues',     [ 0,  2,  3,  4,  7,  9, 12, 14, 15, 16, 19, 21, 24]), # Pentatonic Major + Chromatic
+        ('Minor Blues',     [ 0,  3,  5,  6,  7, 10, 12, 15, 17, 18, 19, 22, 24]), # Pentatonic Minor + Chromatic
+        ('Harmonic Minor',  [ 0,  2,  3,  5,  7,  8, 10, 11, 12, 14, 15, 17, 19])  # Harmonic Minor
+    ]
 }
 
 harmony_configs = {
@@ -22,18 +22,18 @@ harmony_configs = {
     # The list of root keys you can select from turning the rotary dial
     'keys': [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
     # The list of progressions you can select by press & turning on the rotary dial
-    'progressions': {
-        'Pop Progression':          ["I",  "V",   "vi", "IV" ],
-        'Minor Pop':                ["vi", "IV",  "I",  "V"  ],
-        'Royal Road':               ["IV", "V",   "iii","vi" ],
-        'Alternate Western Pop':    ["I",  "IV",  "vi", "V"  ],
-        'Coldplay Progression':     ["IV", "V",   "I",  "vi" ],
-        '\'50s Progression':        ["I",  "vi",  "IV", "V"  ],
-        'Montgomery Ward Bridge':   ["I",  "IV",  "ii", "V"  ],
-        'Blues Progression':        ["I",  "iii", "vi", "V"  ],
-        'Take Me On':               ["I",  "iii", "vi", "IV" ],
-        'Minor TOM':                ["ii", "V",   "I",  "iii"]
-    }
+    'progressions': [
+        ('Pop Progression',       ["I",  "V",   "vi", "IV" ]),
+        ('Minor Pop',             ["vi", "IV",  "I",  "V"  ]),
+        ('Royal Road',            ["IV", "V",   "iii","vi" ]),
+        ('Alternate Western Pop', ["I",  "IV",  "vi", "V"  ]),
+        ('Coldplay Progression',  ["IV", "V",   "I",  "vi" ]),
+        ('\'50s Progression',     ["I",  "vi",  "IV", "V"  ]),
+        ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ]),
+        ('Blues Progression',     ["I",  "iii", "vi", "V"  ]),
+        ('Take Me On',            ["I",  "iii", "vi", "IV" ]),
+        ('Minor TOM',             ["ii", "V",   "I",  "iii"])
+    ]
 }
 
 rhythm_configs = {
@@ -41,16 +41,16 @@ rhythm_configs = {
     'channel': 9,
     # List of pads as they show on the display, stored as (LED color, name, MIDI number)
     # See also https://www.midi.org/specifications-old/item/gm-level-1-sound-set
-    'kits': {
-        'Acoustic Drum Kit': [
+    'kits': [
+        ('Acoustic Drum Kit', [
             # Layout is intended to be similar to a standard drum kit, as illustrated at:
             # https://macprovideo.com/article/audio-software/everything-producers-need-to-know-about-drum-maps
             [(0xFFF500, 'HHClose', 42), (0xFFF500, 'HHPedal', 44), (0xFFF500, 'HHOpen',  46)],
             [(0xFFF500, 'Crash',   49), (0xFFF500, 'Ride',    51), (0xFFF500, 'LgCrash', 57)],
             [(0x12B0FF, 'Snare',   38), (0x12B0FF, 'SmolTom', 50), (0x12B0FF, 'LgTom',   45)],
             [(0xFF1930, 'Kick',    35), (0xFF1930, 'LoFlTom', 41), (0xFF1930, 'HiFlTom', 43)]
-        ],
-        'Rhythm Composer': [
+        ]),
+        ('Rhythm Composer', [
             # Layout inspired by the instruments of the TR-808, MIDI details at:
             # https://www.roland.com/global/support/by_product/rc_tr-808/owners_manuals/
             # Some pads adjusted to work with the GarageBand "Roland TR-808" electronic drum kit
@@ -58,15 +58,15 @@ rhythm_configs = {
             [(0xF200FF, 'Clap',    39), (0xF200FF, 'Claves',  37), (0xF200FF, 'Cowbell', 56)],
             [(0x12B0FF, 'LoTom',   41), (0x12B0FF, 'MdTom',   45), (0x12B0FF, 'HiTom',   48)],
             [(0xFF1930, 'Kick',    36), (0xFF1930, 'Snare',   40), (0x12B0FF, 'LowMid',  47)]
-        ],
-        'Percussion': [
+        ]),
+        ('Percussion', [
             # A grab bag of other useful percussion instruments
             [(0xFFF500, 'Bells',   59), (0xF200FF, 'Claves',  75), (0xF200FF, 'Maraca',  70)],
             [(0x12B0FF, 'HBongo',  60), (0x12B0FF, 'Conga',   63), (0x12B0FF, 'HTimbl',  65)],
             [(0x12B0FF, 'LBongo',  61), (0x12B0FF, 'CongaD',  62), (0x12B0FF, 'LTimbl',  66)],
             [(0xFF1930, 'Stomp',   57), (0xFF1930, 'Wdblck',  77), (0x00FF9E, 'Snap',    58)]
-        ]
-    }
+        ])
+    ]
 }
 
 # MIDI control defaults accessible in the MIDI Controls section
