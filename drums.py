@@ -53,12 +53,10 @@ class Drums:
 class DrumKits:
     def __init__(self, config):
         self.index = 0
-        self.names = list(config['kits'])
         self.kits = config['kits']
 
     def get(self):
-        name = self.names[self.index]
-        return name, self.kits[name]
+        return self.kits[self.index]
 
     def next(self):
         self.index = (self.index + 1) % len(self.kits)
