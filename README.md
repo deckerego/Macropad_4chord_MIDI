@@ -2,7 +2,18 @@
 
 [![Macropad 4chord MIDI](https://github.com/deckerego/Macropad_4chord_MIDI/actions/workflows/pullrequest-unittest.yml/badge.svg)](https://github.com/deckerego/Macropad_4chord_MIDI/actions/workflows/pullrequest-unittest.yml)
 
-"All the greatest hits from the past forty years just use four chords. Same four chords for every song. It's dead simple to write a pop hit."
+## Contents
+
+* **[About the Macropad 4chord MIDI](#about)**
+* **[Playing Harmonies, Melodies, and Rhythms](#playing)**
+* **[Installing on an Adafruit Macropad](#installing)**
+* **[Updating an Existing Installation](#updating)**
+* **[How to configure progressions, drum kits, MIDI settings](#configuring)**
+* **[Building & Testing This Project](#building)**
+
+## About
+
+> "All the greatest hits from the past forty years just use four chords. Same four chords for every song. It's dead simple to write a pop hit.""
  -- Benny, Axis of Awesome
 
 A four-chord MIDI device that allows you to rapidly churn out catchy tunes.
@@ -22,12 +33,13 @@ Huge thanks to so many who have inspired this idea, especially:
 
 ## Playing
 
-The Macropad 4chord MIDI is built to play simple chord progressions as a MIDI
-device. You can connect the Macropad to any studio recording software that
-accepts MIDI devices, such as GarageBand.
+The Macropad 4chord MIDI is built to play simple chord progressions, follow scales to build
+melodies, and act as a drum kit as a MIDI device. You can connect the Macropad to any studio 
+recording software or DAW accepts MIDI devices, such as GarageBand or Abelton Live.
 
-The 4chord MIDI has three different modes: the "chords" mode that allows you
-to select progressions and root keys to play chords, the "drum pad" mode that
+The 4chord MIDI has four different modes: the "harmony" mode that allows you
+to select progressions and root keys to play chords, the "melody" mode that
+highlights different scales you can play, the "rhythm" mode that
 allows you to use the MacroPad as an acoustic drum / electric drum /
 percussion pad, and a "MIDI controls" mode that lets you set MIDI command
 controls (including note velocity). You can switch between each mode by
@@ -36,6 +48,7 @@ clicking on the rotary dial.
 A demo of using the MacroPad 4chord MIDI with GarageBand is available at https://youtu.be/2-FtnHHVXCg
 
 ![MacroPad 4chord MIDI: Playing Chords](./docs/images/chords.jpg)
+![MacroPad 4chord MIDI: Playing Notes on a Scale](./docs/images/scales.jpg)
 ![MacroPad 4chord MIDI: Drum Pad](./docs/images/drumpad.jpg)
 ![MacroPad 4chord MIDI: MIDI Controls](./docs/images/controls.jpg)
 
@@ -62,16 +75,38 @@ You can bend the current notes being played by rotating the dial while keys
 are being held down. Rotating counter-clockwise will bend the pitch down,
 rotating clockwise will bend the pitch up.
 
+### Highlight Scales
+
+Clicking once on the rotary dial after the Macropad boots loads the
+"melody" keyboard. In this mode each of the 12 buttons on the Macropad
+corresponds to a note on the chromatic scale, with the root note you
+have selected in the top left. 
+
+The buttons that are illuminated correspond to the scale selected while
+in this mode. You can play as many notes as you wish simultaneously,
+however only the highlighted notes are part of the selected scale.
+To change to a different scale (pentatonic major, relative minor, 
+blues major, etc.) press down on the encoder button and rotate the dial.
+The name and first seven notes of the scale will be shown on the display.
+
+Just as when playing chord progressions, you can bend the current notes 
+being played by rotating the dial while keys are being held down. 
+Rotating counter-clockwise will bend the pitch down, rotating clockwise 
+will bend the pitch up.
+
 ### Drum Pads
 
-If you click once on the rotary dial after the Macropad boots, it will move
+If you click twice on the rotary dial after the Macropad boots, it will move
 into the drum pad mode. Rotating the dial will allow you to select from
-a number of drum or percussion presets where MIDI notes match acoustic drum,
-electric drum, or percussion strikes.
+a number of drum or percussion presets where MIDI notes match an acoustic drum,
+a rhythm composer (such as the classic TR-808), or percussion strikes.
+Actual percussion sounds depend on the MIDI controller or DAW you are using,
+so you may need to make some [configuration tweaks](#configuring)
+with the MIDI mapping to match what instrument you want to use.
 
 ### MIDI Controls
 
-Clicking twice after booting the Macropad will take you into the MIDI controls
+Clicking three times after booting the Macropad will take you into the MIDI controls
 mode, where you can adjust MIDI controls that are transferred to your DAW
 when recording. This includes global settings (such as attack or release time)
 as well as note settings (such as velocity).
