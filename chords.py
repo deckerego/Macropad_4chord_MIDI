@@ -15,7 +15,7 @@ class Chords:
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(settings.chords['keys'][0], 3, self.scale)
+        self.key = Key(settings.chords['keys'][0])
         self.chords = None
         self.progression_idx = 0
         self.pitch_bend = 8192
@@ -66,14 +66,14 @@ class Chords:
     def switch_progression(self, position_change):
         self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
         name, progression = self.settings.chords['progressions'][self.progression_idx]
-        self.chords = self.key.chords(progression)
+        self.chords = self.key.chords(progression, self.scale)
         self.pixels.set_progression(progression)
         self.display.set_progression(name, progression)
 
     def switch_key(self, position_change):
         self.key = self.key.advance(position_change)
         name, progression = self.settings.chords['progressions'][self.progression_idx]
-        self.chords = self.key.chords(progression)
+        self.chords = self.key.chords(progression, self.scale)
         self.pixels.wake()
         self.display.set_key(self.key)
 

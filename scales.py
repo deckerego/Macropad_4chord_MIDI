@@ -12,7 +12,7 @@ class Scales:
         self.display = Display(macropad, settings.display['brightness'])
         self.pixels = Pixels(macropad, settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(settings.chords['keys'][0], 3, [])
+        self.key = Key(settings.chords['keys'][0])
         self.chords = None
         self.scale_idx = 0
         self.pitch_bend = 8192
