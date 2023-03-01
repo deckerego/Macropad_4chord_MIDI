@@ -33,7 +33,6 @@ class Scales:
         for event in events:
             if event.pressed:
                 note = self.key.number + event.key_number
-                print("Note:", note)
                 self.macropad.midi.send(self.macropad.NoteOn(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = note
             else: # event.released
