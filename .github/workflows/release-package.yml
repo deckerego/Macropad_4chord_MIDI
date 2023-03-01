@@ -1,0 +1,50 @@
+name: Package the latest release
+
+on:
+  release:
+    types: [published]
+
+env:
+  adafruit-bundle: '20220907'
+
+jobs:
+  github-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Adafruit Library Cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.adafruit-circuitpython-bundle
+          key: ${{ runner.os }}-adafruit-mpy-${{ env.adafruit-bundle }}
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Download the Adafruit CircuitPython Bundle
+        run: |
+          curl -L https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases/download/${{ env.adafruit-bundle }}/adafruit-circuitpython-bundle-7.x-mpy-${{ env.adafruit-bundle }}.zip -o adafruit-circuitpython-bundle.zip
+          unzip adafruit-circuitpython-bundle.zip
+          mkdir -p ~/.adafruit-circuitpython-bundle
+          mv adafruit-circuitpython-bundle-7.x-mpy-${{ env.adafruit-bundle }}/* ~/.adafruit-circuitpython-bundle/
+          rmdir adafruit-circuitpython-bundle-7.x-mpy-${{ env.adafruit-bundle }}/*
+      - name: Copy Adafruit Libraries
+        run: |
+          cp -a ~/.adafruit-circuitpython-bundle/lib/adafruit_debouncer.mpy \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_display_shapes \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_display_text \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_displayio_layout \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_hid \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_macropad.mpy \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_midi \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_pixelbuf.mpy \
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_simple_text_display.mpy \
+          ~/.adafruit-circuitpython-bundle/lib/neopixel.mpy lib/adafruit_ticks.mpy \
+          ./lib
+        - name: Package Release
+          run: |
+            echo "GitHub Ref: ${{ github.ref }}"
+            echo "GitHub Ref Name ${{ github.ref_name }}"
+            zip -r Macropad.4chord.MIDI.v${{ github.ref_name }}.zip *.py lib README.md LICENSE
+        - name: Archive Release Package
+          uses: actions/upload-artifact@v3
+          with:
+            name: dist
+            path: Macropad.4chord.MIDI.v${{ github.ref_name }}.zip
