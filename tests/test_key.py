@@ -1,3 +1,7 @@
+# Bootstrap the settings for the tests to run under
+import settings
+settings.key_configs['middle_octave'] = 3
+
 from key import Key
 import unittest
 
