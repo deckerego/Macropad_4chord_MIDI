@@ -24,7 +24,7 @@ jobs:
           unzip adafruit-circuitpython-bundle.zip
           mkdir -p ~/.adafruit-circuitpython-bundle
           mv adafruit-circuitpython-bundle-7.x-mpy-${{ env.adafruit-bundle }}/* ~/.adafruit-circuitpython-bundle/
-          rmdir adafruit-circuitpython-bundle-7.x-mpy-${{ env.adafruit-bundle }}/*
+          rmdir adafruit-circuitpython-bundle-7.x-mpy-${{ env.adafruit-bundle }}
       - name: Copy Adafruit Libraries
         run: |
           cp -a ~/.adafruit-circuitpython-bundle/lib/adafruit_debouncer.mpy \
