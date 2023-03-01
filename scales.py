@@ -4,19 +4,20 @@ from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
 from rainbowio import colorwheel
 from key import Key
+from settings import Settings
 from adafruit_macropad import MacroPad
 
 class Scales:
-    def __init__(self, macropad, settings):
-        self.settings = settings
-        self.display = Display(macropad, settings.display['brightness'])
-        self.pixels = Pixels(macropad, settings.display['brightness'])
+    def __init__(self, macropad):
+        self.settings = Settings()
+        self.display = Display(macropad, self.settings.display['brightness'])
+        self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(settings.chords['keys'][0])
+        self.key = Key(self.settings.chords['keys'][0])
         self.chords = None
         self.scale_idx = 0
         self.pitch_bend = 8192
-        self.channel = settings.scales['channel']
+        self.channel = self.settings.scales['channel']
 
     def refresh(self):
         self.active_notes = [None for i in range(12)]

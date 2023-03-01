@@ -8,16 +8,18 @@ DEGREES = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii']
 # Set the octove for MIDI note 60 (middle C)
 MIDDLE_OCTAVE = settings.keys['middle_octave']
 MIDDLE_C = 60
-# If we want to include all full scales starting at A and going to G#,
-# that means we start at C-2 (note #0) and end at G#7 (note #116)
-START_NOTE = 0
 START_OCTAVE = MIDDLE_OCTAVE - (MIDDLE_C // 12)
-# However, MIDI 1.0 only goes to note 127 and so if we use a seventh degree's
-# perfect fifth, that means we max out at note 111 (D#7).
-END_NOTE = 111
+
+# We want to include all full scales starting at A and going to G#,
+# which would end with note 116. MIDI 1.0 goes to note 127,
+# but we need room for a seventh degree chord's perfect fifth, 
+# so let's max out at note 111 (D#).
+END_NOTE = 116 - 5
+START_NOTE = 0
 
 # Calculations for chords based on the selected key
 class Key:
+    
     def __init__(self, key, octave=MIDDLE_OCTAVE):
         self.octave = octave
         self.key = key

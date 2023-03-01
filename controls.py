@@ -1,5 +1,6 @@
 import displayio
 import terminalio
+from settings import Settings
 from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
 from adafruit_midi import control_change_values
@@ -20,11 +21,11 @@ controls = [
 ]
 
 class Controls:
-    def __init__(self, macropad, settings):
-        self.settings = settings
+    def __init__(self, macropad):
+        self.settings = Settings()
         self.macropad = macropad
-        self.display = Display(macropad, settings.display['brightness'])
-        self.pixels = Pixels(macropad, settings.display['brightness'])
+        self.display = Display(macropad, self.settings.display['brightness'])
+        self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.pressed = None
 
     def send_controls(self, channel=None):
