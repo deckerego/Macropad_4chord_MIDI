@@ -8,10 +8,10 @@ from controls import Controls
 
 macropad = MacroPad(midi_out_channel=4)
 settings = Settings()
-controls = Controls(macropad, settings)
-chords = Chords(macropad, settings)
-scales = Scales(macropad, settings)
-drums = Drums(macropad, settings)
+controls = Controls(macropad)
+chords = Chords(macropad)
+scales = Scales(macropad)
+drums = Drums(macropad)
 
 modes = [ chords, scales, drums, controls ]
 mode_current = 0
