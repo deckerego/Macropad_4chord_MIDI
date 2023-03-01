@@ -1,18 +1,19 @@
 import displayio
 import terminalio
+from settings import Settings
 from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
 from rainbowio import colorwheel
 
 class Drums:
-    def __init__(self, macropad, settings):
-        self.settings = settings
-        self.display = Display(macropad, settings.display['brightness'])
-        self.pixels = Pixels(macropad, settings.display['brightness'])
+    def __init__(self, macropad):
+        self.settings = Settings()
+        self.display = Display(macropad, self.settings.display['brightness'])
+        self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
-        self.kits = DrumKits(settings.drums)
+        self.kits = DrumKits(self.settings.drums)
         self.active_notes = [None for i in range(12)]
-        self.channel = settings.drums['channel']
+        self.channel = self.settings.drums['channel']
 
     def refresh(self):
         self.display.refresh()

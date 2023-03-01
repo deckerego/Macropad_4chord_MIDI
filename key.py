@@ -1,41 +1,47 @@
+from settings import Settings
+settings = Settings()
+
 CHROMATIC_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 CHROMATIC_SCALE_LENGTH = len(CHROMATIC_SCALE_NAMES)
 DEGREES = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii']
 
-# I'm considering MIDI note 60 (middle C) to be C3.
-# If we want to include all full scales starting at A and going to G#,
-# that means we start at C-2 (note #0) and end at G#7 (note #116)
+# Set the octove for MIDI note 60 (middle C)
+MIDDLE_OCTAVE = settings.keys['middle_octave']
+MIDDLE_C = 60
+START_OCTAVE = MIDDLE_OCTAVE - (MIDDLE_C // 12)
+
+# We want to include all full scales starting at A and going to G#,
+# which would end with note 116. MIDI 1.0 goes to note 127,
+# but we need room for a seventh degree chord's perfect fifth, 
+# so let's max out at note 111 (D#).
+END_NOTE = 116 - 5
 START_NOTE = 0
-START_OCTAVE = -2
-# However, MIDI 1.0 only goes to note 127 and so if we use a seventh degree's
-# perfect fifth, that means we max out at note 111 (D#7).
-END_NOTE = 111
 
 # Calculations for chords based on the selected key
 class Key:
-    def __init__(self, key, octave, scale):
-        self.scale = scale
+    
+    def __init__(self, key, octave=MIDDLE_OCTAVE):
         self.octave = octave
         self.key = key
         self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
         self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * CHROMATIC_SCALE_LENGTH)
         self.number = self.octave_offset + self.key_offset
 
-    def chord(self, numeral):
+    def chord(self, numeral, scale):
         degree = Key.to_degree(numeral)
-        root =  self.number + self.scale[degree    ]
-        third = self.number + self.scale[degree + 2]
-        fifth = self.number + self.scale[degree + 4]
+        root =  self.number + scale[degree    ]
+        third = self.number + scale[degree + 2]
+        fifth = self.number + scale[degree + 4]
         return [root, third, fifth]
 
-    def chords(self, progression):
-        return [self.chord(degree) for degree in progression]
+    def chords(self, progression, scale):
+        return [self.chord(degree, scale) for degree in progression]
 
     def advance(self, index):
         key_index = self.key_offset + index
         octave = self.octave + (key_index // CHROMATIC_SCALE_LENGTH)
         key = CHROMATIC_SCALE_NAMES[key_index % CHROMATIC_SCALE_LENGTH]
-        new_key = Key(key, octave, self.scale)
+        new_key = Key(key, octave)
         if new_key.number >=0 and new_key.number <= END_NOTE:
             return new_key
         else: # We are out of range of allowed roots

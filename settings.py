@@ -1,3 +1,11 @@
+key_configs = {
+    # MIDI note 60 is considered to be "middle C," but not everyone agrees
+    # what octave note 60 is in. I go with the GarageBand value of C3 by default,
+    # but some DAWs (like Renoise) or controllers consider C4 to be "middle C" 
+    # at note 60. If it bugs you, change it here.
+    'middle_octave': 3
+}
+
 melody_configs = {
     # The *index* of the MIDI Channel for notes (e.g. 0 is actually MIDI Channel 1)
     'channel': 0,
@@ -91,9 +99,9 @@ display_configs = {
 }
 
 class Settings:
-    def __init__(self):
-        self.chords = harmony_configs
-        self.scales = melody_configs
-        self.midi = midi_configs
-        self.drums = rhythm_configs
-        self.display = display_configs
+    chords = harmony_configs
+    scales = melody_configs
+    midi = midi_configs
+    drums = rhythm_configs
+    display = display_configs
+    keys = key_configs
