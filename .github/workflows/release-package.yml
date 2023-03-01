@@ -36,7 +36,8 @@ jobs:
           ~/.adafruit-circuitpython-bundle/lib/adafruit_midi \
           ~/.adafruit-circuitpython-bundle/lib/adafruit_pixelbuf.mpy \
           ~/.adafruit-circuitpython-bundle/lib/adafruit_simple_text_display.mpy \
-          ~/.adafruit-circuitpython-bundle/lib/neopixel.mpy lib/adafruit_ticks.mpy \
+          ~/.adafruit-circuitpython-bundle/lib/neopixel.mpy 
+          ~/.adafruit-circuitpython-bundle/lib/adafruit_ticks.mpy \
           ./lib
       - name: Package Release
         run: |
