@@ -53,6 +53,14 @@ class TestName(unittest.TestCase):
         name = Key.to_note(42)
         self.assertEqual(name, "F#" )
 
+    def test_lowest(self):
+        name = Key.to_name(0)
+        self.assertEqual(name, "C-2")
+
+    def test_highest(self):
+        name = Key.to_name(116)
+        self.assertEqual(name, "G#7")
+
 class TestAdvanceMajor(unittest.TestCase):
     heptatonic_major = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]
 

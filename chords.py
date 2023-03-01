@@ -44,14 +44,14 @@ class Chords:
                 note = self.active_notes[event.key_number]
                 self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = None
-                notes_active = len(list(filter(lambda x: x, self.active_notes)))
+                notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
                 if notes_active == 0: self.pitch_bend = 8192
 
         self.display.set_playing(self.active_notes)
         self.pixels.set_playing(self.active_notes)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
-        notes_active = len(list(filter(lambda x: x, self.active_notes)))
+        notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
         if encoder_switch and notes_active == 0:
             self.switch_progression(encoder_position - encoder_last_position)
         elif notes_active == 0:
@@ -135,7 +135,7 @@ class Display:
 
     def set_playing(self, notes):
         self.wake()
-        note_names = [Key.to_name(note) for note in notes if note]
+        note_names = [Key.to_name(note) for note in notes if note is not None]
         self.group[9].text = ' '.join(note_names)
         self.display.refresh()
 
@@ -174,7 +174,7 @@ class Pixels:
     def set_playing(self, active_notes):
         self.wake()
         for index in range(12):
-            self.pixels[index] = 0xFFFFFF if active_notes[index] else self.palette[index]
+            self.pixels[index] = 0xFFFFFF if active_notes[index] is not None else self.palette[index]
         self.pixels.show()
 
     def reset(self):
