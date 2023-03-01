@@ -2,7 +2,7 @@ name: Package the latest release
 
 on:
   release:
-    types: [published]
+    types: [ published ]
 
 env:
   adafruit-bundle: '20220907'
@@ -38,13 +38,13 @@ jobs:
           ~/.adafruit-circuitpython-bundle/lib/adafruit_simple_text_display.mpy \
           ~/.adafruit-circuitpython-bundle/lib/neopixel.mpy lib/adafruit_ticks.mpy \
           ./lib
-        - name: Package Release
-          run: |
-            echo "GitHub Ref: ${{ github.ref }}"
-            echo "GitHub Ref Name ${{ github.ref_name }}"
-            zip -r Macropad.4chord.MIDI.v${{ github.ref_name }}.zip *.py lib README.md LICENSE
-        - name: Archive Release Package
-          uses: actions/upload-artifact@v3
-          with:
-            name: dist
-            path: Macropad.4chord.MIDI.v${{ github.ref_name }}.zip
+      - name: Package Release
+        run: |
+          echo "GitHub Ref: ${{ github.ref }}"
+          echo "GitHub Ref Name ${{ github.ref_name }}"
+          zip -r Macropad.4chord.MIDI.v${{ github.ref_name }}.zip *.py lib README.md LICENSE
+      - name: Archive Release Package
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: Macropad.4chord.MIDI.v${{ github.ref_name }}.zip
