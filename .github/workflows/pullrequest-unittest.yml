@@ -1,4 +1,4 @@
-name: Macropad 4chord MIDI
+name: Automated Tests
 
 on:
   pull_request:

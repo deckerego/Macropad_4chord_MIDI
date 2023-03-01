@@ -1,4 +1,4 @@
-name: Package the latest release
+name: Package the Latest Release
 
 on:
   release:
