@@ -8,7 +8,7 @@ env:
   adafruit-bundle: '20220907'
 
 jobs:
-  github-pages:
+  package:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
