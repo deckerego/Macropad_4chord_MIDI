@@ -104,7 +104,6 @@ class Display:
 
     def reload(self):
         self.display.auto_refresh = False
-        self.display.auto_brightness = True
         self.display.brightness = self.scaled_brightness
 
         self.group[13].anchored_position=(self.display.width//2, -2)
@@ -123,7 +122,6 @@ class Display:
             self.display.refresh()
 
     def sleep(self):
-        self.display.auto_brightness = False
         self.display.brightness = 0
         self.display.refresh()
 
