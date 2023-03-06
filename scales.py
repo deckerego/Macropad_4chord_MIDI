@@ -116,7 +116,8 @@ class Display:
     def set_scale(self, name, key, scale):
         self.wake()
         self.group[1].text = name
-        notes = map(lambda d: Key.to_note(key.number + d), scale[:7])
+        degrees = filter(lambda d: d < 12, scale)
+        notes = map(lambda d: Key.to_note(key.number + d), degrees)
         self.group[7].text = ' '.join(notes)
         self.display.refresh()
 
