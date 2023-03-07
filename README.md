@@ -45,7 +45,9 @@ percussion pad, and a "MIDI controls" mode that lets you set MIDI command
 controls (including note velocity). You can switch between each mode by
 clicking on the rotary dial.
 
-A demo of using the MacroPad 4chord MIDI with GarageBand is available at https://youtu.be/2-FtnHHVXCg
+There are a few quick demos showing how to use the MacroPad 4chord MIDI in a DAW:
+* GarageBand: https://youtu.be/2-FtnHHVXCg
+* Renoise: https://youtu.be/bhJ7GtdNhvA
 
 ![MacroPad 4chord MIDI: Playing Chords](./docs/images/chords.jpg)
 ![MacroPad 4chord MIDI: Playing Notes on a Scale](./docs/images/scales.jpg)
