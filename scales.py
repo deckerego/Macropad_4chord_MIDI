@@ -13,9 +13,10 @@ class Scales:
         self.display = Display(macropad, self.settings.display['brightness'])
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(self.settings.chords['keys'][0])
-        self.chords = None
         self.scale_idx = 0
+        _, self.scale = self.settings.scales['scale_degrees'][self.scale_idx]
+        self.key = Key(self.settings.chords['keys'][0], self.scale)
+        self.chords = None
         self.pitch_bend = 8192
         self.channel = self.settings.scales['channel']
 
@@ -67,7 +68,7 @@ class Scales:
         self.display.set_scale(name, self.key, self.scale)
 
     def switch_key(self, position_change):
-        self.key = self.key.advance(position_change)
+        self.key.advance(position_change)
         name, self.scale = self.settings.scales['scale_degrees'][self.scale_idx]
         self.pixels.wake()
         self.display.set_key(self.key)
@@ -116,9 +117,12 @@ class Display:
     def set_scale(self, name, key, scale):
         self.wake()
         self.group[1].text = name
-        degrees = filter(lambda d: d < 12, scale)
+
+        scale_map = [sum(scale[:i]) for i in range(len(scale)+1)]
+        degrees = filter(lambda d: d < 12, scale_map)
         notes = map(lambda d: Key.to_note(key.number + d), degrees)
         self.group[7].text = ' '.join(notes)
+
         self.display.refresh()
 
     def set_key(self, key):
@@ -157,10 +161,11 @@ class Pixels:
         self.pixels.show()
 
     def set_scale(self, scale):
+        scale_map = [sum(scale[:i]) for i in range(len(scale)+1)]
         for row in range(4):
             for column in range(3):
                 key_number = (row * 3) + column
-                if key_number in scale:
+                if key_number in scale_map:
                     segment = SEGMENT_SIZE * row
                     subsegment = SUBSEGMENT_SIZE * column
                     self.palette[key_number] = colorwheel(segment + subsegment)

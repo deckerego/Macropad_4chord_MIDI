@@ -9,18 +9,11 @@ key_configs = {
 melody_configs = {
     # The *index* of the MIDI Channel for notes (e.g. 0 is actually MIDI Channel 1)
     'channel': 0,
-    # The degrees in each scale, zero-indexed. That means 1st Degree is the value 0 (not 1)
-    # Note we "wrap around" the scale to the next octave for a total of twelve notes
+    # The offset of the degrees within each scale. You can think of 2 as "whole"
+    # and 1 as "half," so a "2" on index 0 would mean two notes from the root.
     # Special thanks to https://pulse.berklee.edu/?lesson=73&id=4 for helping me double-check
     'scale_degrees': [
-        ('Pentatonic',      [ 0,  2,  4,  7,  9, 12, 14, 16, 19, 21, 24, 26, 28]), # Pentatonic Major
-        ('Minor Pentatonic',[ 0,  3,  5,  7, 10, 12, 15, 17, 19, 22, 24, 27, 29]), # Pentatonic Minor
-        ('Major Blues',     [ 0,  2,  3,  4,  7,  9, 12, 14, 15, 16, 19, 21, 24]), # Pentatonic Major + Chromatic
-        ('Minor Blues',     [ 0,  3,  5,  6,  7, 10, 12, 15, 17, 18, 19, 22, 24]), # Pentatonic Minor + Chromatic
-        ('Major Scale',     [ 0,  2,  4,  5,  7,  9, 11, 12, 14, 16, 17, 19, 21]), # Heptatonic Major
-        ('Minor Scale',     [ 0,  2,  3,  5,  7,  8, 10, 12, 14, 15, 17, 19, 20]), # Heptatonic Minor
-        ('Harmonic Minor',  [ 0,  2,  3,  5,  7,  8, 10, 11, 12, 14, 15, 17, 19]), # Harmonic Minor
-        ('Chromatic Scale', [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12])  # Chromatic Scale
+        ('Major Scale',     [ 2, 2, 1, 2, 2, 2, 1 ]), # Heptatonic Major
     ]
 }
 

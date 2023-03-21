@@ -6,38 +6,38 @@ from key import Key
 import unittest
 
 class TestDegrees(unittest.TestCase):
-    heptatonic_major = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
     def test_1st_degree(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chord('I', self.heptatonic_major), [60, 64, 67])
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chord('I'), [60, 64, 67])
 
-    def test_2st_degree(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chord('ii', self.heptatonic_major), [62, 65, 69])
+    def test_2nd_degree(self):
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chord('ii'), [62, 65, 69])
 
     def test_3rd_degree(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chord('iii', self.heptatonic_major), [64, 67, 71])
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chord('iii'), [64, 67, 71])
 
     def test_4th_degree(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chord('IV', self.heptatonic_major), [65, 69, 72])
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chord('IV'), [65, 69, 72])
 
     def test_5th_degree(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chord('V', self.heptatonic_major), [67, 71, 74])
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chord('V'), [67, 71, 74])
 
     def test_6th_degree(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chord('vi', self.heptatonic_major), [69, 72, 76])
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chord('vi'), [69, 72, 76])
 
 class TestChords(unittest.TestCase):
-    heptatonic_major = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
     def test_chord_list(self):
-        key = Key('C', 3)
-        self.assertEqual(key.chords(['I', 'vi'], self.heptatonic_major), [[60, 64, 67], [69, 72, 76]])    
+        key = Key('C', self.major, 3)
+        self.assertEqual(key.chords(['I', 'vi']), [[60, 64, 67], [69, 72, 76]])    
 
 class TestName(unittest.TestCase):
 
@@ -62,91 +62,118 @@ class TestName(unittest.TestCase):
         self.assertEqual(name, "G#7")
 
 class TestAdvanceMajor(unittest.TestCase):
-    heptatonic_major = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16]
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
     def test_next_note(self):
-        start = Key('C', 3)
-        next = start.advance(1)
-        self.assertEqual(next.key, "C#")
-        self.assertEqual(next.octave, 3)
-        self.assertEqual(next.number, 61)
+        key = Key('C', self.major, 3)
+        key.advance(1)
+        self.assertEqual(key.key, "C#")
+        self.assertEqual(key.octave, 3)
+        self.assertEqual(key.number, 61)
 
     def test_next_octave(self):
-        start = Key('B', 3)
-        next = start.advance(1)
-        self.assertEqual(next.key, "C")
-        self.assertEqual(next.octave, 4)
-        self.assertEqual(next.number, 72)
+        key = Key('B', self.major, 3)
+        key.advance(1)
+        self.assertEqual(key.key, "C")
+        self.assertEqual(key.octave, 4)
+        self.assertEqual(key.number, 72)
 
     def test_prev_note(self):
-        start = Key('F', 3)
-        next = start.advance(-1)
-        self.assertEqual(next.key, "E")
-        self.assertEqual(next.octave, 3)
-        self.assertEqual(next.number, 64)
+        key = Key('F', self.major, 3)
+        key.advance(-1)
+        self.assertEqual(key.key, "E")
+        self.assertEqual(key.octave, 3)
+        self.assertEqual(key.number, 64)
 
     def test_prev_octave(self):
-        start = Key('C', 3)
-        next = start.advance(-1)
-        self.assertEqual(next.key, "B")
-        self.assertEqual(next.octave, 2)
-        self.assertEqual(next.number, 59)
+        key = Key('C', self.major, 3)
+        key.advance(-1)
+        self.assertEqual(key.key, "B")
+        self.assertEqual(key.octave, 2)
+        self.assertEqual(key.number, 59)
 
     def test_max(self):
-        start = Key('G#', 7)
-        next = start.advance(1)
-        self.assertEqual(next.key, "G#")
-        self.assertEqual(next.octave, 7)
-        self.assertEqual(next.number, 116)
+        key = Key('G#', self.major, 7)
+        key.advance(1)
+        self.assertEqual(key.key, "G#")
+        self.assertEqual(key.octave, 7)
+        self.assertEqual(key.number, 116)
 
     def test_min(self):
-        start = Key('C', -2)
-        next = start.advance(-1)
-        self.assertEqual(next.key, "C")
-        self.assertEqual(next.octave, -2)
-        self.assertEqual(next.number, 0)
+        key = Key('C', self.major, -2)
+        key.advance(-1)
+        self.assertEqual(key.key, "C")
+        self.assertEqual(key.octave, -2)
+        self.assertEqual(key.number, 0)
 
 class TestAdvancePentatonic(unittest.TestCase):
-    heptatonic_major = [0, 1, 2, 4, 5, 9, 11, 12, 14, 16]
+    pentatonic = [ 2, 2, 3, 2, 3 ]
 
     def test_next_note(self):
-        start = Key('C', 3)
-        next = start.advance(1)
-        self.assertEqual(next.key, "C#")
-        self.assertEqual(next.octave, 3)
-        self.assertEqual(next.number, 61)
+        key = Key('C', self.pentatonic, 3)
+        key.advance(1)
+        self.assertEqual(key.key, "C#")
+        self.assertEqual(key.octave, 3)
+        self.assertEqual(key.number, 61)
 
     def test_next_octave(self):
-        start = Key('B', 3)
-        next = start.advance(1)
-        self.assertEqual(next.key, "C")
-        self.assertEqual(next.octave, 4)
-        self.assertEqual(next.number, 72)
+        key = Key('B', self.pentatonic, 3)
+        key.advance(1)
+        self.assertEqual(key.key, "C")
+        self.assertEqual(key.octave, 4)
+        self.assertEqual(key.number, 72)
 
     def test_prev_note(self):
-        start = Key('F', 3)
-        next = start.advance(-1)
-        self.assertEqual(next.key, "E")
-        self.assertEqual(next.octave, 3)
-        self.assertEqual(next.number, 64)
+        key = Key('F', self.pentatonic, 3)
+        key.advance(-1)
+        self.assertEqual(key.key, "E")
+        self.assertEqual(key.octave, 3)
+        self.assertEqual(key.number, 64)
 
     def test_prev_octave(self):
-        start = Key('C', 3)
-        next = start.advance(-1)
-        self.assertEqual(next.key, "B")
-        self.assertEqual(next.octave, 2)
-        self.assertEqual(next.number, 59)
+        key = Key('C', self.pentatonic, 3)
+        key.advance(-1)
+        self.assertEqual(key.key, "B")
+        self.assertEqual(key.octave, 2)
+        self.assertEqual(key.number, 59)
 
     def test_max(self):
-        start = Key('G#', 7)
-        next = start.advance(1)
-        self.assertEqual(next.key, "G#")
-        self.assertEqual(next.octave, 7)
-        self.assertEqual(next.number, 116)
+        key = Key('G#', self.pentatonic, 7)
+        key.advance(1)
+        self.assertEqual(key.key, "G#")
+        self.assertEqual(key.octave, 7)
+        self.assertEqual(key.number, 116)
 
     def test_min(self):
-        start = Key('C', -2)
-        next = start.advance(-1)
-        self.assertEqual(next.key, "C")
-        self.assertEqual(next.octave, -2)
-        self.assertEqual(next.number, 0)
+        key = Key('C', self.pentatonic, -2)
+        key.advance(-1)
+        self.assertEqual(key.key, "C")
+        self.assertEqual(key.octave, -2)
+        self.assertEqual(key.number, 0)
+
+class TestDorian(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_1st_degree(self):
+        key = Key('C', self.major, 3, 2)
+        self.assertEqual(key.chord('i'), [60, 63, 67])
+
+    def test_2nd_degree(self):
+        key = Key('C', self.major, 3, 2)
+        self.assertEqual(key.chord('ii'), [62, 65, 69])
+
+    def test_3rd_degree(self):
+        key = Key('C', self.major, 3, 2)
+        self.assertEqual(key.chord('III'), [63, 67, 70])
+
+    def test_4th_degree(self):
+        key = Key('C', self.major, 3, 2)
+        self.assertEqual(key.chord('IV'), [65, 69, 72])
+
+    def test_5th_degree(self):
+        key = Key('C', self.major, 3, 2)
+        self.assertEqual(key.chord('v'), [67, 70, 74])
+
+    def test_6th_degree(self):
+        key = Key('C', self.major, 3, 2)
+        self.assertEqual(key.chord('vi'), [69, 72, 75])
