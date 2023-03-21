@@ -13,7 +13,14 @@ melody_configs = {
     # and 1 as "half," so a "2" on index 0 would mean two notes from the root.
     # Special thanks to https://pulse.berklee.edu/?lesson=73&id=4 for helping me double-check
     'scale_degrees': [
-        ('Major Scale',     [ 2, 2, 1, 2, 2, 2, 1 ]), # Heptatonic Major
+        ('Pentatonic',      [ 2, 2, 3, 2, 3 ]),         # Pentatonic Major
+        ('Minor Pentatonic',[ 3, 2, 2, 3, 2 ]),         # Pentatonic Minor
+        ('Major Blues',     [ 2, 1, 1, 3, 2, 3 ]),      # Pentatonic Major + Chromatic
+        ('Minor Blues',     [ 3, 2, 1, 1, 3, 2 ]),      # Pentatonic Minor + Chromatic
+        ('Major Scale',     [ 2, 2, 1, 2, 2, 2, 1 ]),   # Heptatonic Major
+        ('Minor Scale',     [ 2, 1, 2, 2, 1, 2, 2 ]),   # Heptatonic Minor
+        ('Harmonic Minor',  [ 2, 1, 2, 2, 1, 2, 1, 1 ]),# Harmonic Minor
+        ('Chromatic Scale', [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ])
     ]
 }
 
