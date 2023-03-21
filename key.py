@@ -22,20 +22,20 @@ class Key:
     
     def __init__(self, key, scale, octave=MIDDLE_OCTAVE, mode=1):
         self.octave = octave
-        # Expand our scale to be three octaves long since we have
-        # calculate the major 7th of the 7th degree of the 7th mode
-        self.scale = [ *scale, *scale, *scale ]
+        self.scale = scale
         self.key = key
         self.mode = mode - 1
+        self.circle = self.scale[self.mode:] + self.scale[:self.mode]
+        self.circle += self.circle
         self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
         self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * CHROMATIC_SCALE_LENGTH)
         self.number = self.octave_offset + self.key_offset
 
     def chord(self, numeral):
         degree = Key.to_degree(numeral)
-        root =  self.number + sum(self.scale[self.mode:degree + self.mode + 0])
-        third = self.number + sum(self.scale[self.mode:degree + self.mode + 2])
-        fifth = self.number + sum(self.scale[self.mode:degree + self.mode + 4])
+        root =  self.number + sum(self.circle[:degree + 0])
+        third = self.number + sum(self.circle[:degree + 2])
+        fifth = self.number + sum(self.circle[:degree + 4])
         return [root, third, fifth]
 
     def chords(self, progression):
