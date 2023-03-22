@@ -155,25 +155,25 @@ class TestDorian(unittest.TestCase):
     major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
     def test_1st_degree(self):
-        key = Key('C', self.major, 3, 2)
+        key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('i'), [60, 63, 67])
 
     def test_2nd_degree(self):
-        key = Key('C', self.major, 3, 2)
+        key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('ii'), [62, 65, 69])
 
     def test_3rd_degree(self):
-        key = Key('C', self.major, 3, 2)
+        key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('III'), [63, 67, 70])
 
     def test_4th_degree(self):
-        key = Key('C', self.major, 3, 2)
+        key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('IV'), [65, 69, 72])
 
     def test_5th_degree(self):
-        key = Key('C', self.major, 3, 2)
+        key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('v'), [67, 70, 74])
 
     def test_6th_degree(self):
-        key = Key('C', self.major, 3, 2)
+        key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('vi'), [69, 72, 75])

@@ -19,12 +19,17 @@ START_NOTE = 0
 
 # Calculations for chords based on the selected key
 class Key:
-    
-    def __init__(self, key, scale, octave=MIDDLE_OCTAVE, mode=1):
+
+    # Create a new root "key."
+    # key:    The root key (given as a letter in the chromatic scale)
+    # scale:  A scale, defined as offsets to the degrees within each scale (see settings.py)
+    # octave: The "middle" octave as a single-digit number (most MIDI controllers assume this to be 3)
+    # mode:   The zero-indexed mode number of the scale (e.g. 0 would be Ionian, 1 would be Dorian)
+    def __init__(self, key, scale, octave=MIDDLE_OCTAVE, mode=0):
         self.octave = octave
         self.scale = scale
         self.key = key
-        self.mode = mode - 1
+        self.mode = mode
         self.circle = self.scale[self.mode:] + self.scale[:self.mode]
         self.circle += self.circle
         self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
