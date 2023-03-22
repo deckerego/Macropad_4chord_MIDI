@@ -87,7 +87,7 @@ class Display:
         self.scaled_brightness = 0.5 + (brightness * 0.5)
         self.group = displayio.Group()
         self.group.append(Rect(0, 0, self.display.width, 12, fill=0xFFFFFF))
-        self.group.append(Display.create_label('Macropad 4chord MIDI', (self.display.width//2, -2), (0.5, 0.0), 0x000000))
+        self.group.append(Display.create_label('Macropad 4chord MIDI', (self.display.width//2, -1), (0.5, 0.0), 0x000000))
         self.group.append(Display.create_label("Key:", (0, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("X#", (30, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("Oct:", (self.display.width / 2, self.display.height - 36), (0, 1.0)))

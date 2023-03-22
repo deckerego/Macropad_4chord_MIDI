@@ -106,7 +106,7 @@ class Display:
         self.display.auto_refresh = False
         self.display.brightness = self.scaled_brightness
 
-        self.group[13].anchored_position=(self.display.width//2, -2)
+        self.group[13].anchored_position=(self.display.width//2, -1)
         self.group[13].anchor_point=(0.5, 0.0)
         self.group[13].text = 'MIDI Controls'
         for i in range(12):
