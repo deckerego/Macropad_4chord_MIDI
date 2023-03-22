@@ -10,6 +10,10 @@ class TestDefaults(unittest.TestCase):
         key = Key()
         self.assertEqual(key.key, "C")
 
+    def test_no_scale(self):
+        key = Key()
+        self.assertEqual(key.chord('I'), [60, 60, 60])
+
 class TestDegrees(unittest.TestCase):
     major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
@@ -65,6 +69,24 @@ class TestName(unittest.TestCase):
     def test_highest(self):
         name = Key.to_name(116)
         self.assertEqual(name, "G#7")
+
+class TestDegreeNumber(unittest.TestCase):
+
+    def test_second_major(self):
+        degree = Key.to_degree('II')
+        self.assertEqual(degree, 1)
+
+    def test_second_minor(self):
+        degree = Key.to_degree('ii')
+        self.assertEqual(degree, 1)
+
+    def test_seventh_diminished(self):
+        degree = Key.to_degree('vii˚')
+        self.assertEqual(degree, 6)
+    
+    def test_sixth_augmented_diminished(self):
+        degree = Key.to_degree('vi7˚')
+        self.assertEqual(degree, 5)
 
 class TestAdvanceMajor(unittest.TestCase):
     major = [ 2, 2, 1, 2, 2, 2, 1 ]

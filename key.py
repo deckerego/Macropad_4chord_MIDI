@@ -69,4 +69,5 @@ class Key:
 
     @staticmethod
     def to_degree(numeral):
-        return NUMERALS.index(numeral.lower())
+        numeral_sanitized = ''.join(filter(lambda c: c.isalpha(), numeral.lower()))
+        return NUMERALS.index(numeral_sanitized)
