@@ -9,18 +9,18 @@ key_configs = {
 melody_configs = {
     # The *index* of the MIDI Channel for notes (e.g. 0 is actually MIDI Channel 1)
     'channel': 0,
-    # The degrees in each scale, zero-indexed. That means 1st Degree is the value 0 (not 1)
-    # Note we "wrap around" the scale to the next octave for a total of twelve notes
+    # The offset of the degrees within each scale. You can think of 2 as "whole"
+    # and 1 as "half," so a "2" on index 0 would mean two notes from the root.
     # Special thanks to https://pulse.berklee.edu/?lesson=73&id=4 for helping me double-check
     'scale_degrees': [
-        ('Pentatonic',      [ 0,  2,  4,  7,  9, 12, 14, 16, 19, 21, 24, 26, 28]), # Pentatonic Major
-        ('Minor Pentatonic',[ 0,  3,  5,  7, 10, 12, 15, 17, 19, 22, 24, 27, 29]), # Pentatonic Minor
-        ('Major Blues',     [ 0,  2,  3,  4,  7,  9, 12, 14, 15, 16, 19, 21, 24]), # Pentatonic Major + Chromatic
-        ('Minor Blues',     [ 0,  3,  5,  6,  7, 10, 12, 15, 17, 18, 19, 22, 24]), # Pentatonic Minor + Chromatic
-        ('Major Scale',     [ 0,  2,  4,  5,  7,  9, 11, 12, 14, 16, 17, 19, 21]), # Heptatonic Major
-        ('Minor Scale',     [ 0,  2,  3,  5,  7,  8, 10, 12, 14, 15, 17, 19, 20]), # Heptatonic Minor
-        ('Harmonic Minor',  [ 0,  2,  3,  5,  7,  8, 10, 11, 12, 14, 15, 17, 19]), # Harmonic Minor
-        ('Chromatic Scale', [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12])  # Chromatic Scale
+        ('Pentatonic',      [ 2, 2, 3, 2, 3 ]),      # Pentatonic Major
+        ('Minor Pentatonic',[ 3, 2, 2, 3, 2 ]),      # Pentatonic Minor
+        ('Major Blues',     [ 2, 1, 1, 3, 2, 3 ]),   # Pentatonic Major + Chromatic
+        ('Minor Blues',     [ 3, 2, 1, 1, 3, 2 ]),   # Pentatonic Minor + Chromatic
+        ('Major Scale',     [ 2, 2, 1, 2, 2, 2, 1 ]),# Heptatonic Major
+        ('Minor Scale',     [ 2, 1, 2, 2, 1, 2, 2 ]),# Heptatonic Minor
+        ('Harmonic Minor',  [ 2, 1, 2, 2, 1, 3, 1 ]),# Harmonic Minor
+        ('Chromatic Scale', [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ])
     ]
 }
 
@@ -30,17 +30,19 @@ harmony_configs = {
     # The list of root keys you can select from turning the rotary dial
     'keys': [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
     # The list of progressions you can select by press & turning on the rotary dial
+    # Format: (Display Name, [ Degree List ], Scale Name, Mode Number)
     'progressions': [
-        ('Pop Progression',       ["I",  "V",   "vi", "IV" ]),
-        ('Minor Pop',             ["vi", "IV",  "I",  "V"  ]),
-        ('Royal Road',            ["IV", "V",   "iii","vi" ]),
-        ('Alternate Western Pop', ["I",  "IV",  "vi", "V"  ]),
-        ('Coldplay Progression',  ["IV", "V",   "I",  "vi" ]),
-        ('\'50s Progression',     ["I",  "vi",  "IV", "V"  ]),
-        ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ]),
-        ('Blues Progression',     ["I",  "iii", "vi", "V"  ]),
-        ('Take Me On',            ["I",  "iii", "vi", "IV" ]),
-        ('Minor TOM',             ["ii", "V",   "I",  "iii"])
+        ('Pop Progression',       ["I",  "V",   "vi", "IV" ], 'Major Scale', 0),
+        ('Minor Pop',             ["vi", "IV",  "I",  "V"  ], 'Major Scale', 0),
+        ('Royal Road',            ["IV", "V",   "iii","vi" ], 'Major Scale', 0),
+        ('Alternate Western Pop', ["I",  "IV",  "vi", "V"  ], 'Major Scale', 0),
+        ('Coldplay Progression',  ["IV", "V",   "I",  "vi" ], 'Major Scale', 0),
+        ('\'50s Progression',     ["I",  "vi",  "IV", "V"  ], 'Major Scale', 0),
+        ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ], 'Major Scale', 0),
+        ('Blues Progression',     ["I",  "iii", "vi", "V"  ], 'Major Scale', 0),
+        ('Take Me On',            ["I",  "iii", "vi", "IV" ], 'Major Scale', 0),
+        ('Minor TOM',             ["ii", "V",   "I",  "iii"], 'Major Scale', 0),
+        ('Mixolydian Foo',        ["I",  "v",   "IV", "ii" ], 'Major Scale', 4)
     ]
 }
 
