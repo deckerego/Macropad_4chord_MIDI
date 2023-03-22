@@ -41,7 +41,8 @@ harmony_configs = {
         ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ], 'Major Scale', 0),
         ('Blues Progression',     ["I",  "iii", "vi", "V"  ], 'Major Scale', 0),
         ('Take Me On',            ["I",  "iii", "vi", "IV" ], 'Major Scale', 0),
-        ('Minor TOM',             ["ii", "V",   "I",  "iii"], 'Major Scale', 0)
+        ('Minor TOM',             ["ii", "V",   "I",  "iii"], 'Major Scale', 0),
+        ('Mixolydian Foo',        ["I",  "v",   "IV", "ii" ], 'Major Scale', 4)
     ]
 }
 
