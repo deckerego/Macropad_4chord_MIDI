@@ -30,17 +30,18 @@ harmony_configs = {
     # The list of root keys you can select from turning the rotary dial
     'keys': [ "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"],
     # The list of progressions you can select by press & turning on the rotary dial
+    # Format: (Display Name, [ Degree List ], Scale Name, Mode Number)
     'progressions': [
-        ('Pop Progression',       ["I",  "V",   "vi", "IV" ]),
-        ('Minor Pop',             ["vi", "IV",  "I",  "V"  ]),
-        ('Royal Road',            ["IV", "V",   "iii","vi" ]),
-        ('Alternate Western Pop', ["I",  "IV",  "vi", "V"  ]),
-        ('Coldplay Progression',  ["IV", "V",   "I",  "vi" ]),
-        ('\'50s Progression',     ["I",  "vi",  "IV", "V"  ]),
-        ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ]),
-        ('Blues Progression',     ["I",  "iii", "vi", "V"  ]),
-        ('Take Me On',            ["I",  "iii", "vi", "IV" ]),
-        ('Minor TOM',             ["ii", "V",   "I",  "iii"])
+        ('Pop Progression',       ["I",  "V",   "vi", "IV" ], 'Major Scale', 0),
+        ('Minor Pop',             ["vi", "IV",  "I",  "V"  ], 'Major Scale', 0),
+        ('Royal Road',            ["IV", "V",   "iii","vi" ], 'Major Scale', 0),
+        ('Alternate Western Pop', ["I",  "IV",  "vi", "V"  ], 'Major Scale', 0),
+        ('Coldplay Progression',  ["IV", "V",   "I",  "vi" ], 'Major Scale', 0),
+        ('\'50s Progression',     ["I",  "vi",  "IV", "V"  ], 'Major Scale', 0),
+        ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ], 'Major Scale', 0),
+        ('Blues Progression',     ["I",  "iii", "vi", "V"  ], 'Major Scale', 0),
+        ('Take Me On',            ["I",  "iii", "vi", "IV" ], 'Major Scale', 0),
+        ('Minor TOM',             ["ii", "V",   "I",  "iii"], 'Major Scale', 0)
     ]
 }
 

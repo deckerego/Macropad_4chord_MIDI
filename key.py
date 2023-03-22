@@ -25,7 +25,7 @@ class Key:
     # scale:  A scale, defined as offsets to the degrees within each scale (see settings.py)
     # octave: The "middle" octave as a single-digit number (most MIDI controllers assume this to be 3)
     # mode:   The zero-indexed mode number of the scale (e.g. 0 would be Ionian, 1 would be Dorian)
-    def __init__(self, key, scale, octave=MIDDLE_OCTAVE, mode=0):
+    def __init__(self, key=CHROMATIC_SCALE_NAMES[0], scale=[], octave=MIDDLE_OCTAVE, mode=0):
         self.octave = octave
         self.scale = scale
         self.key = key
@@ -42,6 +42,9 @@ class Key:
         third = self.number + sum(self.circle[:degree + 2])
         fifth = self.number + sum(self.circle[:degree + 4])
         return [root, third, fifth]
+
+    def set_scale(self, scale, mode=0):
+        self.__init__(self.key, scale, self.octave, mode)
 
     def chords(self, progression):
         return [self.chord(degree) for degree in progression]

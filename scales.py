@@ -14,8 +14,7 @@ class Scales:
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
         self.scale_idx = 0
-        _, self.scale = self.settings.scales['scale_degrees'][self.scale_idx]
-        self.key = Key(self.settings.chords['keys'][0], self.scale)
+        self.key = Key()
         self.chords = None
         self.pitch_bend = 8192
         self.channel = self.settings.scales['channel']
@@ -64,6 +63,7 @@ class Scales:
     def switch_scale(self, position_change):
         self.scale_idx = (self.scale_idx + position_change) % len(self.settings.scales['scale_degrees'])
         name, self.scale = self.settings.scales['scale_degrees'][self.scale_idx]
+        self.key.set_scale(self.scale)
         self.pixels.set_scale(self.scale)
         self.display.set_scale(name, self.key, self.scale)
 

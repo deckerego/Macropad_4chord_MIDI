@@ -7,16 +7,13 @@ from key import Key
 from settings import Settings
 from adafruit_macropad import MacroPad
 
-SCALE_NAME = 'Major Scale'
-
 class Chords:
     def __init__(self, macropad):
         self.settings = Settings()
-        _, self.scale = next(filter(lambda s: s[0] == SCALE_NAME, self.settings.scales['scale_degrees']))
         self.display = Display(macropad, self.settings.display['brightness'])
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
-        self.key = Key(self.settings.chords['keys'][0], self.scale)
+        self.key = Key()
         self.chords = None
         self.progression_idx = 0
         self.pitch_bend = 8192
@@ -66,17 +63,23 @@ class Chords:
 
     def switch_progression(self, position_change):
         self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
-        name, progression = self.settings.chords['progressions'][self.progression_idx]
+        name, progression, scale_name, mode = self.settings.chords['progressions'][self.progression_idx]
+        self.key.set_scale(self.find_scale(scale_name), mode)
         self.chords = self.key.chords(progression)
         self.pixels.set_progression(progression)
         self.display.set_progression(name, progression)
 
     def switch_key(self, position_change):
         self.key.advance(position_change)
-        name, progression = self.settings.chords['progressions'][self.progression_idx]
+        name, progression, scale_name, mode = self.settings.chords['progressions'][self.progression_idx]
+        self.key.set_scale(self.find_scale(scale_name), mode)
         self.chords = self.key.chords(progression)
         self.pixels.wake()
         self.display.set_key(self.key)
+
+    def find_scale(self, name):
+        _, scale = next(filter(lambda s: s[0] == name, self.settings.scales['scale_degrees']))
+        return scale
 
 class Display:
     def __init__(self, macropad, brightness):

@@ -5,6 +5,11 @@ settings.key_configs['middle_octave'] = 3
 from key import Key
 import unittest
 
+class TestDefaults(unittest.TestCase):
+    def test_default_constructor(self):
+        key = Key()
+        self.assertEqual(key.key, "C")
+
 class TestDegrees(unittest.TestCase):
     major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
@@ -177,3 +182,27 @@ class TestDorian(unittest.TestCase):
     def test_6th_degree(self):
         key = Key('C', self.major, 3, 1)
         self.assertEqual(key.chord('vi'), [69, 72, 75])
+
+class TestSwitchScale(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_scale_from_default(self):
+        key = Key()
+        self.assertEqual(key.chord('I'), [60, 60, 60])
+
+        key.set_scale(self.major)
+        self.assertEqual(key.chord('I'), [60, 64, 67])
+
+    def test_scale_from_constructor(self):
+        key = Key('C', [ 3, 2, 1, 1, 3, 2 ], 3, 0)
+        self.assertEqual(key.chord('I'), [60, 65, 67])
+
+        key.set_scale(self.major)
+        self.assertEqual(key.chord('I'), [60, 64, 67])
+
+    def test_mode_from_constructor(self):
+        key = Key('C', [ 3, 2, 1, 1, 3, 2 ], 3, 0)
+        self.assertEqual(key.chord('I'), [60, 65, 67])
+
+        key.set_scale(self.major, 1)
+        self.assertEqual(key.chord('I'), [60, 63, 67])
