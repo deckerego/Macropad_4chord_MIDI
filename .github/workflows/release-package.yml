@@ -13,11 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Adafruit Library Cache
+        id: cache-mpy
         uses: actions/cache@v1
         with:
           path: ~/.adafruit-circuitpython-bundle
           key: ${{ runner.os }}-adafruit-mpy-${{ env.adafruit-bundle }}
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.cache-mpy.outputs.cache-hit != 'true' }}
         name: Download the Adafruit CircuitPython Bundle
         run: |
           curl -L https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases/download/${{ env.adafruit-bundle }}/adafruit-circuitpython-bundle-8.x-mpy-${{ env.adafruit-bundle }}.zip -o adafruit-circuitpython-bundle.zip

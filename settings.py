@@ -3,12 +3,7 @@ key_configs = {
     # what octave note 60 is in. I go with the GarageBand value of C3 by default,
     # but some DAWs (like Renoise) or controllers consider C4 to be "middle C" 
     # at note 60. If it bugs you, change it here.
-    'middle_octave': 3
-}
-
-melody_configs = {
-    # The *index* of the MIDI Channel for notes (e.g. 0 is actually MIDI Channel 1)
-    'channel': 0,
+    'middle_octave': 3,
     # The offset of the degrees within each scale. You can think of 2 as "whole"
     # and 1 as "half," so a "2" on index 0 would mean two notes from the root.
     # Special thanks to https://pulse.berklee.edu/?lesson=73&id=4 for helping me double-check
@@ -22,6 +17,11 @@ melody_configs = {
         ('Harmonic Minor',  [ 2, 1, 2, 2, 1, 3, 1 ]),# Harmonic Minor
         ('Chromatic Scale', [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ])
     ]
+}
+
+melody_configs = {
+    # The *index* of the MIDI Channel for notes (e.g. 0 is actually MIDI Channel 1)
+    'channel': 0
 }
 
 harmony_configs = {

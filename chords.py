@@ -78,7 +78,7 @@ class Chords:
         self.display.set_key(self.key)
 
     def find_scale(self, name):
-        _, scale = next(filter(lambda s: s[0] == name, self.settings.scales['scale_degrees']))
+        _, scale = next(filter(lambda s: s[0] == name, self.settings.keys['scale_degrees']))
         return scale
 
 class Display:
