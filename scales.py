@@ -61,15 +61,15 @@ class Scales:
         self.display.sleep()
 
     def switch_scale(self, position_change):
-        self.scale_idx = (self.scale_idx + position_change) % len(self.settings.scales['scale_degrees'])
-        name, self.scale = self.settings.scales['scale_degrees'][self.scale_idx]
+        self.scale_idx = (self.scale_idx + position_change) % len(self.settings.keys['scale_degrees'])
+        name, self.scale = self.settings.keys['scale_degrees'][self.scale_idx]
         self.key.set_scale(self.scale)
         self.pixels.set_scale(self.scale)
         self.display.set_scale(name, self.key, self.scale)
 
     def switch_key(self, position_change):
         self.key.advance(position_change)
-        name, self.scale = self.settings.scales['scale_degrees'][self.scale_idx]
+        name, self.scale = self.settings.keys['scale_degrees'][self.scale_idx]
         self.pixels.wake()
         self.display.set_key(self.key)
 
