@@ -36,9 +36,25 @@ class Key:
         self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * CHROMATIC_SCALE_LENGTH)
         self.number = self.octave_offset + self.key_offset
 
+    def __third(self): return self.number + sum(self.circle[:2])
+    def __third_minor(self): return self.__third() - 1
+    def __fifth(self): return self.number + sum(self.circle[:4])
+    def __fifth_augmented(self): return self.__fifth() + 1
+    def __fifth_diminished(self): return self.__fifth() - 1
+    def __seventh(self): return self.number + sum(self.circle[:6])
+    def __seventh_minor(self): return self.__seventh() - 1
+
+    def chord_major(self): return [self.number, self.__third(), self.__fifth()]
+    def chord_minor(self): return [self.number, self.__third_minor(), self.__fifth()]
+    def chord_seventh(self): return [self.number, self.__third(), self.__fifth(), self.__seventh_minor()]
+    def chord_seventh_maj(self): return [self.number, self.__third(), self.__fifth(), self.__seventh()]
+    def chord_seventh_min(self): return [self.number, self.__third_minor(), self.__fifth(), self.__seventh_minor()]
+    def chord_augmented(self): return [self.number, self.__third(), self.__fifth_augmented()]
+    def chord_diminished(self): return [self.number, self.__third_minor(), self.__fifth_diminished()]
+
     def chord(self, numeral):
         degree = Key.to_degree(numeral)
-        root =  self.number + sum(self.circle[:degree + 0])
+        root = self.number + sum(self.circle[:degree + 0])
         third = self.number + sum(self.circle[:degree + 2])
         fifth = self.number + sum(self.circle[:degree + 4])
         return [root, third, fifth]

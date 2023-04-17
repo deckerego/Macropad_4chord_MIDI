@@ -228,3 +228,74 @@ class TestSwitchScale(unittest.TestCase):
 
         key.set_scale(self.major, 1)
         self.assertEqual(key.chord('I'), [60, 63, 67])
+
+class TestMajorChord(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_major_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_major(), [60, 64, 67])
+
+    def test_major_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_major(), [69, 73, 76])
+
+class TestMinorChord(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_minor_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_minor(), [60, 63, 67])
+
+    def test_minor_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_minor(), [69, 72, 76])
+
+class TestAugmentedChord(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_minor_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_augmented(), [60, 64, 68])
+
+    def test_minor_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_augmented(), [69, 73, 77])
+
+class TestDiminishedChord(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_minor_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_diminished(), [60, 63, 66])
+
+    def test_minor_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_diminished(), [69, 72, 75])
+
+class TestSeventhChords(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_dom_seventh_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_seventh(), [60, 64, 67, 70])
+
+    def test_dom_seventh_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_seventh(), [69, 73, 76, 79])
+
+    def test_maj_seventh_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_seventh_maj(), [60, 64, 67, 71])
+
+    def test_maj_seventh_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_seventh_maj(), [69, 73, 76, 80])
+
+    def test_min_seventh_c(self):
+        key = Key('C', self.major)
+        self.assertEqual(key.chord_seventh_min(), [60, 63, 67, 70])
+
+    def test_min_seventh_a(self):
+        key = Key('A', self.major)
+        self.assertEqual(key.chord_seventh_min(), [69, 72, 76, 79])
