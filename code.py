@@ -2,6 +2,7 @@ import time
 from settings import Settings
 from adafruit_macropad import MacroPad
 from chords import Chords
+from autochords import AutoChords
 from scales import Scales
 from drums import Drums
 from controls import Controls
@@ -10,10 +11,11 @@ macropad = MacroPad(midi_out_channel=4)
 settings = Settings()
 controls = Controls(macropad)
 chords = Chords(macropad)
+auto_chords = AutoChords(macropad)
 scales = Scales(macropad)
 drums = Drums(macropad)
 
-modes = [ chords, scales, drums, controls ]
+modes = [ auto_chords, chords, scales, drums, controls ]
 mode_current = 0
 
 encoder_last_position = 0
