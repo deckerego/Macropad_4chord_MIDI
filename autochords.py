@@ -37,6 +37,7 @@ class AutoChords:
             self.latch_time = self.latch_time - elapsed_seconds
             if self.latch_time <= 0:
                 self.mask_flip()
+                self.pixels.set_playing(self.masks_live)
                 self.latch_time = None
 
     def mask_flip(self):
@@ -46,7 +47,6 @@ class AutoChords:
             if mask_live != mask_buffer:
                 self.send_command(self.macropad.NoteOff, self.roots[row], mask_live)
                 self.send_command(self.macropad.NoteOn, self.roots[row], mask_buffer)
-            self.pixels.set_playing(self.masks_buffer)
             self.masks_live[row] = self.masks_buffer[row].copy()
 
     def keypad_events(self, events):
