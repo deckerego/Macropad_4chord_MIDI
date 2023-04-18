@@ -29,7 +29,7 @@ class AutoChords:
         self.pixels.refresh()
         self.switch_progression(0)
         self.switch_key(0)
-        self.keypad_events([])
+        self.display.set_playing(None, [])
 
     def keypad_events(self, events):
         for event in events:
@@ -45,12 +45,12 @@ class AutoChords:
 
         for col, state in enumerate(mask):
             enum += state << col
-        chord = self.to_chord(root, enum)
+        name, chord = self.to_chord(root, enum)
 
         for note in chord:
             self.macropad.midi.send(command(note, note_velocity, channel=self.channel))
             
-        self.display.set_playing(chord)
+        self.display.set_playing(name, chord)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
@@ -88,14 +88,14 @@ class AutoChords:
 
     def to_chord(self, root, enum):
         key = Key(root, self.key.scale, self.key.octave)
-        if   enum == 0: return []
-        elif enum == 4: return key.chord_seventh()
-        elif enum == 2: return key.chord_minor()
-        elif enum == 6: return key.chord_seventh_min()
-        elif enum == 1: return key.chord_major()
-        elif enum == 5: return key.chord_seventh_maj()
-        elif enum == 3: return key.chord_diminished()
-        elif enum == 7: return key.chord_augmented()
+        if   enum == 0: return None, []
+        elif enum == 4: return '%s7' % root, key.chord_seventh()
+        elif enum == 2: return '%sm' % root, key.chord_minor()
+        elif enum == 6: return '%sm7' % root, key.chord_seventh_min()
+        elif enum == 1: return '%s' % root, key.chord_major()
+        elif enum == 5: return '%smaj7' % root, key.chord_seventh_maj()
+        elif enum == 3: return '%sdim' % root, key.chord_diminished()
+        elif enum == 7: return '%saug' % root, key.chord_augmented()
 
 class Display:
     def __init__(self, macropad, brightness):
@@ -150,8 +150,9 @@ class Display:
         self.group[5].text = str(key.octave)
         self.display.refresh()
 
-    def set_playing(self, notes):
+    def set_playing(self, name, notes):
         self.wake()
+        self.group[8].text = '%s: ' % name if name else ''
         note_names = [Key.to_name(note) for note in notes if note is not None]
         self.group[9].text = ' '.join(note_names)
         self.display.refresh()
