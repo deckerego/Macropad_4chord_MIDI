@@ -14,6 +14,7 @@ class AutoChords:
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.macropad = macropad
         self.key = Key()
+        self.roots = None
         self.masks = [[0, 0, 0],
                       [0, 0, 0],
                       [0, 0, 0],
@@ -34,15 +35,22 @@ class AutoChords:
         for event in events:
             row = event.key_number // 3
             column = event.key_number % 3
+            self.send_command(self.macropad.NoteOff, self.roots[row], self.masks[row])
             self.masks[row][column] = 1 if event.pressed else 0
-            self.play_masks()
+            self.send_command(self.macropad.NoteOn, self.roots[row], self.masks[row])
 
-    def play_masks(self):
-        for row, mask in enumerate(self.masks):
-            enum = 0
-            for col, state in enumerate(mask):
-                enum += state << col
-            print("Enum:", enum)
+    def send_command(self, command, root, mask):
+        note_velocity = self.settings.midi['Velocity']
+        enum = 0
+
+        for col, state in enumerate(mask):
+            enum += state << col
+        chord = self.to_chord(root, enum)
+
+        for note in chord:
+            self.macropad.midi.send(command(note, note_velocity, channel=self.channel))
+            
+        self.display.set_playing(chord)
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
@@ -62,7 +70,7 @@ class AutoChords:
         self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
         name, progression, scale_name, mode = self.settings.chords['progressions'][self.progression_idx]
         self.key.set_scale(self.find_scale(scale_name), mode)
-        self.chords = self.key.chords(progression)
+        self.roots = [Key.to_note(chord[0]) for chord in self.key.chords(progression)]
         self.pixels.set_progression(progression)
         self.display.set_progression(name, progression)
 
@@ -70,13 +78,24 @@ class AutoChords:
         self.key.advance(position_change)
         name, progression, scale_name, mode = self.settings.chords['progressions'][self.progression_idx]
         self.key.set_scale(self.find_scale(scale_name), mode)
-        self.chords = self.key.chords(progression)
+        self.roots = [Key.to_note(chord[0]) for chord in self.key.chords(progression)]
         self.pixels.wake()
         self.display.set_key(self.key)
 
     def find_scale(self, name):
         _, scale = next(filter(lambda s: s[0] == name, self.settings.keys['scale_degrees']))
         return scale
+
+    def to_chord(self, root, enum):
+        key = Key(root, self.key.scale, self.key.octave)
+        if   enum == 0: return []
+        elif enum == 4: return key.chord_seventh()
+        elif enum == 2: return key.chord_minor()
+        elif enum == 6: return key.chord_seventh_min()
+        elif enum == 1: return key.chord_major()
+        elif enum == 5: return key.chord_seventh_maj()
+        elif enum == 3: return key.chord_diminished()
+        elif enum == 7: return key.chord_augmented()
 
 class Display:
     def __init__(self, macropad, brightness):
