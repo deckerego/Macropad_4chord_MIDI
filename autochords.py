@@ -46,6 +46,7 @@ class AutoChords:
             if mask_live != mask_buffer:
                 self.send_command(self.macropad.NoteOff, self.roots[row], mask_live)
                 self.send_command(self.macropad.NoteOn, self.roots[row], mask_buffer)
+            self.pixels.set_playing(self.masks_buffer)
             self.masks_live[row] = self.masks_buffer[row].copy()
 
     def keypad_events(self, events):
@@ -205,10 +206,12 @@ class Pixels:
                 self.palette[(row * 3) + column] = colorwheel(segment + subsegment)
         self.reset()
 
-    def set_playing(self, active_notes):
+    def set_playing(self, masks):
         self.wake()
-        for index in range(12):
-            self.pixels[index] = 0xFFFFFF if active_notes[index] is not None else self.palette[index]
+        for row in range(4):
+            for col in range(3):
+                index = (row * 3) + col
+                self.pixels[index] = 0xFFFFFF if masks[row][col] else self.palette[index]
         self.pixels.show()
 
     def reset(self):
