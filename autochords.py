@@ -8,6 +8,8 @@ from settings import Settings
 from adafruit_macropad import MacroPad
 
 class AutoChords:
+    LATCH_TIME = 0.05
+
     def __init__(self, macropad):
         self.settings = Settings()
         self.display = Display(macropad, self.settings.display['brightness'])
@@ -15,10 +17,9 @@ class AutoChords:
         self.macropad = macropad
         self.key = Key()
         self.roots = None
-        self.masks = [[0, 0, 0],
-                      [0, 0, 0],
-                      [0, 0, 0],
-                      [0, 0, 0]]
+        self.masks_live = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        self.masks_buffer = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
+        self.latch_time = None
         self.progression_idx = 0
         self.pitch_bend = 8192
         self.channel = self.settings.chords['channel']
@@ -29,15 +30,30 @@ class AutoChords:
         self.pixels.refresh()
         self.switch_progression(0)
         self.switch_key(0)
-        self.display.set_playing(None, [])
+        self.display.set_playing('AutoChord Mode', [])
+
+    def tick(self, elapsed_seconds):
+        if self.latch_time: # Latch keypresses to "debounce" them
+            self.latch_time = self.latch_time - elapsed_seconds
+            if self.latch_time <= 0:
+                self.mask_flip()
+                self.latch_time = None
+
+    def mask_flip(self):
+        for row in range(4):
+            mask_live = self.masks_live[row]
+            mask_buffer = self.masks_buffer[row]
+            if mask_live != mask_buffer:
+                self.send_command(self.macropad.NoteOff, self.roots[row], mask_live)
+                self.send_command(self.macropad.NoteOn, self.roots[row], mask_buffer)
+            self.masks_live[row] = self.masks_buffer[row].copy()
 
     def keypad_events(self, events):
         for event in events:
             row = event.key_number // 3
             column = event.key_number % 3
-            self.send_command(self.macropad.NoteOff, self.roots[row], self.masks[row])
-            self.masks[row][column] = 1 if event.pressed else 0
-            self.send_command(self.macropad.NoteOn, self.roots[row], self.masks[row])
+            self.masks_buffer[row][column] = 1 if event.pressed else 0
+            if not self.latch_time: self.latch_time = AutoChords.LATCH_TIME
 
     def send_command(self, command, root, mask):
         note_velocity = self.settings.midi['Velocity']
