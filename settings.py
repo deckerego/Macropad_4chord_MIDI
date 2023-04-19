@@ -97,7 +97,7 @@ midi_configs = {
 
 display_configs = {
     'brightness': 0.2,     # Brightness of LEDs and screen from 0.0 to 1.0
-    'sleep_seconds': 300,  # Seconds before the LEDs turn off, None if they are always on
+    'sleep_seconds': 300,  # Seconds before going into low power mode, None to disable
 }
 
 class Settings:
