@@ -179,7 +179,7 @@ class Display:
         self.display.refresh()
 
 SEGMENT_SIZE = 255 // 7
-SUBSEGMENT_SIZE = SEGMENT_SIZE // 3
+SUBSEGMENT_SIZE = (SEGMENT_SIZE // 3) * 2
 
 class Pixels:
     def __init__(self, macropad, brightness):
@@ -206,8 +206,13 @@ class Pixels:
             for column in range(3):
                 degree = Key.to_degree(progression[row])
                 segment = SEGMENT_SIZE * degree
-                subsegment = SUBSEGMENT_SIZE * column
-                self.palette[(row * 3) + column] = colorwheel(segment + subsegment)
+
+                if column == 1 and progression[row].islower():
+                    segment += SUBSEGMENT_SIZE # Highlight minor key
+                elif column == 0 and progression[row].isupper():
+                    segment += SUBSEGMENT_SIZE # Highlight major key
+
+                self.palette[(row * 3) + column] = colorwheel(segment)
         self.reset()
 
     def set_playing(self, masks):
