@@ -1,6 +1,10 @@
 import board
 import digitalio
 import storage
+import usb_midi
+
+print("Enabling MIDI over USB")
+usb_midi.enable()
 
 # Mount the CIRCUITPY drive as read-only unless the encoder switch is held down
 encoder_switch = digitalio.DigitalInOut(board.BUTTON)

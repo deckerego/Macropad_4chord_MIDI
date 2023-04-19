@@ -1,5 +1,4 @@
 import time
-from settings import Settings
 from adafruit_macropad import MacroPad
 from chords import Chords
 from autochords import AutoChords
@@ -7,8 +6,7 @@ from scales import Scales
 from drums import Drums
 from controls import Controls
 
-macropad = MacroPad(midi_out_channel=4)
-settings = Settings()
+macropad = MacroPad()
 controls = Controls(macropad)
 chords = Chords(macropad)
 auto_chords = AutoChords(macropad)
@@ -22,6 +20,9 @@ encoder_last_position = 0
 encoder_last_down = False
 encoder_last_pressed = 0
 last_time_seconds = time.monotonic()
+
+from settings import Settings
+settings = Settings()
 sleep_seconds = settings.display['sleep_seconds']
 sleep_active = False
 

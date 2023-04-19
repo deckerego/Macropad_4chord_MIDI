@@ -101,9 +101,10 @@ display_configs = {
 }
 
 class Settings:
-    chords = harmony_configs
-    scales = melody_configs
-    midi = midi_configs
-    drums = rhythm_configs
-    display = display_configs
-    keys = key_configs
+    def __init__(self):
+        self.chords = harmony_configs
+        self.scales = melody_configs
+        self.midi = midi_configs
+        self.drums = rhythm_configs
+        self.display = display_configs
+        self.keys = key_configs
