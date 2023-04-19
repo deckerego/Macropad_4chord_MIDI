@@ -299,3 +299,29 @@ class TestSeventhChords(unittest.TestCase):
     def test_min_seventh_a(self):
         key = Key('A', self.major)
         self.assertEqual(key.chord_seventh_min(), [69, 72, 76, 79])
+
+class NumberConstructor(unittest.TestCase):
+    major = [ 2, 2, 1, 2, 2, 2, 1 ]
+
+    def test_middle_c(self):
+        key = Key(number=60)
+        self.assertEqual(key.key, "C")
+        self.assertEqual(key.octave, 3)
+        self.assertEqual(key.number, 60)
+
+    def test_octave_c(self):
+        key = Key(number=72)
+        self.assertEqual(key.key, "C")
+        self.assertEqual(key.octave, 4)
+        self.assertEqual(key.number, 72)
+
+    def test_a(self):
+        key = Key(number=57)
+        self.assertEqual(key.key, "A")
+        self.assertEqual(key.octave, 2)
+        self.assertEqual(key.number, 57)
+
+    def test_scale(self):
+        key = Key(scale=self.major, number=57)
+        self.assertEqual(key.number, 57)
+        self.assertEqual(key.scale, [ 2, 2, 1, 2, 2, 2, 1 ])

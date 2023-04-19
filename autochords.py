@@ -87,7 +87,7 @@ class AutoChords:
         self.progression_idx = (self.progression_idx + position_change) % len(self.settings.chords['progressions'])
         name, progression, scale_name, mode = self.settings.chords['progressions'][self.progression_idx]
         self.key.set_scale(self.find_scale(scale_name), mode)
-        self.roots = [Key.to_note(chord[0]) for chord in self.key.chords(progression)]
+        self.roots = [chord[0] for chord in self.key.chords(progression)]
         self.pixels.set_progression(progression)
         self.display.set_progression(name, progression)
 
@@ -95,7 +95,7 @@ class AutoChords:
         self.key.advance(position_change)
         name, progression, scale_name, mode = self.settings.chords['progressions'][self.progression_idx]
         self.key.set_scale(self.find_scale(scale_name), mode)
-        self.roots = [Key.to_note(chord[0]) for chord in self.key.chords(progression)]
+        self.roots = [chord[0] for chord in self.key.chords(progression)]
         self.pixels.wake()
         self.display.set_key(self.key)
 
@@ -104,15 +104,16 @@ class AutoChords:
         return scale
 
     def to_chord(self, root, enum):
-        key = Key(root, self.key.scale, self.key.octave)
+        key = Key(scale=self.key.scale, mode=self.key.mode, number=root)
+        note = Key.to_note(root)
         if   enum == 0: return None, []
-        elif enum == 4: return '%s7' % root, key.chord_seventh()
-        elif enum == 2: return '%sm' % root, key.chord_minor()
-        elif enum == 6: return '%sm7' % root, key.chord_seventh_min()
-        elif enum == 1: return '%s' % root, key.chord_major()
-        elif enum == 5: return '%smaj7' % root, key.chord_seventh_maj()
-        elif enum == 3: return '%sdim' % root, key.chord_diminished()
-        elif enum == 7: return '%saug' % root, key.chord_augmented()
+        elif enum == 4: return '%s7' % note, key.chord_seventh()
+        elif enum == 2: return '%sm' % note, key.chord_minor()
+        elif enum == 6: return '%sm7' % note, key.chord_seventh_min()
+        elif enum == 1: return '%s' % note, key.chord_major()
+        elif enum == 5: return '%smaj7' % note, key.chord_seventh_maj()
+        elif enum == 3: return '%sdim' % note, key.chord_diminished()
+        elif enum == 7: return '%saug' % note, key.chord_augmented()
 
 class Display:
     def __init__(self, macropad, brightness):

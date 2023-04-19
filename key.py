@@ -25,15 +25,19 @@ class Key:
     # scale:  A scale, defined as offsets to the degrees within each scale (see settings.py)
     # octave: The "middle" octave as a single-digit number (most MIDI controllers assume this to be 3)
     # mode:   The zero-indexed mode number of the scale (e.g. 0 would be Ionian, 1 would be Dorian)
-    def __init__(self, key=CHROMATIC_SCALE_NAMES[0], scale=[], octave=MIDDLE_OCTAVE, mode=0):
-        self.octave = octave
+    def __init__(self, key=CHROMATIC_SCALE_NAMES[0], scale=[], octave=MIDDLE_OCTAVE, mode=0, number=None):
+        if number:
+            self.octave = Key.to_octave(number)
+            self.key = Key.to_note(number)
+        else:
+            self.octave = octave
+            self.key = key
         self.scale = scale
-        self.key = key
         self.mode = mode
         self.circle = self.scale[self.mode:] + self.scale[:self.mode]
         self.circle += self.circle
-        self.key_offset = CHROMATIC_SCALE_NAMES.index(key.upper())
-        self.octave_offset = START_NOTE + ((octave - START_OCTAVE) * CHROMATIC_SCALE_LENGTH)
+        self.key_offset = CHROMATIC_SCALE_NAMES.index(self.key.upper())
+        self.octave_offset = START_NOTE + ((self.octave - START_OCTAVE) * CHROMATIC_SCALE_LENGTH)
         self.number = self.octave_offset + self.key_offset
 
     def __third(self): return self.number + sum(self.circle[:2])
@@ -75,8 +79,12 @@ class Key:
 
     @staticmethod
     def to_name(number):
+        return "%s%i" % (Key.to_note(number), Key.to_octave(number))
+
+    @staticmethod
+    def to_octave(number):
         octave_idx = (number - START_NOTE) // CHROMATIC_SCALE_LENGTH
-        return "%s%i" % (Key.to_note(number), octave_idx + START_OCTAVE)
+        return octave_idx + START_OCTAVE
 
     @staticmethod
     def to_note(number):
