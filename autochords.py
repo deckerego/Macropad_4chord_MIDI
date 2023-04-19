@@ -30,7 +30,6 @@ class AutoChords:
         self.pixels.refresh()
         self.switch_progression(0)
         self.switch_key(0)
-        self.display.set_playing('AutoChord Mode', [])
 
     def tick(self, elapsed_seconds):
         if self.latch_time: # Latch keypresses to "debounce" them
@@ -127,9 +126,9 @@ class Display:
         self.group.append(Display.create_label("Oct:", (self.display.width / 2, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("00", ((self.display.width / 2) + 30, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("Chords:", (0, self.display.height - 22), (0, 1.0)))
-        self.group.append(Display.create_label("III III III III", (42, self.display.height - 22), (0, 1.0)))
-        self.group.append(Display.create_label("Type:", (0, self.display.height - 8), (0, 1.0)))
-        self.group.append(Display.create_label("Xm# Xm# Xm# Xm#", (40, self.display.height - 8), (0, 1.0)))
+        self.group.append(Display.create_label("", (42, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("AutoChord Mode", (0, self.display.height - 8), (0, 1.0)))
+        self.group.append(Display.create_label("", (40, self.display.height - 8), (0, 1.0)))
 
     @staticmethod
     def create_label(text, anchor_position, anchor_point, color=0xFFFFFF):
@@ -167,6 +166,9 @@ class Display:
         self.group[3].text = key.key
         self.group[5].text = str(key.octave)
         self.display.refresh()
+
+    def set_welcome(self, text):
+        self.group[8].text = text if text else ''
 
     def set_playing(self, name, notes):
         self.wake()

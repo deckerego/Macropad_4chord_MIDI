@@ -25,7 +25,6 @@ class Scales:
         self.pixels.refresh()
         self.switch_scale(0)
         self.switch_key(0)
-        self.keypad_events([])
 
     def keypad_events(self, events):
         note_velocity = self.settings.midi['Velocity']
@@ -81,13 +80,13 @@ class Display:
         self.group.append(Rect(0, 0, self.display.width, 12, fill=0xFFFFFF))
         self.group.append(Display.create_label('Macropad 4chord MIDI', (self.display.width//2, -1), (0.5, 0.0), 0x000000))
         self.group.append(Display.create_label("Key:", (0, self.display.height - 36), (0, 1.0)))
-        self.group.append(Display.create_label("X#", (30, self.display.height - 36), (0, 1.0)))
+        self.group.append(Display.create_label("X#", (40, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("Oct:", (self.display.width / 2, self.display.height - 36), (0, 1.0)))
         self.group.append(Display.create_label("00", ((self.display.width / 2) + 30, self.display.height - 36), (0, 1.0)))
-        self.group.append(Display.create_label("Scl:", (0, self.display.height - 22), (0, 1.0)))
-        self.group.append(Display.create_label("* * * * * * *", (30, self.display.height - 22), (0, 1.0)))
-        self.group.append(Display.create_label("Notes:", (0, self.display.height - 8), (0, 1.0)))
-        self.group.append(Display.create_label("Xm# Xm# Xm# Xm#", (40, self.display.height - 8), (0, 1.0)))
+        self.group.append(Display.create_label("Scale:", (0, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("", (40, self.display.height - 22), (0, 1.0)))
+        self.group.append(Display.create_label("Melody Mode", (0, self.display.height - 8), (0, 1.0)))
+        self.group.append(Display.create_label("", (40, self.display.height - 8), (0, 1.0)))
 
     @staticmethod
     def create_label(text, anchor_position, anchor_point, color=0xFFFFFF):
@@ -134,6 +133,7 @@ class Display:
     def set_playing(self, notes):
         self.wake()
         note_names = [Key.to_name(note) for note in notes if note is not None]
+        self.group[8].text = 'Notes:'
         self.group[9].text = ' '.join(note_names)
         self.display.refresh()
 

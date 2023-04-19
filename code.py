@@ -43,7 +43,7 @@ def refresh():
 # A click occurs when the dial is pressed ONLY (no rotation or keypress)
 def click_event():
     global mode_current
-    mode_current = (mode_current + 1) % 4
+    mode_current = (mode_current + 1) % len(modes)
     refresh()
 
 def wake_event():
