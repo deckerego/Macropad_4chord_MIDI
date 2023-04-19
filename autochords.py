@@ -5,7 +5,6 @@ from adafruit_display_shapes.rect import Rect
 from rainbowio import colorwheel
 from key import Key
 from settings import Settings
-from adafruit_macropad import MacroPad
 
 class AutoChords:
     LATCH_TIME = 0.05
