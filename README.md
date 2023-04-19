@@ -51,7 +51,7 @@ There are a few quick demos showing how to use the MacroPad 4chord MIDI in a DAW
 * Renoise: https://youtu.be/bhJ7GtdNhvA
 * Zenbeats Mobile: COMING SOON
 
-![Switching between triad, autochord, melody, drum pad, and MIDI settings modes](./docs/images/modes.jpg)
+![Switching between triad, autochord, melody, drum pad, and MIDI settings modes](./docs/images/modes.gif)
 
 ### Chord Keyboard (Triad Mode)
 
