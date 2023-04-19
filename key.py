@@ -1,9 +1,9 @@
 from settings import Settings
 settings = Settings()
 
+NUMERALS = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii']
 CHROMATIC_SCALE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 CHROMATIC_SCALE_LENGTH = len(CHROMATIC_SCALE_NAMES)
-NUMERALS = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii']
 
 # Set the octove for MIDI note 60 (middle C)
 MIDDLE_OCTAVE = settings.keys['middle_octave']
@@ -14,8 +14,7 @@ START_OCTAVE = MIDDLE_OCTAVE - (MIDDLE_C // 12)
 # which would end with note 116. MIDI 1.0 goes to note 127,
 # but we need room for a seventh degree chord's perfect fifth, 
 # so let's max out at note 111 (D#).
-END_NOTE = 116 - 5
-START_NOTE = 0
+START_NOTE, END_NOTE = 0, 116 - 5
 
 # Calculations for chords based on the selected key
 class Key:
@@ -76,6 +75,18 @@ class Key:
             octave = self.octave + (key_index // CHROMATIC_SCALE_LENGTH)
             key = CHROMATIC_SCALE_NAMES[key_index % CHROMATIC_SCALE_LENGTH]
             self.__init__(key, self.scale, octave, self.mode)
+
+    @staticmethod
+    def to_bassline(chord):
+        bassline = []
+        if not chord or len(chord) <= 0: return bassline
+
+        first = chord[0]
+        fifth = chord[2] if len(chord) >= 3 else None
+
+        bassline.append(first if first < 12 else first - 12)
+        if fifth: bassline.append(fifth if first < 12 else fifth - 12)
+        return bassline
 
     @staticmethod
     def to_name(number):

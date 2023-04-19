@@ -62,8 +62,9 @@ class AutoChords:
         for col, state in enumerate(mask):
             enum += state << col
         name, chord = self.to_chord(root, enum)
+        bassline = Key.to_bassline(chord)
 
-        for note in chord:
+        for note in chord + bassline:
             self.macropad.midi.send(command(note, note_velocity, channel=self.channel))
             
         self.display.set_playing(name, chord)

@@ -300,7 +300,7 @@ class TestSeventhChords(unittest.TestCase):
         key = Key('A', self.major)
         self.assertEqual(key.chord_seventh_min(), [69, 72, 76, 79])
 
-class NumberConstructor(unittest.TestCase):
+class TestNumberConstructor(unittest.TestCase):
     major = [ 2, 2, 1, 2, 2, 2, 1 ]
 
     def test_middle_c(self):
@@ -325,3 +325,21 @@ class NumberConstructor(unittest.TestCase):
         key = Key(scale=self.major, number=57)
         self.assertEqual(key.number, 57)
         self.assertEqual(key.scale, [ 2, 2, 1, 2, 2, 2, 1 ])
+
+class TestBassLine(unittest.TestCase):
+    
+    def test_nothing(self):
+        self.assertEqual(Key.to_bassline(None), [])
+        self.assertEqual(Key.to_bassline([]), [])
+
+    def test_c_chord(self):
+        self.assertEqual(Key.to_bassline([60, 64, 67]), [48, 55])
+
+    def test_seventh_chord(self):
+        self.assertEqual(Key.to_bassline([60, 64, 67, 70]), [48, 55])
+
+    def test_low_fifth(self):
+        self.assertEqual(Key.to_bassline([4, 8, 11]), [4, 11])
+
+    def test_low_third(self):
+        self.assertEqual(Key.to_bassline([8, 12, 15]), [8, 15])
