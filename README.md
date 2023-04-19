@@ -13,7 +13,7 @@
 
 ## About
 
-> "All the greatest hits from the past forty years just use four chords. Same four chords for every song. It's dead simple to write a pop hit.""
+> "All the greatest hits from the past forty years just use four chords. Same four chords for every song. It's dead simple to write a pop hit."
  -- Benny, Axis of Awesome
 
 A four-chord MIDI device that allows you to rapidly churn out catchy tunes.
@@ -28,6 +28,7 @@ Huge thanks to so many who have inspired this idea, especially:
 - Paul David's [The Four Chord Song](https://youtu.be/6U8-Y7DEzOE) music theory video
 - [iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4)
 - Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
+- The [Omnichord System Two](http://www.suzukimusic.co.uk/omnichord-heaven/models/om36-84.html)
 - ...and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I)
 
 
@@ -48,23 +49,21 @@ clicking on the rotary dial.
 There are a few quick demos showing how to use the MacroPad 4chord MIDI in a DAW:
 * GarageBand: https://youtu.be/2-FtnHHVXCg
 * Renoise: https://youtu.be/bhJ7GtdNhvA
+* Zenbeats Mobile: COMING SOON
 
-![MacroPad 4chord MIDI: Playing Chords](./docs/images/chords.jpg)
-![MacroPad 4chord MIDI: Playing Notes on a Scale](./docs/images/scales.jpg)
-![MacroPad 4chord MIDI: Drum Pad](./docs/images/drumpad.jpg)
-![MacroPad 4chord MIDI: MIDI Controls](./docs/images/controls.jpg)
+![Switching between triad, autochord, melody, drum pad, and MIDI settings modes](./docs/images/modes.jpg)
 
-### Chord Keyboard
+### Chord Keyboard (Triad Mode)
 
-Once you power on the Macropad a default progression is restored, with the root
-on middle C (I'm a assuming middle C is on the fourth octave). The root note
-is at the top left, with the major (or minor) third and perfect fifth on the
-middle and right keys. The key and octave can be changed by rotating the
-encoder dial, going up or down the chromatic scale.
+Once you power on the Macropad a default progression is loaded into "Triad Mode", 
+with the root on middle C (I'm a assuming middle C is on the third octave). 
+The root note is at the top left, with the major (or minor) third and 
+perfect fifth on the middle and right keys. The key and octave can be changed 
+by rotating the encoder dial, going up or down the chromatic scale.
 
 As you go down the keypad, the notes follow the four chord progression listed
 on the screen. By default this is a I-V-vi-IV progression, so with the root
-at C4 you will have G4, A5, and F4 as you go down the keypad. You can rotate
+at C3 you will have G3, A3, and F3 as you go down the keypad. You can rotate
 through some four chord progressions by pressing down on the encoder button
 while rotating the dial.
 
@@ -77,12 +76,35 @@ You can bend the current notes being played by rotating the dial while keys
 are being held down. Rotating counter-clockwise will bend the pitch down,
 rotating clockwise will bend the pitch up.
 
-### Highlight Scales
+### AutoChord Mode
 
 Clicking once on the rotary dial after the Macropad boots loads the
-"melody" keyboard. In this mode each of the 12 buttons on the Macropad
-corresponds to a note on the chromatic scale, with the root note you
-have selected in the top left. 
+"AutoChord" mode. In this mode each button does **not** correspond to
+a note, instead each button corresponds to a _chord_.
+
+This mode does load a chord progression just as the previous "Triad Mode"
+does, however each combination of keys you press in a row corresponds to a
+different type of cord. The map is:
+
+| Key 1 | Key 2 | Key 3 | Chord Type         |
+|-------|-------|-------|--------------------|
+| Press |       |       | Major Chord        |
+|       | Press |       | Minor Chord        |
+|       |       | Press | Dominant 7th Chord |
+| Press |       | Press | Major 7th Chord    |
+|       | Press | Press | Minor 7th Chord    |
+| Press | Press |       | Diminshed Chord    |
+| Press | Press | Press | Augmented Chord    |
+
+When played each chord also has an accompanying bass chord, where the 1st
+and 5th are played one octave lower.
+
+### Highlight Scales (Melody Mode)
+
+Clicking again on the rotary dial brings up a keyboard where a selected
+scale is highlighted on the keypad so you can type out a melody.
+Each of the 12 buttons on the Macropad will correspond to a note on the 
+chromatic scale, with the root note you have selected in the top left. 
 
 The buttons that are illuminated correspond to the scale selected while
 in this mode. You can play as many notes as you wish simultaneously,
@@ -98,7 +120,7 @@ will bend the pitch up.
 
 ### Drum Pads
 
-If you click twice on the rotary dial after the Macropad boots, it will move
+If you click three times on the rotary dial after the Macropad boots, it will move
 into the drum pad mode. Rotating the dial will allow you to select from
 a number of drum or percussion presets where MIDI notes match an acoustic drum,
 a rhythm composer (such as the classic TR-808), or percussion strikes.
@@ -108,7 +130,7 @@ with the MIDI mapping to match what instrument you want to use.
 
 ### MIDI Controls
 
-Clicking three times after booting the Macropad will take you into the MIDI controls
+Clicking four times after booting the Macropad will take you into the MIDI controls
 mode, where you can adjust MIDI controls that are transferred to your DAW
 when recording. This includes global settings (such as attack or release time)
 as well as note settings (such as velocity).
@@ -165,8 +187,8 @@ your Macropad in read/write mode (see [Updating](#updating)).
 
 ## Building
 
-There is no big build process since the Python files are distributed in
-.py form and are not compiled to Micropython. Just copy-and-paste.
+There is no build process since the Python files are distributed in
+.py form and are not compiled to Micropython. All files are packaged as-is.
 
 ### Packaging
 
