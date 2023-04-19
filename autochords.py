@@ -207,12 +207,12 @@ class Pixels:
                 degree = Key.to_degree(progression[row])
                 segment = SEGMENT_SIZE * degree
 
-                if column == 1 and progression[row].islower():
-                    segment += SUBSEGMENT_SIZE # Highlight minor key
-                elif column == 0 and progression[row].isupper():
-                    segment += SUBSEGMENT_SIZE # Highlight major key
-
-                self.palette[(row * 3) + column] = colorwheel(segment)
+                if column == 1 and progression[row].islower(): # Highlight minor key
+                    self.palette[(row * 3) + column] = colorwheel(segment + SUBSEGMENT_SIZE)
+                elif column == 0 and progression[row].isupper(): # Highlight major key
+                    self.palette[(row * 3) + column] = colorwheel(segment + SUBSEGMENT_SIZE)
+                else:
+                    self.palette[(row * 3) + column] = colorwheel(segment)
         self.reset()
 
     def set_playing(self, masks):
