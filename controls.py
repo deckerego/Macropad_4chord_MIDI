@@ -3,20 +3,15 @@ import terminalio
 from settings import Settings
 from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
-from adafruit_midi import control_change_values
 from rainbowio import colorwheel
-from adafruit_macropad import MacroPad
+from adafruit_midi import control_change_values
 
-# Several of these can be removed after https://github.com/adafruit/Adafruit_CircuitPython_MIDI/pull/49
-ATTACK_TIME = 73
-PORTAMENTO_TIME = 5
-CHORUS = 93
 DETUNE = 94
 
 controls = [
-    ('Attack', ATTACK_TIME), ('Release', control_change_values.RELEASE_TIME), ('Brightness', control_change_values.CUTOFF_FREQUENCY),
-    ('Timbre', control_change_values.FILTER_RESONANCE), ('TimePortamento', PORTAMENTO_TIME), ('CtlPortamento', control_change_values.PORTAMENTO),
-    ('ChorusSend', CHORUS), ('PanL/R', control_change_values.PAN), ('Volume', control_change_values.VOLUME),
+    ('Attack', control_change_values.ATTACK_TIME), ('Release', control_change_values.RELEASE_TIME), ('Brightness', control_change_values.CUTOFF_FREQUENCY),
+    ('Timbre', control_change_values.FILTER_RESONANCE), ('TimePortamento', control_change_values.PORTAMENTO_TIME), ('CtlPortamento', control_change_values.PORTAMENTO),
+    ('ChorusSend', control_change_values.CHORUS), ('PanL/R', control_change_values.PAN), ('Volume', control_change_values.VOLUME),
     ('Breath', control_change_values.BREATH_CONTROL), ('Celeste', DETUNE), ('Velocity', None)
 ]
 
