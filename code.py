@@ -1,13 +1,11 @@
 import time
-from settings import Settings
 from adafruit_macropad import MacroPad
 from chords import Chords
 from scales import Scales
 from drums import Drums
 from controls import Controls
 
-macropad = MacroPad(midi_out_channel=4)
-settings = Settings()
+macropad = MacroPad()
 controls = Controls(macropad)
 chords = Chords(macropad)
 scales = Scales(macropad)
@@ -20,6 +18,9 @@ encoder_last_position = 0
 encoder_last_down = False
 encoder_last_pressed = 0
 last_time_seconds = time.time()
+
+from settings import Settings
+settings = Settings()
 sleep_seconds = settings.display['sleep_seconds']
 
 # Seconds (floating) since last invocation
@@ -40,7 +41,7 @@ def refresh():
 # A click occurs when the dial is pressed ONLY (no rotation or keypress)
 def click_event():
     global mode_current
-    mode_current = (mode_current + 1) % 4
+    mode_current = (mode_current + 1) % len(modes)
     refresh()
 
 refresh()

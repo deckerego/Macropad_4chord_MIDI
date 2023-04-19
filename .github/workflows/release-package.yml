@@ -5,7 +5,7 @@ on:
     types: [ published ]
 
 env:
-  adafruit-bundle: '20230301'
+  adafruit-bundle: '20230419'
 
 jobs:
   package:
@@ -23,6 +23,7 @@ jobs:
         run: |
           curl -L https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases/download/${{ env.adafruit-bundle }}/adafruit-circuitpython-bundle-8.x-mpy-${{ env.adafruit-bundle }}.zip -o adafruit-circuitpython-bundle.zip
           unzip adafruit-circuitpython-bundle.zip
+          rm adafruit-circuitpython-bundle.zip
           mkdir -p ~/.adafruit-circuitpython-bundle
           mv adafruit-circuitpython-bundle-8.x-mpy-${{ env.adafruit-bundle }}/* ~/.adafruit-circuitpython-bundle/
           rmdir adafruit-circuitpython-bundle-8.x-mpy-${{ env.adafruit-bundle }}
