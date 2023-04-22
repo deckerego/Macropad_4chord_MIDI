@@ -33,6 +33,7 @@ harmony_configs = {
     # Format: (Display Name, [ Degree List ], Scale Name, Mode Number)
     'progressions': [
         ('Pop Progression',       ["I",  "V",   "vi", "IV" ], 'Major Scale', 0),
+        ('Two Five One',          ["ii", "V",   "I",  "IV"], 'Major Scale', 0),
         ('Minor Pop',             ["vi", "IV",  "I",  "V"  ], 'Major Scale', 0),
         ('Royal Road',            ["IV", "V",   "iii","vi" ], 'Major Scale', 0),
         ('Alternate Western Pop', ["I",  "IV",  "vi", "V"  ], 'Major Scale', 0),
@@ -41,7 +42,6 @@ harmony_configs = {
         ('Montgomery Ward Bridge',["I",  "IV",  "ii", "V"  ], 'Major Scale', 0),
         ('Blues Progression',     ["I",  "iii", "vi", "V"  ], 'Major Scale', 0),
         ('Take Me On',            ["I",  "iii", "vi", "IV" ], 'Major Scale', 0),
-        ('Minor TOM',             ["ii", "V",   "I",  "iii"], 'Major Scale', 0),
         ('Mixolydian Foo',        ["I",  "v",   "IV", "ii" ], 'Major Scale', 4)
     ]
 }
