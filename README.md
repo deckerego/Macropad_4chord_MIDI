@@ -29,6 +29,7 @@ Huge thanks to so many who have inspired this idea, especially:
 - [iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4)
 - Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
 - The [Omnichord System Two](http://www.suzukimusic.co.uk/omnichord-heaven/models/om36-84.html)
+- The [Yamaha QY20](https://soundprogramming.net/sequencers/yamaha/yamaha-qy20/)
 - ...and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I)
 
 
@@ -38,18 +39,19 @@ The Macropad 4chord MIDI is built to play simple chord progressions, follow scal
 melodies, and act as a drum kit as a MIDI device. You can connect the Macropad to any studio 
 recording software or DAW accepts MIDI devices, such as GarageBand or Abelton Live.
 
-The 4chord MIDI has four different modes: the "harmony" mode that allows you
-to select progressions and root keys to play chords, the "melody" mode that
-highlights different scales you can play, the "rhythm" mode that
+The 4chord MIDI has five different modes: a "harmony" mode that allows you to select 
+progressions and root keys to play chords, the "autochord" mode that lets you play an
+entire chord with a single key (like the sequencers of the 80's and 90's), a "melody" 
+mode that highlights different scales you can play, a "rhythm" mode that
 allows you to use the MacroPad as an acoustic drum / electric drum /
-percussion pad, and a "MIDI controls" mode that lets you set MIDI command
+percussion pad, and the "MIDI controls" mode that lets you set MIDI command
 controls (including note velocity). You can switch between each mode by
 clicking on the rotary dial.
 
 There are a few quick demos showing how to use the MacroPad 4chord MIDI in a DAW:
 * GarageBand: https://youtu.be/2-FtnHHVXCg
 * Renoise: https://youtu.be/bhJ7GtdNhvA
-* Zenbeats Mobile: COMING SOON
+* Zenbeats Mobile: https://youtu.be/n5oL5MZPpwQ
 
 ![Switching between triad, autochord, melody, drum pad, and MIDI settings modes](./docs/images/modes.gif)
 
