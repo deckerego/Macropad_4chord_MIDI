@@ -25,8 +25,6 @@ melody_configs = {
 }
 
 autochord_configs = {
-    # Delay between each note played in a chord to give guitar voices a strum effect
-    'arpeggio_delay_ms': 0, # No arpeggio
     # Bass notes to add to the chord (empty array is none, otherwise specify as offsets to the cord).
     # For example [0, 2] would be the root note and perfect fifth of a triad but one octave lower,
     # or [1] would be the second note of the chord (so for a triad the third note). 
@@ -101,7 +99,7 @@ midi_configs = {
     'ChorusSend': 0,       # Chorus effect level
     'PanL/R': 64,          # Pan left/right channel (64 is center)
     'Volume': 90,          # Volume of the send
-    'Breath': 0,           # Wind instrument breath control
+    'Arpeggio': 0,         # Delay between each note played in autochord (strum effect)
     'Celeste': 0           # Detune level
 }
 

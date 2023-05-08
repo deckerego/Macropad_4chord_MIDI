@@ -67,7 +67,7 @@ class AutoChords:
     def send_command(self, command, root, mask):
         note_velocity = self.settings.midi['Velocity']
         bass_notes = self.settings.autochord['bass_notes']
-        note_delay_seconds = self.settings.autochord['arpeggio_delay_ms'] / 1000.0
+        note_delay_seconds = self.settings.midi['Arpeggio'] / 256.0
         enum = 0
 
         for col, state in enumerate(mask): enum += state << col

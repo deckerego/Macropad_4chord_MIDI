@@ -12,7 +12,7 @@ controls = [
     ('Attack', control_change_values.ATTACK_TIME), ('Release', control_change_values.RELEASE_TIME), ('Brightness', control_change_values.CUTOFF_FREQUENCY),
     ('Timbre', control_change_values.FILTER_RESONANCE), ('TimePortamento', control_change_values.PORTAMENTO_TIME), ('CtlPortamento', control_change_values.PORTAMENTO),
     ('ChorusSend', control_change_values.CHORUS), ('PanL/R', control_change_values.PAN), ('Volume', control_change_values.VOLUME),
-    ('Breath', control_change_values.BREATH_CONTROL), ('Celeste', DETUNE), ('Velocity', None)
+    ('Arpeggio', None), ('Celeste', DETUNE), ('Velocity', None)
 ]
 
 class Controls:
