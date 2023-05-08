@@ -56,12 +56,13 @@ class AutoChords:
 
     def send_command(self, command, root, mask):
         note_velocity = self.settings.midi['Velocity']
+        bass_notes = self.settings.autochord['bass_notes']
         enum = 0
 
         for col, state in enumerate(mask):
             enum += state << col
         name, chord = self.to_chord(root, enum)
-        bassline = Key.to_bassline(chord)
+        bassline = Key.to_bassline(chord, bass_notes)
 
         for note in chord + bassline:
             self.macropad.midi.send(command(note, note_velocity, channel=self.channel))
