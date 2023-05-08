@@ -143,7 +143,8 @@ with the MIDI mapping to match what instrument you want to use.
 Clicking four times after booting the Macropad will take you into the MIDI controls
 mode, where you can adjust MIDI controls that are transferred to your DAW
 when recording. This includes global settings (such as attack or release time)
-as well as note settings (such as velocity).
+as well as note settings (such as velocity). The AutoChord setting that
+allows you to arpeggiate a chord is also listed here.
 
 Bear in mind that not all DAWs will register MIDI commands from devices in the
 same way. Some DAWs register the commands so long as your device is connected,
