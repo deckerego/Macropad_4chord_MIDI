@@ -61,16 +61,15 @@ class AutoChords:
         note_delay_seconds = self.settings.autochord['arpeggio_delay_ms'] / 1000.0
         enum = 0
 
-        for col, state in enumerate(mask):
-            enum += state << col
+        for col, state in enumerate(mask): enum += state << col
         name, chord = self.to_chord(root, enum)
         bassline = Key.to_bassline(chord, bass_notes)
 
-        for i, note in enumerate(chord + bassline):
-            if i > 0: time.sleep(note_delay_seconds)
-            self.macropad.midi.send(command(note, note_velocity, channel=self.channel))
-            
         self.display.set_playing(name, chord)
+
+        for i, note in enumerate(bassline + chord):
+            if i > 0: time.sleep(note_delay_seconds)
+            self.macropad.midi.send(command(note, note_velocity, channel=self.channel))            
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
