@@ -77,15 +77,15 @@ class Key:
             self.__init__(key, self.scale, octave, self.mode)
 
     @staticmethod
-    def to_bassline(chord):
+    def to_bassline(chord, notes=[0, 2]):
         bassline = []
-        if not chord or len(chord) <= 0: return bassline
+        chord_len = len(chord) if chord else None
+        if not chord_len: return bassline
 
-        first = chord[0]
-        fifth = chord[2] if len(chord) >= 3 else None
+        for offset in notes:
+            if chord_len > offset and chord[offset] >= 12:
+                bassline.append(chord[offset] - 12)
 
-        bassline.append(first if first < 12 else first - 12)
-        if fifth: bassline.append(fifth if first < 12 else fifth - 12)
         return bassline
 
     @staticmethod

@@ -24,6 +24,14 @@ melody_configs = {
     'channel': 0
 }
 
+autochord_configs = {
+    # Bass notes to add to the chord (empty array is none, otherwise specify as offsets to the cord).
+    # For example [0, 2] would be the root note and perfect fifth of a triad but one octave lower,
+    # or [1] would be the second note of the chord (so for a triad the third note). 
+    # If we can't go any lower than the current octave, the bass notes are omitted.
+    'bass_notes': [ 0, 2 ] # Bass notes on root and perfect 5th of triad
+}
+
 harmony_configs = {
     # The *index* of the MIDI Channel for notes (e.g. 0 is actually MIDI Channel 1)
     'channel': 0,
@@ -91,7 +99,7 @@ midi_configs = {
     'ChorusSend': 0,       # Chorus effect level
     'PanL/R': 64,          # Pan left/right channel (64 is center)
     'Volume': 90,          # Volume of the send
-    'Breath': 0,           # Wind instrument breath control
+    'Arpeggio': 0,         # Delay between each note played in autochord (strum effect)
     'Celeste': 0           # Detune level
 }
 
@@ -108,3 +116,4 @@ class Settings:
         self.drums = rhythm_configs
         self.display = display_configs
         self.keys = key_configs
+        self.autochord = autochord_configs

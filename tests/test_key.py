@@ -339,7 +339,16 @@ class TestBassLine(unittest.TestCase):
         self.assertEqual(Key.to_bassline([60, 64, 67, 70]), [48, 55])
 
     def test_low_fifth(self):
-        self.assertEqual(Key.to_bassline([4, 8, 11]), [4, 11])
+        self.assertEqual(Key.to_bassline([4, 8, 11]), [])
 
     def test_low_third(self):
-        self.assertEqual(Key.to_bassline([8, 12, 15]), [8, 15])
+        self.assertEqual(Key.to_bassline([8, 12, 15]), [3])
+
+    def test_no_bassline(self):
+        self.assertEqual(Key.to_bassline([60, 64, 67, 70], []), [])
+
+    def test_root_only(self):
+        self.assertEqual(Key.to_bassline([60, 64, 67, 70], [0]), [48])
+
+    def test_root_third(self):
+        self.assertEqual(Key.to_bassline([60, 64, 67, 70], [0, 1]), [48, 52])

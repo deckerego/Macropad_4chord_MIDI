@@ -28,7 +28,7 @@ Huge thanks to so many who have inspired this idea, especially:
 - Paul David's [The Four Chord Song](https://youtu.be/6U8-Y7DEzOE) music theory video
 - [iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4)
 - Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
-- The [Omnichord System Two](http://www.suzukimusic.co.uk/omnichord-heaven/models/om36-84.html)
+- The [Omnichord System Two](https://suzukimusic-global.com/products_single.php?parent_cate_cd=3&products_cate_cd=34&products_cd=315)
 - The [Yamaha QY20](https://soundprogramming.net/sequencers/yamaha/yamaha-qy20/)
 - ...and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I)
 
@@ -98,8 +98,16 @@ different type of cord. The map is:
 | Press | Press |       | Diminshed Chord    |
 | Press | Press | Press | Augmented Chord    |
 
-When played each chord also has an accompanying bass chord, where the 1st
-and 5th are played one octave lower.
+Each chord also has an accompanying bass chord, where the 1st
+and 5th one octave lower are played alongside the chord. This can be
+configured to be just the root, or the 3rd, or disabled entirely 
+in `settings.py`.
+
+AutoChord mode also allows you to arpeggiate chords, so that there is a
+slight delay between each note as it is played. This works well with
+guitar voices, since it provides a more realistic strum-like effect. This
+can be configured within the [MIDI Controls](#midi-controls) configuration
+screen, and defaults can be configured within `settings.py`.
 
 ### Highlight Scales (Melody Mode)
 
@@ -135,7 +143,8 @@ with the MIDI mapping to match what instrument you want to use.
 Clicking four times after booting the Macropad will take you into the MIDI controls
 mode, where you can adjust MIDI controls that are transferred to your DAW
 when recording. This includes global settings (such as attack or release time)
-as well as note settings (such as velocity).
+as well as note settings (such as velocity). The AutoChord setting that
+allows you to arpeggiate a chord is also listed here.
 
 Bear in mind that not all DAWs will register MIDI commands from devices in the
 same way. Some DAWs register the commands so long as your device is connected,

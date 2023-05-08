@@ -1,5 +1,6 @@
 import displayio
 import terminalio
+import time
 from adafruit_display_text import label
 from adafruit_display_shapes.rect import Rect
 from rainbowio import colorwheel
@@ -8,6 +9,7 @@ from settings import Settings
 
 class AutoChords:
     LATCH_TIME = 0.05
+    command_queue = None
 
     def __init__(self, macropad):
         self.settings = Settings()
@@ -22,6 +24,7 @@ class AutoChords:
         self.progression_idx = 0
         self.pitch_bend = 8192
         self.channel = self.settings.chords['channel']
+        self.command_queue = []
 
     def refresh(self):
         self.active_notes = [None for i in range(12)]
@@ -29,14 +32,21 @@ class AutoChords:
         self.pixels.refresh()
         self.switch_progression(0)
         self.switch_key(0)
+        self.command_queue.clear()
 
     def tick(self, elapsed_seconds):
-        if self.latch_time: # Latch keypresses to "debounce" them
+        # Latch keypresses to "debounce" them
+        if self.latch_time:
             self.latch_time = self.latch_time - elapsed_seconds
             if self.latch_time <= 0:
                 self.mask_flip()
                 self.pixels.set_playing(self.masks_live)
                 self.latch_time = None
+
+        # Lastly, Do we have any MIDI commands to process?
+        while self.command_queue and self.command_queue[-1][1] <= time.monotonic():
+            command, _ = self.command_queue.pop()
+            self.macropad.midi.send(command)
 
     def mask_flip(self):
         for row in range(4):
@@ -56,17 +66,25 @@ class AutoChords:
 
     def send_command(self, command, root, mask):
         note_velocity = self.settings.midi['Velocity']
+        bass_notes = self.settings.autochord['bass_notes']
+        note_delay_seconds = self.settings.midi['Arpeggio'] / 256.0
         enum = 0
 
-        for col, state in enumerate(mask):
-            enum += state << col
+        for col, state in enumerate(mask): enum += state << col
         name, chord = self.to_chord(root, enum)
-        bassline = Key.to_bassline(chord)
+        bassline = Key.to_bassline(chord, bass_notes)
 
-        for note in chord + bassline:
-            self.macropad.midi.send(command(note, note_velocity, channel=self.channel))
-            
         self.display.set_playing(name, chord)
+
+        delay = 0.0
+        for i, note in enumerate(bassline + chord):
+            midi_command = command(note, note_velocity, channel=self.channel)
+            self.queue_command(midi_command, delay)
+            delay += note_delay_seconds
+
+    def queue_command(self, command, delay=0.0):
+        self.command_queue.append((command, time.monotonic() + delay))
+        self.command_queue.sort(reverse=True, key=lambda n: n[1])
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
