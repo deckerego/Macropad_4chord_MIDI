@@ -26,7 +26,7 @@ melody_configs = {
 
 autochord_configs = {
     # Delay between each note played in a chord to give guitar voices a strum effect
-    'arpeggio_delay_ms': 0, # No arpeggio
+    'arpeggio_delay_ms': 100, # No arpeggio
     # Bass notes to add to the chord (empty array is none, otherwise specify as offsets to the cord).
     # For example [0, 2] would be the root note and perfect fifth of a triad but one octave lower,
     # or [1] would be the second note of the chord (so for a triad the third note). 
