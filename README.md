@@ -28,7 +28,7 @@ Huge thanks to so many who have inspired this idea, especially:
 - Paul David's [The Four Chord Song](https://youtu.be/6U8-Y7DEzOE) music theory video
 - [iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4)
 - Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
-- The [Omnichord System Two](http://www.suzukimusic.co.uk/omnichord-heaven/models/om36-84.html)
+- The [Omnichord System Two](https://suzukimusic-global.com/products_single.php?parent_cate_cd=3&products_cate_cd=34&products_cd=315)
 - The [Yamaha QY20](https://soundprogramming.net/sequencers/yamaha/yamaha-qy20/)
 - ...and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I)
 
