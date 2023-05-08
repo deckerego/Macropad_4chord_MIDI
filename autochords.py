@@ -9,6 +9,7 @@ from settings import Settings
 
 class AutoChords:
     LATCH_TIME = 0.05
+    command_queue = None
 
     def __init__(self, macropad):
         self.settings = Settings()
@@ -23,6 +24,7 @@ class AutoChords:
         self.progression_idx = 0
         self.pitch_bend = 8192
         self.channel = self.settings.chords['channel']
+        self.command_queue = []
 
     def refresh(self):
         self.active_notes = [None for i in range(12)]
@@ -30,14 +32,21 @@ class AutoChords:
         self.pixels.refresh()
         self.switch_progression(0)
         self.switch_key(0)
+        self.command_queue.clear()
 
     def tick(self, elapsed_seconds):
-        if self.latch_time: # Latch keypresses to "debounce" them
+        # Latch keypresses to "debounce" them
+        if self.latch_time:
             self.latch_time = self.latch_time - elapsed_seconds
             if self.latch_time <= 0:
                 self.mask_flip()
                 self.pixels.set_playing(self.masks_live)
                 self.latch_time = None
+
+        # Lastly, Do we have any MIDI commands to process?
+        while self.command_queue and self.command_queue[-1][1] <= time.monotonic():
+            command, _ = self.command_queue.pop()
+            self.macropad.midi.send(command)
 
     def mask_flip(self):
         for row in range(4):
@@ -67,9 +76,15 @@ class AutoChords:
 
         self.display.set_playing(name, chord)
 
+        delay = 0.0
         for i, note in enumerate(bassline + chord):
-            if i > 0: time.sleep(note_delay_seconds)
-            self.macropad.midi.send(command(note, note_velocity, channel=self.channel))            
+            midi_command = command(note, note_velocity, channel=self.channel)
+            self.queue_command(midi_command, delay)
+            delay += note_delay_seconds
+
+    def queue_command(self, command, delay=0.0):
+        self.command_queue.append((command, time.monotonic() + delay))
+        self.command_queue.sort(reverse=True, key=lambda n: n[1])
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
         notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
