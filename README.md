@@ -98,8 +98,16 @@ different type of cord. The map is:
 | Press | Press |       | Diminshed Chord    |
 | Press | Press | Press | Augmented Chord    |
 
-When played each chord also has an accompanying bass chord, where the 1st
-and 5th are played one octave lower.
+Each chord also has an accompanying bass chord, where the 1st
+and 5th one octave lower are played alongside the chord. This can be
+configured to be just the root, or the 3rd, or disabled entirely 
+in `settings.py`.
+
+AutoChord mode also allows you to arpeggiate chords, so that there is a
+slight delay between each note as it is played. This works well with
+guitar voices, since it provides a more realistic strum-like effect. This
+can be configured within the [MIDI Controls](#midi-controls) configuration
+screen, and defaults can be configured within `settings.py`.
 
 ### Highlight Scales (Melody Mode)
 
