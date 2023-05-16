@@ -26,12 +26,15 @@ Huge thanks to so many who have inspired this idea, especially:
 - [iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4)
 - The [Omnichord System Two](https://suzukimusic-global.com/products_single.php?parent_cate_cd=3&products_cate_cd=34&products_cd=315)
 - The [Yamaha QY20](https://soundprogramming.net/sequencers/yamaha/yamaha-qy20/)
+- Roland's [TR-808, TB-303, and SH-101](https://roland50.studio/)
 - ...and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I)
 
 Would you like to learn more about music theory and music composition? May I recommend:
-- [ArcAttach](https://youtu.be/d2OsF86fcKQ) and their [StringTheory project](https://arcattack.com/stringtheory/)
 - Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
 - Nice Stick's [Bon! Music](https://nicestick.io/) beginner guide to music composition
+- [ArcAttach](https://youtu.be/d2OsF86fcKQ) and their [StringTheory project](https://arcattack.com/stringtheory/)
+- Goodhertz' [Funklet](https://goodhertz.com/funklet/)
+- Mike Hadlow's [Guitar Dashboard](https://guitardashboard.com/)
 
 
 ## Playing
