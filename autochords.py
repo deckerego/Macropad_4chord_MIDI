@@ -83,7 +83,7 @@ class AutoChords:
             delay += note_delay_seconds
 
     def queue_command(self, command, delay=0.0):
-        self.command_queue.append((command, time.monotonic() + delay))
+        self.command_queue.insert(0, (command, time.monotonic() + delay))
         self.command_queue.sort(reverse=True, key=lambda n: n[1])
 
     def rotate_event(self, encoder_position, encoder_last_position, encoder_switch):
