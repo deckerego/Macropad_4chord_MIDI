@@ -173,18 +173,20 @@ the precompiled Adafruit libraries that power the Macropad.
 
 ## Updating
 
-After you first install this version of Macropad 4chord MIDI and reboot the Macropad,
-the CIRCUITPY filesystem will be mounted as read-only. When mounting the device
-as read-only, Windows and MacOS won't complain if you unplug or reboot the device
-without unmounting it, making it more like a regular old HID device.
+After you first install this version of Macropad 4chord MIDI and reboot,
+the Macropad will no longer mount as a removable drive. This ensures that 
+Windows and MacOS won't complain if you unplug or reboot the device, 
+making it behave more like pure MIDI device. This also helps mobile devices
+as well, as sometimes Android can't tell if the Macropad 4chord MIDI is
+a input device, a flash drive, or a MIDI keyboard.
 
 To update or edit the code on the device, or to modify the settings, you first
-need to reboot the device with the CIRCUITPY drive mounted in read/write mode.
+need to reboot the device with the Macropad's drive mounted in read/write mode.
 To do that, reboot the device using the boot switch on the left of the
 Macropad, and then after releasing the button immediately hold down the
 rotary encoder button. You should see the text "Enabling Updates" quickly
-appear on the screen, and then the CIRCUITPY drive will mount in read/write mode.
-
+appear on the screen, and then a removable drive will mount in read/write mode
+that contains some documentation and the Macropad's CircuitPython code.
 
 ## Configuring
 
