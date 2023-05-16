@@ -21,16 +21,17 @@ Set your root key & chord progression, then off you go. Includes drum pads
 so you can provide a backing beat to your tracks.
 
 Huge thanks to so many who have inspired this idea, especially:
-- [Sven Gregori](https://github.com/sgreg) and his
-[4 Chord USB MIDI Keyboard](https://hackaday.io/project/26078-4chord-midi)
-- [ArcAttach](https://youtu.be/d2OsF86fcKQ) and their
-[StringTheory project](https://arcattack.com/stringtheory/)
+- [Sven Gregori](https://github.com/sgreg) and his [4 Chord USB MIDI Keyboard](https://hackaday.io/project/26078-4chord-midi)
 - Paul David's [The Four Chord Song](https://youtu.be/6U8-Y7DEzOE) music theory video
 - [iSongs' Take On Me with iOS' GarageBand](https://youtu.be/U3aiBukp_E4)
-- Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
 - The [Omnichord System Two](https://suzukimusic-global.com/products_single.php?parent_cate_cd=3&products_cate_cd=34&products_cd=315)
 - The [Yamaha QY20](https://soundprogramming.net/sequencers/yamaha/yamaha-qy20/)
 - ...and of course [Axis of Awesome's Four Chord Song](https://youtu.be/5pidokakU4I)
+
+Would you like to learn more about music theory and music composition? May I recommend:
+- [ArcAttach](https://youtu.be/d2OsF86fcKQ) and their [StringTheory project](https://arcattack.com/stringtheory/)
+- Andrew Huang's [learn music theory in half an hour](https://youtu.be/rgaTLrZGlk0) video
+- Nice Stick's [Bon! Music](https://nicestick.io/) beginner guide to music composition
 
 
 ## Playing
