@@ -54,8 +54,9 @@ clicking on the rotary dial.
 
 There are a few quick demos showing how to use the MacroPad 4chord MIDI in a DAW:
 * GarageBand: https://youtu.be/2-FtnHHVXCg
-* Renoise: https://youtu.be/bhJ7GtdNhvA
+* Renoise: https://youtu.be/5VwU2DpjD-4
 * Zenbeats Mobile: https://youtu.be/n5oL5MZPpwQ
+* Hookpad: https://youtu.be/Ifc-n-RV3Ag
 
 ![Switching between triad, autochord, melody, drum pad, and MIDI settings modes](./docs/images/modes.gif)
 
