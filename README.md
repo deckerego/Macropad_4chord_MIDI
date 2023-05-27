@@ -53,7 +53,7 @@ controls (including note velocity). You can switch between each mode by
 clicking on the rotary dial.
 
 There are a few quick demos showing how to use the MacroPad 4chord MIDI in a DAW:
-* GarageBand: https://youtu.be/2-FtnHHVXCg
+* GarageBand: https://youtu.be/goyia2EYv0Q
 * Renoise: https://youtu.be/5VwU2DpjD-4
 * Zenbeats Mobile: https://youtu.be/n5oL5MZPpwQ
 * Hookpad: https://youtu.be/Ifc-n-RV3Ag
