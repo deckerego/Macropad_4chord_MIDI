@@ -98,7 +98,7 @@ class Display:
     def refresh(self):
         self.display.auto_refresh = False
         self.display.brightness = self.scaled_brightness
-        self.display.show(self.group)
+        self.display.root_group = self.group
         self.display.refresh()
 
     def wake(self):

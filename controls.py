@@ -94,7 +94,7 @@ class Display:
         self.group[13].anchored_position=(5, -2)
         self.group[13].anchor_point=(0, 0)
         self.group[13].text = "%s: %d" % (control_name, control_value)
-        self.display.show(self.group)
+        self.display.root_group = self.group
         self.display.refresh()
 
     def reload(self):
@@ -108,7 +108,7 @@ class Display:
             control_name, _ = controls[i]
             self.group[i].text = control_name[:6]
 
-        self.display.show(self.group)
+        self.display.root_group = self.group
         self.display.refresh()
 
     def wake(self):
