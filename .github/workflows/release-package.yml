@@ -5,7 +5,7 @@ on:
     types: [ published ]
 
 env:
-  adafruit-bundle: '20250221'
+  adafruit-bundle: '20251105'
 
 jobs:
   package:
@@ -21,12 +21,12 @@ jobs:
       - if: ${{ steps.cache-mpy.outputs.cache-hit != 'true' }}
         name: Download the Adafruit CircuitPython Bundle
         run: |
-          curl -L https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases/download/${{ env.adafruit-bundle }}/adafruit-circuitpython-bundle-9.x-mpy-${{ env.adafruit-bundle }}.zip -o adafruit-circuitpython-bundle.zip
+          curl -L https://github.com/adafruit/Adafruit_CircuitPython_Bundle/releases/download/${{ env.adafruit-bundle }}/adafruit-circuitpython-bundle-10.x-mpy-${{ env.adafruit-bundle }}.zip -o adafruit-circuitpython-bundle.zip
           unzip adafruit-circuitpython-bundle.zip
           rm adafruit-circuitpython-bundle.zip
           mkdir -p ~/.adafruit-circuitpython-bundle
-          mv adafruit-circuitpython-bundle-9.x-mpy-${{ env.adafruit-bundle }}/* ~/.adafruit-circuitpython-bundle/
-          rmdir adafruit-circuitpython-bundle-9.x-mpy-${{ env.adafruit-bundle }}
+          mv adafruit-circuitpython-bundle-10.x-mpy-${{ env.adafruit-bundle }}/* ~/.adafruit-circuitpython-bundle/
+          rmdir adafruit-circuitpython-bundle-10.x-mpy-${{ env.adafruit-bundle }}
       - name: Copy Adafruit Libraries
         run: |
           cp -a \
