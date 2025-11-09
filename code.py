@@ -2,29 +2,27 @@ import time
 from settings import Settings
 from adafruit_macropad import MacroPad
 
+from chords import Chords
+from autochords import AutoChords
+from scales import Scales
+from drums import Drums
+from controls import Controls
+
 macropad = MacroPad()
 settings = Settings()
 modes = []
-mode_current = 0
+mode_current = Chords(macropad)
+mode_current_idx = 0
 encoder_last_position = 0
 encoder_last_down = False
 encoder_last_pressed = 0
 last_time_seconds = time.monotonic()
 
-from chords import Chords
-modes.append(Chords(macropad))
-
-from autochords import AutoChords
-modes.append(AutoChords(macropad))
-
-from scales import Scales
-modes.append(Scales(macropad))
-
-from drums import Drums
-modes.append(Drums(macropad))
-
-from controls import Controls
-modes.append(Controls(macropad))
+modes.append(Chords)
+modes.append(AutoChords)
+modes.append(Scales)
+modes.append(Drums)
+modes.append(Controls)
 
 sleep_seconds = settings.display['sleep_seconds']
 sleep_active = False
@@ -39,15 +37,17 @@ def elapsed_seconds():
 
 # The current mode has changed, update the MacroPad
 def refresh():
-    if hasattr(modes[mode_current], 'channel'): 
-        macropad.midi.out_channel = modes[mode_current].channel
-        #controls.send_controls(modes[mode_current].channel)
-    modes[mode_current].refresh()
+    global mode_current
+    if hasattr(mode_current, 'channel'): 
+        macropad.midi.out_channel = mode_current.channel
+    mode_current.refresh()
 
 # A click occurs when the dial is pressed ONLY (no rotation or keypress)
 def click_event():
-    global mode_current
-    mode_current = (mode_current + 1) % len(modes)
+    global macropad, mode_current, mode_current_idx
+    mode_current_idx = (mode_current_idx + 1) % len(modes)
+    del mode_current
+    mode_current = modes[mode_current_idx](macropad)
     refresh()
 
 def wake_event():
@@ -57,8 +57,9 @@ def wake_event():
 
 def sleep_event():
     global sleep_active
-    modes[mode_current].sleep_event()
+    mode_current.sleep_event()
     sleep_active = True
+
 
 refresh()
 while True:
@@ -69,7 +70,7 @@ while True:
         key_events.append(key_event)
         key_event = macropad.keys.events.get()
     if key_events:
-        modes[mode_current].keypad_events(key_events)
+        mode_current.keypad_events(key_events)
         wake_event()
 
     if macropad.encoder_switch != encoder_last_down:
@@ -79,14 +80,14 @@ while True:
         encoder_last_pressed = time.time() if macropad.encoder_switch else 0
         wake_event()
     elif macropad.encoder != encoder_last_position:
-        modes[mode_current].rotate_event(macropad.encoder, encoder_last_position, macropad.encoder_switch);
+        mode_current.rotate_event(macropad.encoder, encoder_last_position, macropad.encoder_switch);
         encoder_last_position = macropad.encoder
         encoder_last_pressed = 0
         wake_event()
     
     elapsed = elapsed_seconds()
-    if hasattr(modes[mode_current], 'tick') and not sleep_active: 
-        modes[mode_current].tick(elapsed)
+    if hasattr(mode_current, 'tick') and not sleep_active: 
+        mode_current.tick(elapsed)
 
     if sleep_seconds:
         sleep_seconds -= elapsed
