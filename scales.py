@@ -41,6 +41,10 @@ class Scales:
             else: # event.released
                 note = self.active_notes[event.key_number]
                 self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity, channel=self.channel))
+                if(not note):
+                    print("WARN: No active notes")
+                    return
+            
                 self.active_notes[event.key_number] = None
                 notes_active = len(list(filter(lambda n: n is not None, self.active_notes)))
                 if notes_active == 0: self.pitch_bend = 8192
