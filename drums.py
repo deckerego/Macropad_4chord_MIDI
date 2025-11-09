@@ -42,6 +42,10 @@ class Drums:
                     self.active_notes[event.key_number] = note
             else: # event.released
                 note = self.active_notes[event.key_number]
+                if(not note):
+                    print("WARN: No active notes")
+                    return
+                
                 self.macropad.midi.send(self.macropad.NoteOff(note, note_velocity, channel=self.channel))
                 self.active_notes[event.key_number] = None
         self.pixels.set_playing(self.active_notes)
