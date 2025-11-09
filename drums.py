@@ -15,6 +15,11 @@ class Drums:
         self.active_notes = [None for i in range(12)]
         self.channel = self.settings.drums['channel']
 
+    def __del__(self):
+        del self.kits
+        del self.pixels
+        del self.display
+
     def refresh(self):
         self.display.refresh()
         self.pixels.refresh()
@@ -56,6 +61,9 @@ class DrumKits:
         self.index = 0
         self.kits = config['kits']
 
+    def __del__(self):
+        self.kits.clear()
+
     def get(self):
         return self.kits[self.index]
 
@@ -95,6 +103,9 @@ class Display:
             )
         )
 
+    def __del__(self):
+        del self.group
+
     def refresh(self):
         self.display.auto_refresh = False
         self.display.brightness = self.scaled_brightness
@@ -128,6 +139,9 @@ class Pixels:
         self.pixels = macropad.pixels
         self.brightness = brightness
         self.palette = [0x0F0F0F for i in range(12)]
+
+    def __del__(self):
+        self.palette.clear()
 
     def refresh(self):
         self.pixels.auto_write = False

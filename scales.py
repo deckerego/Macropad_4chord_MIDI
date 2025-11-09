@@ -17,7 +17,12 @@ class Scales:
         self.chords = None
         self.pitch_bend = 8192
         self.channel = self.settings.scales['channel']
-
+   
+    def __del__(self):
+        del self.key
+        del self.pixels
+        del self.display
+    
     def refresh(self):
         self.active_notes = [None for i in range(12)]
         self.display.refresh()
@@ -86,7 +91,10 @@ class Display:
         self.group.append(Display.create_label("", (40, self.display.height - 22), (0, 1.0)))
         self.group.append(Display.create_label("Melody Mode", (0, self.display.height - 8), (0, 1.0)))
         self.group.append(Display.create_label("", (40, self.display.height - 8), (0, 1.0)))
-
+    
+    def __del__(self):
+        del self.group
+    
     @staticmethod
     def create_label(text, anchor_position, anchor_point, color=0xFFFFFF):
         return label.Label(

@@ -22,7 +22,11 @@ class Controls:
         self.display = Display(macropad, self.settings.display['brightness'])
         self.pixels = Pixels(macropad, self.settings.display['brightness'])
         self.pressed = None
-
+    
+    def __del__(self):
+        del self.pixels
+        del self.display
+    
     def send_controls(self, channel=None):
         for control in controls:
             self.send_control(control, channel=channel)
@@ -88,7 +92,10 @@ class Display:
                 anchor_point=(0.5, 0.0)
             )
         )
-
+    
+    def __del__(self):
+        del self.group
+    
     def adjust(self, key, control_value):
         control_name, _ = controls[key]
         self.group[13].anchored_position=(5, -2)
